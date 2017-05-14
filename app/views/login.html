@@ -1,0 +1,25 @@
+<div ng-switch on="loginORregister">
+  <div ng-switch-when="login" class="login-form content">
+    <md-toolbar class="md-hue-2">
+      <div class="md-toolbar-tools">
+	<h2 class="md-flex toolbar-text">Please login</h2>							
+      </div>
+    </md-toolbar>
+
+    <md-content layout-padding>	
+      
+      <md-input-container>
+	<input placeholder="E-Mail" type="" ng-model="$parent.login.email"/>    <!-- required spaeter hinzufuegen-->
+      </md-input-container>
+      
+      <md-input-container>
+	<input placeholder="Passwort" type="password" ng-model="$parent.login.password" />  <!-- required -->
+      </md-input-container>
+
+    </md-content>
+
+    <md-content flex layout-padding>
+      <md-button class="md-raised md-primary button-to-right" ng-click="Login()"> Login </md-button>
+    </md-content>
+  </div>
+</div>
