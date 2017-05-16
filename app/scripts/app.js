@@ -41,7 +41,7 @@ var checkRouting= function ($rootScope, $location, Helper) {
 	}
 	
 	console.log("FAILED ");
-	
+	alert("test");
 	$location.path("/start");
     }
     else
@@ -62,27 +62,40 @@ application.config(function ($routeProvider, $locationProvider){
 	})
 	.when('/about', {
 	    templateUrl: 'views/about.html',
+	    resolve: {
+		factory: checkRouting
+	    },
 	    controller: 'AboutCtrl',
 	    controllerAs: 'about'
 	})
 	.when('/start', {
 	    templateUrl: 'views/start.html',
-	    controller: 'Ctrl_Main'
-	})
-    	.when('/vehicles', {
-	    templateUrl: 'views/vehicles.html',
-	    controller: 'VehiclesCtrl'
-	})
-        .when('/users', {
-	    templateUrl: 'views/users.html',
-	    controller: 'UsersCtrl'
-	})
+	    factory: checkRouting
+	},
+	      controller: 'Ctrl_Main'
+	     })
+    		   .when('/vehicles', {
+		       templateUrl: 'views/vehicles.html',
+	    	       factory: checkRouting
+		   },
+			 controller: 'VehiclesCtrl'
+			})
+    .when('/users', {
+	templateUrl: 'views/users.html',
+	factory: checkRouting
+    },
+	  controller: 'UsersCtrl'
+	 })
         .when('/bookings', {
 	    templateUrl: 'views/bookings.html',
+	    		factory: checkRouting
+	    },
 	    controller: 'BookingsCtrl'
 	})
         .when('/statistics', {
 	    templateUrl: 'views/statistics.html',
+	    		factory: checkRouting
+	    },
 	    controller: 'StatisticsCtrl'
 	})
 	.otherwise(
