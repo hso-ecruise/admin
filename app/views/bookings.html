@@ -15,7 +15,7 @@
 			</td>
 		</tr>
 		
-		<tr ng-repeat="(key, booking) in bookings" ng-click="LoadBookingDetails(booking)">
+		<tr ng-repeat="(key, booking) in bookings track by $index" ng-click="LoadBookingDetails2(booking)">
 			
 			<td>
 				{{ key }}
@@ -38,7 +38,7 @@
 	
 	<br/>
 	
-	<div ng-switch="{{currentBooking.available}}">
+	<div ng-switch="currentBooking.available">
 		Buchungsdetails
 		<!-- Booking Objekt hierfür ist $scope.currentBooking -->
 		<div ng-switch-when="false">
@@ -46,19 +46,44 @@
 		</div>
 		
 		<div ng-switch-when="true">
-			ID: {{ currentBooking.bookingID }}
+			ID: {{ currentBooking.bookingID }}<br/>
 			
-			Status: {{ currentBooking.status }}
+			Status: {{ currentBooking.status }}<br/>
 			
-			Vorname: {{ currentBooking.customer.name }}
-			Nachname: {{ currentBooking.customer.familyName }}
-			NutzerID: {{ currentBooking.customer.customerID }}
+			Vorname: {{ currentBooking.customer.name }}<br/>
+			Nachname: {{ currentBooking.customer.familyName }}<br/>
+			NutzerID: {{ currentBooking.customer.customerID }}<br/>
 			
+			Start:<br/>
+				Zeit: {{ currentBooking.trip.start.time }}<br/>
+				Datum: {{ currentBooking.trip.start.date }}<br/><br/>
+				
+				Address:<br/>
+					{{ currentBooking.trip.start.address.street }}<br/>
+					{{ currentBooking.trip.start.address.number }}<br/>
+					{{ currentBooking.trip.start.address.zip }}<br/>
+					{{ currentBooking.trip.start.address.city }}<br/><br/>
+					
+			Ende:<br/>
+			Zeit: {{ currentBooking.trip.end.time }}<br/>
+			Datum: {{ currentBooking.trip.end.date }}<br/><br/>
+			
+			Address:<br/>
+				{{ currentBooking.trip.end.address.street }}<br/>
+				{{ currentBooking.trip.end.address.number }}<br/>
+				{{ currentBooking.trip.end.address.zip }}<br/>
+				{{ currentBooking.trip.end.address.city }}<br/><br/>
+				
+			Rechnung:<br/>
+				ID: {{ currentBooking.invoice.invoiceID }}<br/>
+				Status: {{ currentBooking.invoice.paid }}<br/>	<!--Bezahlt oder nicht bezahlt-->
+				Preis: {{ currentBooking.invoice.totalAmount }}<br/>
+				
+				
 		</div>
 		
-		
-		
-		
 	</div>
+	
+	
 	
 </div>

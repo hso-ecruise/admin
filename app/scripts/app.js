@@ -16,8 +16,7 @@ var application = angular.module('adminApp', [
     'ngMessages',
     'ngResource',
     'ngRoute',
-    'ngSanitize',
-    'ngTouch'
+    'ngSanitize'
 ]);
 
 var checkRouting= function ($rootScope, $location, Helper) {
