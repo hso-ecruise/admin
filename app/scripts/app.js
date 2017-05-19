@@ -27,7 +27,7 @@ var checkRouting= function ($rootScope, $location, Helper) {
     var customerID = Helper.Cookie_Get("customerID");
     
     if(loggedIN !== "true"){
-	loggedIN = false;
+		loggedIN = false;
     }
     
     $rootScope.loggedIN = loggedIN;
@@ -36,74 +36,81 @@ var checkRouting= function ($rootScope, $location, Helper) {
     
     if ($rootScope.loggedIN === false || $rootScope.loggedIN === undefined)
     {
-	if($rootScope.loggedIN === undefined){
-	    $rootScope.loggedIN = false;
-	}
-	
-	console.log("FAILED ");
-	alert("test");
-	$location.path("/start");
+		if($rootScope.loggedIN === undefined){
+			$rootScope.loggedIN = false;
+		}
+		
+		console.log("FAILED ");
+		alert("test");
+		$location.path("/start");
     }
     else
     {
-	alert("true or other");
-	alert($rootScope.loggedIN);
+		//alert("true or other");
+		//alert($rootScope.loggedIN);
     }
+	
 };
 
 application.config(function ($routeProvider, $locationProvider){
-    $routeProvider
+    
+	$routeProvider
 	.when('/', {
 	    templateUrl: 'views/start.html',
 	    resolve: {
-		factory: checkRouting
+			factory: checkRouting
 	    }
 
 	})
-	.when('/about', {
-	    templateUrl: 'views/about.html',
-	    resolve: {
-		factory: checkRouting
-	    },
-	    controller: 'AboutCtrl',
-	    controllerAs: 'about'
-	})
+	
 	.when('/start', {
 	    templateUrl: 'views/start.html',
-	    factory: checkRouting
-	},
-	      controller: 'Ctrl_Main'
-	     })
-    		   .when('/vehicles', {
-		       templateUrl: 'views/vehicles.html',
-	    	       factory: checkRouting
-		   },
-			 controller: 'VehiclesCtrl'
-			})
+		resolve: {
+			factory: checkRouting
+	    },
+		controller: 'Ctrl_Main'
+	})
+	
+	.when('/vehicles', {
+		templateUrl: 'views/vehicles.html',
+	    resolve: {
+			factory: checkRouting
+	    },
+		controller: 'Ctrl_Vehicles'
+	})
+	
     .when('/users', {
-	templateUrl: 'views/users.html',
-	factory: checkRouting
-    },
-	  controller: 'UsersCtrl'
-	 })
-        .when('/bookings', {
-	    templateUrl: 'views/bookings.html',
-	    		factory: checkRouting
+		templateUrl: 'views/users.html',
+		resolve: {
+			factory: checkRouting
 	    },
-	    controller: 'BookingsCtrl'
+		controller: 'Ctrl_Users'
 	})
-        .when('/statistics', {
-	    templateUrl: 'views/statistics.html',
-	    		factory: checkRouting
+	
+	.when('/bookings', {
+		templateUrl: 'views/bookings.html',
+		resolve: {
+			factory: checkRouting
 	    },
-	    controller: 'StatisticsCtrl'
+		controller: 'Ctrl_Bookings'
 	})
+	
+	.when('/statistics', {
+		templateUrl: 'views/statistics.html',
+		resolve: {
+			factory: checkRouting
+	    },
+		controller: 'Ctrl_Statistics'
+	})
+	
 	.otherwise(
-	    {
+	{
 		templateUrl : 'views/start.html',
 		controller: 'Ctrl_Main'
 		//template: 'NO PAGE'
-	    });
+	});
+		
     $locationProvider
 	.html5Mode(true);
+	
 });

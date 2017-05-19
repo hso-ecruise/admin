@@ -1,3 +1,64 @@
 <div>
-  Bookings View
+	Bookings View
+  
+	<table>
+	
+		<tr>
+			<td>
+				ID
+			</td>
+			<td>
+				FahrerID
+			</td>
+			<td>
+				Status
+			</td>
+		</tr>
+		
+		<tr ng-repeat="(key, booking) in bookings" ng-click="LoadBookingDetails(booking)">
+			
+			<td>
+				{{ key }}
+			</td>
+			
+			
+			<td>
+				{{ booking.customer.name }} {{ booking.customer.familyName }}
+			</td>
+			
+			
+			<td ng-switch="booking.status">
+				<div ng-switch-when="FUTURE">FUTURE</div>
+				<div ng-switch-when="PAST">PAST</div>
+			</td>
+			
+		</tr>
+	
+	</table>
+	
+	<br/>
+	
+	<div ng-switch="{{currentBooking.available}}">
+		Buchungsdetails
+		<!-- Booking Objekt hierfür ist $scope.currentBooking -->
+		<div ng-switch-when="false">
+			Buchungsdetails sind derzeit nicht verfügbar
+		</div>
+		
+		<div ng-switch-when="true">
+			ID: {{ currentBooking.bookingID }}
+			
+			Status: {{ currentBooking.status }}
+			
+			Vorname: {{ currentBooking.customer.name }}
+			Nachname: {{ currentBooking.customer.familyName }}
+			NutzerID: {{ currentBooking.customer.customerID }}
+			
+		</div>
+		
+		
+		
+		
+	</div>
+	
 </div>

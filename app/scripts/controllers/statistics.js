@@ -7,7 +7,10 @@
  * # StatisticsCtrl
  * give some description here
  */
-angular.module('adminApp')
-    .controller('StatisticsCtrl', function () {
+
+ application.controller('Ctrl_Statistics', function () {
+	
 	alert("StatisticsCtrl");
+	
+	
 });

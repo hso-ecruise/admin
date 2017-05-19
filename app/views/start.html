@@ -1,40 +1,23 @@
-<div class="login-form" ng-controller="Ctrl_Login_Register" >
+
+<div class="login-form" ng-controller="Ctrl_Main" >
   
   <div ng-cloak class="contentt" flex="">
     <md-toolbar class="md-hue-2">
       <div class="md-toolbar-tools">
-        <h2 class="md-flex">Willkommen</h2>
+        <h2 class="md-flex">Admin Login</h2>
       </div>
     </md-toolbar>
     
     <md-content flex layout-padding >
-      <label> Willkommen auf der e-Cruise.me Webseite!</label>
-      <br/>
-      Dies ist die speziell für Sie entwicklete Seite, über die Sie Ihre nächste Fahrt mit einem unserer E-Fahrzeuge buchen k&ouml;nnen.
-      <br/>
-      <br/>
-      Registrieren Sie sich ganz einfach oder melden Sie sich mit Ihren Nutzerdaten an und schon kann das Buchen beginnen.
-      
-      <br/>
-      <br/>
-      
-      
-      Sollten Sie einmal nicht die Möglichkeit haben über das Internet zu buchen, so können Sie sich auch an unsere Telefon-Hotline wenden,
-      welche gerne Ihre nächste Reservierung entgegen nimmt.
-      
-      <br/>
-      <br/>
-      
-      Sollten Sie Probleme bei der Buchung oder sonstigem haben, so können Sie uns jederzeit unter folgender E-Mail erreichen:
-      
-      <label>mail.com</label>
-      
-      <br/>
-      <br/>
-      <!--
-	  <md-button class="md-raised md-primary button-to-right" ng-click="" href="login" > Login </md-button>
-	  <md-button class="md-raised md-primary button-to-right" ng-click="" href="register" > Registrieren </md-button>
-	  -->
+	
+	
+		<input type="email" ng-model="login_email" placeholder="Email"/>
+		
+		<br/>
+		<input type="password" ng-model="login_password" placeholder="Passwort"/>
+		
+		<md-button class="md-raised md-primary button-to-right" ng-click="Login()"> Login </md-button>
+		
     </md-content>
     
   </div>

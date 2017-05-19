@@ -7,7 +7,9 @@
  * # VehiclesCtrl
  * give some description here
  */
-angular.module('adminApp')
-    .controller('VehiclesCtrl', function () {
+ 
+application.controller('Ctrl_Vehicles', function () {
+
 	alert("VehiclesCtrl");
+
 });

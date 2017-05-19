@@ -7,7 +7,9 @@
  * # UsersCtrl
  * give some description here
  */
-angular.module('adminApp')
-    .controller('UsersCtrl', function () {
+application.controller('Ctrl_Users', function () {
+	
+	
 	alert("UsersCtrl");
+
 });
