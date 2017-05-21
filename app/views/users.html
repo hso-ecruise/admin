@@ -1,3 +1,84 @@
 <div>
-  Users View
+
+  	<table>
+	
+		<tr>
+			<td>
+				ID
+			</td>
+			<td>
+				Nutzer
+			</td>
+		</tr>
+		
+		<tr ng-repeat="(key, customer) in customers track by $index" ng-click="LoadCustomerDetails(customer)">
+			
+			<td>
+				{{ key }}
+			</td>
+			
+			
+			<td>
+				{{ customer.name }} {{ customer.familyName }}
+			</td>
+			
+		</tr>
+	
+	</table>
+	
+	<div ng-switch="view">
+		
+		<div ng-switch-when="info" ng-switch="customer_selected">
+			
+			Nutzer-Informationen:
+			<br/>
+			
+			<div ng-switch-when="true">
+				
+				ID: {{ currentCustomer.customerID }}
+				<br/>
+				Name: {{ currentCustomer.name }} {{ currentCustomer.familyName }}
+				<br/>
+				Aktiviert: {{ currentCustomer.activated }}
+				<br/>
+				Verifiziert: {{ currentCustomer.verified }}
+				<br/>
+				ChipID: {{ currentCustomer.chipID }}
+				<br/>
+				E-Mail: {{ currentCustomer.email }}
+				<br/>
+				Telefon: {{ currentCustomer.phoneNr }}
+				<br/>
+				Adresse:
+				<br/>
+				Straße Nr.: {{ currentCustomer.address.street }} {{ currentCustomer.address.number }}
+				<br/>
+				Stadt PLZ: {{ currentCustomer.address.city }} {{ currentCustomer.address.zip }}
+				<br/>
+				Land: {{ currentCustomer.address.country }}
+				<br/>
+				Extra: {{ currentCustomer.address.extra }}
+				<br/>
+				
+			</div>
+			
+			
+			<div ng-switch-when="false">
+				Bitte wählen Sie einen Nutzer in der linken Liste aus.
+			</div>
+			
+			
+		</div>
+		
+		
+		
+		<div ng-switch-when="add">
+			
+			
+			
+		</div>
+		
+	</div>
+	
+  
 </div>

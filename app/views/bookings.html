@@ -8,7 +8,7 @@
 				ID
 			</td>
 			<td>
-				FahrerID
+				Nutzer
 			</td>
 			<td>
 				Status
@@ -44,34 +44,30 @@
 	
 	<div ng-switch="view">
 		
-		<div ng-switch-when="info">
-			<div ng-switch="currentBooking.available">
-				Buchungsdetails
-				<!-- Booking Objekt hierfür ist $scope.currentBooking -->
-				<div ng-switch-when="false">
-					Buchungsdetails sind derzeit nicht verfügbar
-				</div>
+		<div ng-switch-when="info" ng-switch="booking_selected">
+		
+			Buchungsdetails
+			
+			<div ng-switch-when="true">
+				ID: {{ currentBooking.bookingID }}<br/>
 				
-				<div ng-switch-when="true">
-					ID: {{ currentBooking.bookingID }}<br/>
+				Status: {{ currentBooking.status }}<br/>
 					
-					Status: {{ currentBooking.status }}<br/>
+				Vorname: {{ currentBooking.customer.name }}<br/>
+				Nachname: {{ currentBooking.customer.familyName }}<br/>
+				NutzerID: {{ currentBooking.customer.customerID }}<br/>
 					
-					Vorname: {{ currentBooking.customer.name }}<br/>
-					Nachname: {{ currentBooking.customer.familyName }}<br/>
-					NutzerID: {{ currentBooking.customer.customerID }}<br/>
+				Start:<br/>
+					Zeit: {{ currentBooking.trip.start.time }}<br/>
+					Datum: {{ currentBooking.trip.start.date }}<br/><br/>
 					
-					Start:<br/>
-						Zeit: {{ currentBooking.trip.start.time }}<br/>
-						Datum: {{ currentBooking.trip.start.date }}<br/><br/>
+					Address:<br/>
+						{{ currentBooking.trip.start.address.street }}<br/>
+						{{ currentBooking.trip.start.address.number }}<br/>
+						{{ currentBooking.trip.start.address.zip }}<br/>
+						{{ currentBooking.trip.start.address.city }}<br/><br/>
 						
-						Address:<br/>
-							{{ currentBooking.trip.start.address.street }}<br/>
-							{{ currentBooking.trip.start.address.number }}<br/>
-							{{ currentBooking.trip.start.address.zip }}<br/>
-							{{ currentBooking.trip.start.address.city }}<br/><br/>
-							
-					Ende:<br/>
+				Ende:<br/>
 					Zeit: {{ currentBooking.trip.end.time }}<br/>
 					Datum: {{ currentBooking.trip.end.date }}<br/><br/>
 					
@@ -80,16 +76,20 @@
 						{{ currentBooking.trip.end.address.number }}<br/>
 						{{ currentBooking.trip.end.address.zip }}<br/>
 						{{ currentBooking.trip.end.address.city }}<br/><br/>
-						
-					Rechnung:<br/>
-						ID: {{ currentBooking.invoice.invoiceID }}<br/>
-						Status: {{ currentBooking.invoice.paid }}<br/>	<!--Bezahlt oder nicht bezahlt-->
-						Preis: {{ currentBooking.invoice.totalAmount }}<br/>
-						
-						
-				</div>
 				
+				Rechnung:<br/>
+					ID: {{ currentBooking.invoice.invoiceID }}<br/>
+					Status: {{ currentBooking.invoice.paid }}<br/>	<!--Bezahlt oder nicht bezahlt-->
+					Preis: {{ currentBooking.invoice.totalAmount }}<br/>
+					
+					
 			</div>
+			
+			<!-- Booking Objekt hierfür ist $scope.currentBooking -->
+			<div ng-switch-when="false">
+				Bitte wählen Sie eine Buchung aus der linken Liste
+			</div>
+				
 		</div>
 		
 		<div ng-switch-when="add">

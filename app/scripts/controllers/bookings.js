@@ -9,8 +9,6 @@
  */
  
 application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactory, Helper, $mdDialog) {
-
-	alert("BookingsCtrl");
 	
 	var bookings_all = {};
 	
@@ -19,6 +17,8 @@ application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactor
 
 	
 	var Update = function(){
+		
+		$scope.booking_selected = "false";
 		
 		$scope.view = "info";
 		
@@ -90,21 +90,11 @@ application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactor
 
 	var LoadBookingDetails = function(booking){
 		
-		var currentBooking = {};
+		$scope.booking_selected = "true";
 		
-		if(booking === undefined){
-			currentBooking.available = "false";
-			$scope.currentBooking = currentBooking;
-			return;
-		}
-		
-		currentBooking = booking;
-		
-		currentBooking.available = "true";
+		var currentBooking = booking;
 		
 		$scope.currentBooking = currentBooking;
-		
-		//
 		
 		
 		//GET TRIP INFORMATIONS
@@ -346,8 +336,6 @@ application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactor
 	var Init = function(){
 		
 		Update();
-		
-		LoadBookingDetails(undefined);
 		
 	};
 	
