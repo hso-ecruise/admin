@@ -8,17 +8,19 @@
  * give some description here
  */
  
-application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactory, Helper) {
+application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactory, Helper, $mdDialog) {
 
 	alert("BookingsCtrl");
 	
 	var bookings_all = {};
 	
-	
+
 	
 
 	
 	var Update = function(){
+		
+		$scope.view = "info";
 		
 		//TODO RESTFactory.Bookings_Get(1).then(function(response){
 		RESTFactory.Bookings_Get_CustomerID(1).then(function(response){
@@ -237,10 +239,107 @@ application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactor
 		
 	}
 	
+	var Show_AddBooking = function(){
+		
+		$scope.view = "add";
+
+		var new_booking = {};
+		
+		new_booking.date = new Date();
+		new_booking.date.setSeconds(0);
+		new_booking.date.setMilliseconds(0);
+		
+		new_booking.address_state = "false";
+		
+		$scope.new_booking = new_booking;
+		
+		var Init_Map = function(){
+			
+			var map = new google.maps.Map(document.getElementById('map_booking'), {
+				zoom: 16,
+				center: new google.maps.LatLng(49.5, 8.434),
+				mapTypeId: 'roadmap'
+			});
+			map.addListener("click", function(event){
+
+				var lat = event.latLng.lat();
+				var lon = event.latLng.lng();
+				
+				$scope.new_booking.lat = lat;
+				$scope.new_booking.lon = lon;
+				
+				Helper.Get_Address(lat, lon).then(function(address){
+					$scope.new_booking.address_state = "true";
+					$scope.new_booking.address = address;
+				}, function(response){
+					$scope.new_booking.address_state = "false";
+				});
+
+			});
+		};
+		
+		setTimeout(Init_Map, 2000);
+
+		
+		
+	}
+	
+	var Hide_AddBooking = function(){
+		$scope.view = "info";
+	}
+	
+	var Booking_Safe = function(){
+		
+		var booking = {};
+		
+		var now = new Date();
+		now.setHours(now.getHours() + 2);
+		
+		var plannedDate = new Date();
+		plannedDate = $scope.new_booking.date;
+		plannedDate.setHours(plannedDate.getHours() + 2);
+		
+		booking.customerId = $scope.new_booking.customerID;
+		booking.bookedPositionLatitude = $scope.new_booking.lat;
+		booking.bookedPositionLongitude = $scope.new_booking.lon;
+		booking.bookingDate = now;
+		booking.plannedDate = plannedDate;
+		
+		console.log(booking);
+		
+		RESTFactory.Bookings_Post(booking).then(function(response){
+			alert("Buchung wurde erfolgreich ausgeführt");
+			Hide_AddBooking();
+		}, function(response){
+			alert("Buchung fehlgeschlagen");
+			Hide_AddBooking();
+		});
+		
+	}
+	
+	
+	
+	
+	
+	$scope.Booking_Safe = function(){
+		Booking_Safe();
+	}
+	
+	$scope.Booking_Cancel = function(){
+		Hide_AddBooking();
+	}
+	
 	$scope.LoadBookingDetails2 = function(booking){
 		LoadBookingDetails(booking);
 	}
 	
+	$scope.Show_AddBooking = function(){
+		Show_AddBooking();
+	}
+	
+	$scope.Hide_AddBooking = function(){
+		Hide_AddBooking();
+	}
 	
 	//+++++++++INIT+++++++++++++++++++++++++++++++++++++++++++++++
 	
