@@ -11,7 +11,7 @@
 			</td>
 		</tr>
 		
-		<tr ng-repeat="(key, customer) in customers track by $index" ng-click="LoadCustomerDetails(customer)">
+		<tr ng-repeat="(key, customer) in customers track by $index" ng-click="LoadCustomerDetails(key)">
 			
 			<td>
 				{{ key }}
@@ -37,28 +37,48 @@
 				
 				ID: {{ currentCustomer.customerID }}
 				<br/>
-				Name: {{ currentCustomer.name }} {{ currentCustomer.familyName }}
+				Vorname:	<input type="text" ng-model="currentCustomer.name" ng-disabled="true"/>
+				Nachname:	<input type="text" ng-model="currentCustomer.familyName" ng-disabled="true"/>
+				
 				<br/>
-				Aktiviert: {{ currentCustomer.activated }}
+				Aktiviert:	<input type="checkbox" ng-model="currentCustomer.activated" ng-disabled="editDisabled"/>
 				<br/>
-				Verifiziert: {{ currentCustomer.verified }}
+				Verifiziert:	<input type="checkbox" ng-model="currentCustomer.verified" ng-disabled="editDisabled"/>
 				<br/>
-				ChipID: {{ currentCustomer.chipID }}
+				ChipID:		<input type="text" ng-model="currentCustomer.chipID" ng-disabled="editDisabled"/>
 				<br/>
-				E-Mail: {{ currentCustomer.email }}
+				E-Mail:		<input type="email" ng-model="currentCustomer.email" ng-disabled="editDisabled" required="true"/>
 				<br/>
-				Telefon: {{ currentCustomer.phoneNr }}
+				Telefon:	<input type="text" ng-model="currentCustomer.phoneNr" ng-disabled="editDisabled"/>
 				<br/>
 				Adresse:
 				<br/>
-				Straße Nr.: {{ currentCustomer.address.street }} {{ currentCustomer.address.number }}
+				Straße:		<input type="text" ng-model="currentCustomer.address.street" ng-disabled="editDisabled"/>
 				<br/>
-				Stadt PLZ: {{ currentCustomer.address.city }} {{ currentCustomer.address.zip }}
+				Nr.:		<input type="text" ng-model="currentCustomer.address.number" ng-disabled="editDisabled"/>
 				<br/>
-				Land: {{ currentCustomer.address.country }}
+				Stadt:		<input type="text" ng-model="currentCustomer.address.city" ng-disabled="editDisabled"/>
 				<br/>
-				Extra: {{ currentCustomer.address.extra }}
+				PLZ:		<input type="number" min="10000" max="99999" ng-model="currentCustomer.address.zip" ng-disabled="editDisabled"/>
 				<br/>
+				Straße:		<input type="text" maxlength="2" ng-model="currentCustomer.address.country" ng-disabled="editDisabled"/>
+				<br/>
+				Extra:		<input type="text" ng-model="currentCustomer.address.extra" ng-disabled="editDisabled"/>
+				<br/>
+				
+				<div ng-switch="editDisabled">
+					
+					<div ng-switch-when="false">
+						<input type="button" ng-click="CancelChanges()" value="Verwerfen" />
+						<input type="button" ng-click="SafeChanges()" value="Speichern" />
+					</div>
+					
+					<div ng-switch-when="true">
+						<input type="button" ng-click="EnableEditMode()" value="Bearbeiten" />
+					</div>
+					
+				</div>
+				
 				
 			</div>
 			
