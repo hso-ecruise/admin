@@ -1,7 +1,5 @@
 <div class="bookings" ng-controller="Ctrl_Bookings" >
-
     <div class="bookings-container" layout="row" layout-wrap>
-
         <div ng-cloak class="content" flex>
             <md-toolbar class="md-hue-2">
                 <div class="md-toolbar-tools">
@@ -34,7 +32,7 @@
             </md-content>
 
         </div>
-        <div style="padding:20px;"></div>
+        <div style="padding:15px;"></div>
 
         <div ng-switch="view" ng-cloak class="content" flex>
             <div ng-switch-when="info" ng-switch="booking_selected">
@@ -45,83 +43,76 @@
                 </md-toolbar>
                 <!-- Booking Objekt hierfür ist $scope.currentBooking -->
                 <div ng-switch-when="false">
-                    Buchungsdetails sind derzeit nicht verfügbar
+                    <md-content layout-padding>
+                    <h5>W&auml;hlen Sie eine Buchung aus oder f&uuml;gen Sie eine Neue hinzu</h5>
+                    </md-content>
                 </div>
 
                 <div ng-switch-when="true">
-                ID: {{ currentBooking.bookingID }}<br/>
+                    <md-content layout-padding>
+                        Booking-ID: {{ currentBooking.bookingID }}<br/>
 
-                Status: {{ currentBooking.status }}<br/>
+                        Status: {{ currentBooking.status }}<br/>
 
-                Vorname: {{ currentBooking.customer.name }}<br/>
-                Nachname: {{ currentBooking.customer.familyName }}<br/>
-                NutzerID: {{ currentBooking.customer.customerID }}<br/>
+                        Vorname: {{ currentBooking.customer.name }}<br/>
+                        Nachname: {{ currentBooking.customer.familyName }}<br/>
+                        NutzerID: {{ currentBooking.customer.customerID }}<br/>
 
-                Start:<br/>
-                Zeit: {{ currentBooking.trip.start.time }}<br/>
-                Datum: {{ currentBooking.trip.start.date }}<br/><br/>
+                        Start: {{ currentBooking.trip.start.time }} {{ currentBooking.trip.start.date }}<br>
+                        Adresse:<br>
+                        {{ currentBooking.trip.start.address.street }}  {{ currentBooking.trip.start.address.number }}<br>
+                        {{ currentBooking.trip.start.address.zip }} {{ currentBooking.trip.start.address.city }}<br>
 
-                Address:<br/>
-                {{ currentBooking.trip.start.address.street }}<br/>
-                {{ currentBooking.trip.start.address.number }}<br/>
-                {{ currentBooking.trip.start.address.zip }}<br/>
-                {{ currentBooking.trip.start.address.city }}<br/><br/>
+                        Ende: {{ currentBooking.trip.end.time }} {{ currentBooking.trip.end.date }}<br>
+                        Adresse:<br/>
+                        {{ currentBooking.trip.end.address.street }} {{ currentBooking.trip.end.address.number }}<br>
+                        {{ currentBooking.trip.end.address.zip }} {{ currentBooking.trip.end.address.city }}<br>
 
-                Ende:<br/>
-                Zeit: {{ currentBooking.trip.end.time }}<br/>
-                Datum: {{ currentBooking.trip.end.date }}<br/><br/>
-
-                Address:<br/>
-                {{ currentBooking.trip.end.address.street }}<br/>
-                {{ currentBooking.trip.end.address.number }}<br/>
-                {{ currentBooking.trip.end.address.zip }}<br/>
-                {{ currentBooking.trip.end.address.city }}<br/><br/>
-
-                Rechnung:<br/>
-                ID: {{ currentBooking.invoice.invoiceID }}<br/>
-                Status: {{ currentBooking.invoice.paid }}<br/>	<!--Bezahlt oder nicht bezahlt-->
-                Preis: {{ currentBooking.invoice.totalAmount }}<br/>
-
-
-            </div>
-        </div>
-
-        <div ng-switch-when="add">
-            <md-toolbar class="md-hue-2">
-                <div class="md-toolbar-tools">
-                    <h2 class="md-flex">Buchung Hinzuf&uuml;gen</h2>
-                </div>
-            </md-toolbar>
-            <input type="number" ng-model="new_booking.customerID" placeholder="ID"/>
-            <br/>
-            <input type="text" ng-model="new_booking.lat" placeholder="Latitude"/>
-            <br/>
-            <input type="text" ng-model="new_booking.lon" placeholder="Longitude"/>
-            <br/>
-            <input type="date" ng-model="new_booking.date" placeholder="Datum"/>
-            <br/>
-            <input type="time" ng-model="new_booking.date" placeholder="Zeit"/>
-
-            <br/>
-            <div ng-switch="new_booking.address_state">
-                Adresse:
-                <div ng-switch-when="true">
-                    <!--Adressfelder mit street und so-->
-                </div>
-                <div ng-switch-when="false">
-                    Keine Adresse gefunden
+                        Rechnung:<br/>
+                        ID: {{ currentBooking.invoice.invoiceID }}<br/>
+                        Status: {{ currentBooking.invoice.paid }}<br/>	<!--Bezahlt oder nicht bezahlt-->
+                        Preis: {{ currentBooking.invoice.totalAmount }}<br/>
+                    </md-content>
                 </div>
             </div>
 
-            <!-- Auf 100x100 Größe setzen -->
-            <div style="height: 100px; weight: 100px;">
-                <div style="height: 100px; weight: 100px;" id="map_booking" ></div>
+            <div ng-switch-when="add">
+                <md-toolbar class="md-hue-2">
+                    <div class="md-toolbar-tools">
+                        <h2 class="md-flex">Buchung Hinzuf&uuml;gen</h2>
+                    </div>
+                </md-toolbar>
+                <md-content>
+                    <md-input-container>
+                        <input type="number" ng-model="new_booking.customerID" placeholder="Customer-ID" ng-required/>
+                    </md-input-container>
+                    <md-input-container >
+                        <input type="text" ng-model="new_booking.lat" placeholder="Latitude">    
+                    </md-input-container>
+                    <md-input-container flex-gt-sm>
+                        <input type="text" ng-model="new_booking.lon" placeholder="Longitude"/>
+                    </md-input-container>
+                </md-content>
+                <md-contentg>
+                    <md-input-container flex-gt-sm>
+                        <input type="date" ng-model="new_booking.date" placeholder="Datum"/>
+                    </md-input-container>
+                    <md-input-container flex-gt-sm>
+                        <input type="time" ng-model="new_booking.date" placeholder="Zeit"/>
+                    </md-input-container>
+                    <md-input-container flex-gt-sm ng-switch="new_booking.address_state">
+                        <p ng-switch-when="true"><input type="text" ng-model="new_booking.address" placeholder="Adresse" value="{{ new_booking.address }}"/></p>
+                        <p ng-switch-when="false"><input type="text" ng-model="new_booking.address" placeholder="Adresse" value="Keine Adresse gefunden"/></p>
+                    </md-input-container>
+                    </md-content>
+
+                <div id="map_booking" ></div>
+
+                <md-content flex layout-padding>
+                    <md-button class="md-raised md-primary button-to-right" ng-click="Booking_Safe()"> Speichern </md-button>
+                    <md-button class="md-primary md-hue-1 button-to-right" ng-click="Booking_Cancel()"> Verwerfen </md-button>
+                </md-content>
             </div>
-
-            <input type="button" ng-click="Booking_Cancel()" value="Verwerfen"/>
-            <input type="button" ng-click="Booking_Safe()" value="Speichern"/>
-
         </div>
     </div>
-</div>
 </div>
