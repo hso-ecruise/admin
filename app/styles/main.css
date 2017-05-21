@@ -1,4 +1,15 @@
 
+.bookings-container{
+    height: 80%;
+}
+
+.bookings{
+    margin: auto;
+    width: 60%;
+}
+#map_booking{
+    height: 100px;
+}
 .login-form{
     margin: auto;
     width: 420px;
@@ -40,21 +51,21 @@ md-nav-bar md-nav-ink-bar {
 }
 
 #ng_view{
-	height: calc(100% - 52px - 10px);
+    height: calc(100% - 52px - 10px);
 }
 
 #search_input{
-	
-	background-color: #fff;
-	font-family: Roboto;
-	font-size: 15px;
-	font-weight: 300;
-	margin-top: 10px;
-	margin-left: 12px;
-	padding: 0 11px 0 13px;
-	text-overflow: ellipsis;
-	width: 300px;
-	
+
+    background-color: #fff;
+    font-family: Roboto;
+    font-size: 15px;
+    font-weight: 300;
+    margin-top: 10px;
+    margin-left: 12px;
+    padding: 0 11px 0 13px;
+    text-overflow: ellipsis;
+    width: 300px;
+
 }
 
 .user-edit-left{

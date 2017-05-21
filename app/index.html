@@ -18,6 +18,9 @@
 	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
     <link rel="stylesheet" href="styles/main.css">
     <!-- endbuild -->
+      <style>
+
+      </style>
   </head>
   <body ng-app="adminApp">
     <!--[if lte IE 8]>
@@ -44,20 +47,16 @@
 						<li><a href="bookings" name="bookings"> Buchungen </a></li>
 						<li><a href="statistics" name="statistics"> Tagesstatistik </a></li>
 					</ul>
-	    
 					<div ng-switch-when="false"> 
 						<ul class="nav navbar-nav navbar-right" >
 							<li ng-click="showRegister()"><a><span class="glyphicon glyphicon-user"></span> Registrieren </a></li>
 							<li ng-click="showLogin()"><a><span class="glyphicon glyphicon-log-in"></span> Login </a></li>
 						</ul>
 					</div>
-
 					<div ng-switch-when="true" >
 						<ul class="nav navbar-nav navbar-right" ng-click="Logout()"><li><a href="login"><span class="glyphicon glyphicon-log-out"></span> Log out</a></li></ul>
 					</div>
-			
 				</div>
-	  
 			</div>
 		</nav>
     </div>
