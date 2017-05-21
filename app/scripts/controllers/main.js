@@ -150,6 +150,11 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 			var orig = Promise.resolve(GetCaller.Get(url));
 			return orig;
 		},
+		Cars_Get_CarID: function(id){
+			var url = 'https://' + IP + "/cars/" + id;
+			var orig = Promise.resolve(GetCaller.Get(url));
+			return orig;
+		},
 		Charging_Stations_Get: function(){
 			var url = 'https://' + IP + "/charging-stations";
 			var orig = Promise.resolve(GetCaller.Get(url));
