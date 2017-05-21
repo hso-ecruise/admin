@@ -1,3 +1,104 @@
 <div>
-  Users View
+
+  	<table>
+	
+		<tr>
+			<td>
+				ID
+			</td>
+			<td>
+				Nutzer
+			</td>
+		</tr>
+		
+		<tr ng-repeat="(key, customer) in customers track by $index" ng-click="LoadCustomerDetails(key)">
+			
+			<td>
+				{{ key }}
+			</td>
+			
+			
+			<td>
+				{{ customer.name }} {{ customer.familyName }}
+			</td>
+			
+		</tr>
+	
+	</table>
+	
+	<div ng-switch="view">
+		
+		<div ng-switch-when="info" ng-switch="customer_selected">
+			
+			Nutzer-Informationen:
+			<br/>
+			
+			<div ng-switch-when="true">
+				
+				ID: {{ currentCustomer.customerID }}
+				<br/>
+				Vorname:	<input type="text" ng-model="currentCustomer.name" ng-disabled="true"/>
+				Nachname:	<input type="text" ng-model="currentCustomer.familyName" ng-disabled="true"/>
+				
+				<br/>
+				Aktiviert:	<input type="checkbox" ng-model="currentCustomer.activated" ng-disabled="editDisabled"/>
+				<br/>
+				Verifiziert:	<input type="checkbox" ng-model="currentCustomer.verified" ng-disabled="editDisabled"/>
+				<br/>
+				ChipID:		<input type="text" ng-model="currentCustomer.chipID" ng-disabled="editDisabled"/>
+				<br/>
+				E-Mail:		<input type="email" ng-model="currentCustomer.email" ng-disabled="editDisabled" required="true"/>
+				<br/>
+				Telefon:	<input type="text" ng-model="currentCustomer.phoneNr" ng-disabled="editDisabled"/>
+				<br/>
+				Adresse:
+				<br/>
+				Straße:		<input type="text" ng-model="currentCustomer.address.street" ng-disabled="editDisabled"/>
+				<br/>
+				Nr.:		<input type="text" ng-model="currentCustomer.address.number" ng-disabled="editDisabled"/>
+				<br/>
+				Stadt:		<input type="text" ng-model="currentCustomer.address.city" ng-disabled="editDisabled"/>
+				<br/>
+				PLZ:		<input type="number" min="10000" max="99999" ng-model="currentCustomer.address.zip" ng-disabled="editDisabled"/>
+				<br/>
+				Straße:		<input type="text" maxlength="2" ng-model="currentCustomer.address.country" ng-disabled="editDisabled"/>
+				<br/>
+				Extra:		<input type="text" ng-model="currentCustomer.address.extra" ng-disabled="editDisabled"/>
+				<br/>
+				
+				<div ng-switch="editDisabled">
+					
+					<div ng-switch-when="false">
+						<input type="button" ng-click="CancelChanges()" value="Verwerfen" />
+						<input type="button" ng-click="SafeChanges()" value="Speichern" />
+					</div>
+					
+					<div ng-switch-when="true">
+						<input type="button" ng-click="EnableEditMode()" value="Bearbeiten" />
+					</div>
+					
+				</div>
+				
+				
+			</div>
+			
+			
+			<div ng-switch-when="false">
+				Bitte wählen Sie einen Nutzer in der linken Liste aus.
+			</div>
+			
+			
+		</div>
+		
+		
+		
+		<div ng-switch-when="add">
+			
+			
+			
+		</div>
+		
+	</div>
+	
+  
 </div>
