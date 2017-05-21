@@ -8,7 +8,7 @@
     width: 60%;
 }
 #map_booking{
-    height: 200px;
+    height: 300px;
     width: 100%; 
 }
 
@@ -20,7 +20,6 @@
 .button-to-right {
     float: right;
 }
-
 
 .manage-flex-container{
     display:flex;
