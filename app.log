@@ -117,3 +117,208 @@ Total 672ms
 [36mCompleted in 0.000s at Mon May 22 2017 18:03:43 GMT+0200 (CEST)[39m - Waiting...
 [32m>> [39mFile "app/views/bookings.html" changed.
 [36mCompleted in 0.000s at Mon May 22 2017 18:04:17 GMT+0200 (CEST)[39m - Waiting...
+[32m>> [39mFile "app/scripts/controllers/main.js" changed.
+[32m>> [39mFile "app/scripts/controllers/vehicles.js" changed.
+[32m>> [39mFile "app/scripts/controllers/loginRegister.js" deleted.
+[32m>> [39mFile "app/views/stations.html" added.
+[32m>> [39mFile "app/scripts/controllers/stations.js" renamed.
+[4mRunning "newer:jshint:all" (newer) task[24m
+
+[4mRunning "jshint:all" (jshint) task[24m
+
+app/scripts/app.js
+  line 43   col 9   'alert' is not defined.
+
+app/scripts/controllers/bookings.js
+  line 76   col 18  Don't make functions within a loop.
+  line 78   col 18  Don't make functions within a loop.
+  line 161  col 19  Missing semicolon.
+  line 230  col 6   Missing semicolon.
+  line 275  col 6   Missing semicolon.
+  line 279  col 6   Missing semicolon.
+  line 302  col 13  Missing 'new' prefix when invoking a constructor.
+  line 305  col 13  Missing 'new' prefix when invoking a constructor.
+  line 308  col 6   Missing semicolon.
+  line 315  col 9   Missing 'new' prefix when invoking a constructor.
+  line 316  col 6   Missing semicolon.
+  line 319  col 9   Missing 'new' prefix when invoking a constructor.
+  line 320  col 6   Missing semicolon.
+  line 323  col 9   Missing 'new' prefix when invoking a constructor.
+  line 324  col 6   Missing semicolon.
+  line 327  col 9   Missing 'new' prefix when invoking a constructor.
+  line 328  col 6   Missing semicolon.
+  line 331  col 9   Missing 'new' prefix when invoking a constructor.
+  line 332  col 6   Missing semicolon.
+  line 338  col 9   Missing 'new' prefix when invoking a constructor.
+  line 342  col 5   Missing 'new' prefix when invoking a constructor.
+  line 11   col 1   'application' is not defined.
+  line 248  col 27  'google' is not defined.
+  line 250  col 29  'google' is not defined.
+  line 301  col 13  'alert' is not defined.
+  line 304  col 13  'alert' is not defined.
+  line 11   col 92  '$mdDialog' is defined but never used.
+  line 76   col 29  'response' is defined but never used.
+  line 83   col 21  'response' is defined but never used.
+  line 159  col 29  'response' is defined but never used.
+  line 163  col 25  'response' is defined but never used.
+  line 197  col 29  'response' is defined but never used.
+  line 201  col 25  'response' is defined but never used.
+  line 205  col 21  'response' is defined but never used.
+  line 225  col 21  'response' is defined but never used.
+  line 264  col 29  'response' is defined but never used.
+  line 300  col 58  'response' is defined but never used.
+  line 303  col 21  'response' is defined but never used.
+
+app/scripts/controllers/main.js
+  line 10   col 1   Unnecessary directive "use strict".
+  line 198  col 22  Duplicate key 'Invoices_Post'.
+  line 26   col 1   'application' is not defined.
+  line 42   col 1   'application' is not defined.
+  line 55   col 1   'application' is not defined.
+  line 69   col 1   'application' is not defined.
+  line 241  col 1   'application' is not defined.
+
+app/scripts/controllers/start.js
+  line 92   col 45  Missing semicolon.
+  line 96   col 6   Missing semicolon.
+  line 10   col 1   'application' is not defined.
+  line 86   col 13  'alert' is not defined.
+  line 92   col 13  'alert' is not defined.
+  line 90   col 21  'response' is defined but never used.
+
+app/scripts/controllers/stations.js
+  line 46   col 18  Don't make functions within a loop.
+  line 48   col 18  Don't make functions within a loop.
+  line 106  col 6   Missing semicolon.
+  line 3    col 1   'application' is not defined.
+  line 73   col 9   'new_booking' is not defined.
+  line 79   col 27  'google' is not defined.
+  line 81   col 29  'google' is not defined.
+  line 8    col 9   'Update' is defined but never used.
+  line 62   col 9   'Show_AddStation' is defined but never used.
+  line 3    col 98  '$mdDialog' is defined but never used.
+  line 46   col 29  'response' is defined but never used.
+  line 53   col 21  'response' is defined but never used.
+  line 95   col 29  'response' is defined but never used.
+
+app/scripts/controllers/statistics.js
+  line 11   col 2   'application' is not defined.
+  line 13   col 5   'alert' is not defined.
+
+app/scripts/controllers/users.js
+  line 69   col 9   Missing 'new' prefix when invoking a constructor.
+  line 158  col 9   Missing 'new' prefix when invoking a constructor.
+  line 163  col 9   Missing 'new' prefix when invoking a constructor.
+  line 206  col 9   Missing 'new' prefix when invoking a constructor.
+  line 229  col 9   Missing 'new' prefix when invoking a constructor.
+  line 233  col 9   Missing 'new' prefix when invoking a constructor.
+  line 237  col 9   Missing 'new' prefix when invoking a constructor.
+  line 241  col 9   Missing 'new' prefix when invoking a constructor.
+  line 246  col 9   Missing 'new' prefix when invoking a constructor.
+  line 250  col 9   Missing 'new' prefix when invoking a constructor.
+  line 256  col 9   Missing 'new' prefix when invoking a constructor.
+  line 260  col 5   Missing 'new' prefix when invoking a constructor.
+  line 10   col 1   'application' is not defined.
+  line 141  col 13  'alert' is not defined.
+  line 143  col 13  'alert' is not defined.
+  line 147  col 13  'alert' is not defined.
+  line 149  col 13  'alert' is not defined.
+  line 153  col 13  'alert' is not defined.
+  line 155  col 13  'alert' is not defined.
+  line 186  col 49  'customerID' is not defined.
+  line 187  col 17  'alert' is not defined.
+  line 189  col 17  'alert' is not defined.
+  line 192  col 13  'alert' is not defined.
+  line 196  col 13  'alert' is not defined.
+  line 209  col 9   'Show_AddCustomer' is defined but never used.
+  line 10   col 89  '$mdDialog' is defined but never used.
+  line 10   col 81  'Helper' is defined but never used.
+  line 61   col 21  'response' is defined but never used.
+  line 103  col 21  'response' is defined but never used.
+  line 140  col 80  'response' is defined but never used.
+  line 142  col 21  'response' is defined but never used.
+  line 146  col 76  'response' is defined but never used.
+  line 148  col 21  'response' is defined but never used.
+  line 152  col 80  'response' is defined but never used.
+  line 154  col 21  'response' is defined but never used.
+  line 176  col 55  'response' is defined but never used.
+  line 186  col 84  'response' is defined but never used.
+  line 188  col 25  'response' is defined but never used.
+  line 194  col 21  'response' is defined but never used.
+
+app/scripts/controllers/vehicles.js
+  line 106  col 6   Missing semicolon.
+  line 140  col 37  Missing 'new' prefix when invoking a constructor.
+  line 142  col 37  Missing 'new' prefix when invoking a constructor.
+  line 144  col 37  Missing 'new' prefix when invoking a constructor.
+  line 146  col 37  Missing 'new' prefix when invoking a constructor.
+  line 161  col 25  Missing 'new' prefix when invoking a constructor.
+  line 163  col 25  Missing 'new' prefix when invoking a constructor.
+  line 165  col 25  Missing 'new' prefix when invoking a constructor.
+  line 167  col 25  Missing 'new' prefix when invoking a constructor.
+  line 180  col 17  Missing 'new' prefix when invoking a constructor.
+  line 186  col 6   Missing semicolon.
+  line 204  col 13  Missing 'new' prefix when invoking a constructor.
+  line 206  col 13  Missing 'new' prefix when invoking a constructor.
+  line 230  col 17  Expected an assignment or function call and instead saw an expression.
+  line 230  col 20  Missing semicolon.
+  line 297  col 18  Don't make functions within a loop.
+  line 299  col 18  Don't make functions within a loop.
+  line 326  col 13  Expected an assignment or function call and instead saw an expression.
+  line 326  col 16  Missing semicolon.
+  line 379  col 17  Missing 'new' prefix when invoking a constructor.
+  line 448  col 29  Missing 'new' prefix when invoking a constructor.
+  line 454  col 18  Don't make functions within a loop.
+  line 492  col 17  Missing 'new' prefix when invoking a constructor.
+  line 511  col 17  Missing 'new' prefix when invoking a constructor.
+  line 643  col 5   Missing 'new' prefix when invoking a constructor.
+  line 11   col 1   'application' is not defined.
+  line 52   col 19  'google' is not defined.
+  line 54   col 21  'google' is not defined.
+  line 63   col 9   'Helper' is not defined.
+  line 79   col 29  'google' is not defined.
+  line 80   col 25  'google' is not defined.
+  line 81   col 25  'google' is not defined.
+  line 86   col 26  'google' is not defined.
+  line 87   col 27  'google' is not defined.
+  line 93   col 13  'alert' is not defined.
+  line 93   col 21  '$mdDialog' is not defined.
+  line 99   col 13  '$mdDialog' is not defined.
+  line 100  col 24  'alert' is not defined.
+  line 102  col 17  'alert' is not defined.
+  line 122  col 35  'RESTFactory' is not defined.
+  line 136  col 44  'Helper' is not defined.
+  line 214  col 9   '$scope' is not defined.
+  line 216  col 9   'RESTFactory' is not defined.
+  line 230  col 21  'chargingState' is not defined.
+  line 243  col 17  '$scope' is not defined.
+  line 244  col 17  '$scope' is not defined.
+  line 261  col 9   '$scope' is not defined.
+  line 263  col 9   '$scope' is not defined.
+  line 265  col 9   'RESTFactory' is not defined.
+  line 284  col 17  '$scope' is not defined.
+  line 284  col 17  Too many errors. (43% scanned).
+
+  ✖  1 error
+  ⚠  156 warnings
+
+[33mWarning: Task "jshint:all" failed. Use --force to continue.[39m
+
+[31mAborted due to warnings.[39m
+
+
+Execution Time (2017-05-22 18:05:11 UTC+2)
+loading tasks                 279ms  ▇▇▇▇▇▇ 19%
+loading grunt-newer            29ms  ▇ 2%
+newer:jshint:all               19ms  ▇ 1%
+loading grunt-contrib-jshint  595ms  ▇▇▇▇▇▇▇▇▇▇▇▇▇ 40%
+jshint:all                    570ms  ▇▇▇▇▇▇▇▇▇▇▇▇▇ 38%
+Total 1.5s
+
+[36mCompleted in 1.998s at Mon May 22 2017 18:05:12 GMT+0200 (CEST)[39m - Waiting...
+[32m>> [39mFile "app/views/start.html" changed.
+[36mCompleted in 0.000s at Mon May 22 2017 18:07:09 GMT+0200 (CEST)[39m - Waiting...
+[32m>> [39mFile "app/views/start.html" changed.
+[36mCompleted in 0.000s at Mon May 22 2017 18:07:21 GMT+0200 (CEST)[39m - Waiting...
+[32m>> [39mFile "app/views/start.html" changed.
+[36mCompleted in 0.000s at Mon May 22 2017 18:07:27 GMT+0200 (CEST)[39m - Waiting...

@@ -11,10 +11,10 @@
 
         <md-content layout-padding>	
             <md-input-container>
-                <input type="text" placeholder="E-Mail"  ng-model="login_email"/>    <!-- required spaeter hinzufuegen-->
+                <input type="email" placeholder="E-Mail"  ng-model="login_email" required/>
             </md-input-container>
             <md-input-container>
-                <input placeholder="Passwort" type="password" ng-model="login_password" />  <!-- required -->
+                <input placeholder="Passwort" type="password" ng-model="login_password" required/>
             </md-input-container>
             <md-button class="md-raised md-primary button-to-right" ng-click="Login()"> Login </md-button>
         </md-content>
