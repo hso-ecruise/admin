@@ -1,24 +1,22 @@
 
 <div class="login-form" ng-controller="Ctrl_Main" >
-  
-  <div ng-cloak class="contentt" flex="">
-    <md-toolbar class="md-hue-2">
-      <div class="md-toolbar-tools">
-        <h2 class="md-flex">Admin Login</h2>
-      </div>
-    </md-toolbar>
-    
-    <md-content flex layout-padding >
-	
-	
-		<input type="email" ng-model="login_email" placeholder="Email"/>
-		
-		<br/>
-		<input type="password" ng-model="login_password" placeholder="Passwort"/>
-		
-		<md-button class="md-raised md-primary button-to-right" ng-click="Login()"> Login </md-button>
-		
-    </md-content>
-    
-  </div>
+
+
+    <div class="login-form content" ng-cloak flex>
+        <md-toolbar class="md-hue-2">
+            <div class="md-toolbar-tools">
+                <h2 class="md-flex toolbar-text">Please login</h2>							
+            </div>
+        </md-toolbar>
+
+        <md-content layout-padding>	
+            <md-input-container>
+                <input type="text" placeholder="E-Mail"  ng-model="login_email"/>    <!-- required spaeter hinzufuegen-->
+            </md-input-container>
+            <md-input-container>
+                <input placeholder="Passwort" type="password" ng-model="login_password" />  <!-- required -->
+            </md-input-container>
+            <md-button class="md-raised md-primary button-to-right" ng-click="Login()"> Login </md-button>
+        </md-content>
+    </div>
 </div>

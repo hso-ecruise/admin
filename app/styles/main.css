@@ -2,6 +2,9 @@
 .bookings-container{
     height: 80%;
 }
+md-input-container{
+    height: 37px;
+}
 
 .bookings{
     margin: auto;

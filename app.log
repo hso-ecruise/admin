@@ -1,0 +1,119 @@
+[4mRunning "serve" task[24m
+
+[4mRunning "clean:server" (clean) task[24m
+[32m>> [39m1 path cleaned.
+
+[4mRunning "wiredep:app" (wiredep) task[24m
+
+[4mRunning "wiredep:test" (wiredep) task[24m
+
+[4mRunning "concurrent:server" (concurrent) task[24m
+    
+    [4mRunning "copy:styles" (copy) task[24m
+    Copied 1 file
+    
+    [32mDone, without errors.[39m
+    
+    
+    Execution Time (2017-05-22 17:52:18 UTC+2)
+    loading tasks               284ms  ▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇ 69%
+    loading grunt-contrib-copy   93ms  ▇▇▇▇▇▇▇▇ 23%
+    copy:styles                  33ms  ▇▇▇ 8%
+    Total 411ms
+    
+[4mRunning "postcss:server" (postcss) task[24m
+[32m>> [39m1 processed stylesheet created.
+
+[4mRunning "connect:livereload" (connect) task[24m
+Started connect web server on http://0.0.0.0:8000
+
+[4mRunning "watch" task[24m
+Waiting...
+[32m>> [39mFile "app/views/bookings.html" changed.
+[36mCompleted in 0.001s at Mon May 22 2017 17:53:40 GMT+0200 (CEST)[39m - Waiting...
+[32m>> [39mFile "app/views/bookings.html" changed.
+[36mCompleted in 0.000s at Mon May 22 2017 17:55:33 GMT+0200 (CEST)[39m - Waiting...
+[32m>> [39mFile "app/views/bookings.html" changed.
+[36mCompleted in 0.001s at Mon May 22 2017 17:56:04 GMT+0200 (CEST)[39m - Waiting...
+[32m>> [39mFile "app/views/bookings.html" changed.
+[36mCompleted in 0.000s at Mon May 22 2017 17:56:38 GMT+0200 (CEST)[39m - Waiting...
+[32m>> [39mFile "app/views/bookings.html" changed.
+[36mCompleted in 0.000s at Mon May 22 2017 17:57:03 GMT+0200 (CEST)[39m - Waiting...
+[32m>> [39mFile "app/views/bookings.html" changed.
+[36mCompleted in 0.000s at Mon May 22 2017 17:57:17 GMT+0200 (CEST)[39m - Waiting...
+[32m>> [39mFile "app/views/bookings.html" changed.
+[36mCompleted in 0.000s at Mon May 22 2017 17:57:47 GMT+0200 (CEST)[39m - Waiting...
+[32m>> [39mFile "app/styles/main.css" changed.
+[4mRunning "newer:copy:styles" (newer) task[24m
+
+[4mRunning "copy:styles" (copy) task[24m
+Copied 1 file
+
+[4mRunning "newer-postrun:copy:styles:1:/shared/admin/node_modules/grunt-newer/.cache" (newer-postrun) task[24m
+
+[4mRunning "postcss:server" (postcss) task[24m
+[32m>> [39m1 processed stylesheet created.
+
+[4mRunning "postcss:dist" (postcss) task[24m
+[32m>> [39m1 processed stylesheet created.
+
+[32mDone, without errors.[39m
+
+
+Execution Time (2017-05-22 17:58:45 UTC+2)
+loading tasks                   282ms  ▇▇▇▇▇▇▇▇▇▇▇ 35%
+loading grunt-newer             151ms  ▇▇▇▇▇▇ 19%
+newer:copy:styles                20ms  ▇ 2%
+copy:styles                       9ms  ▇ 1%
+newer-postrun:...-newer/.cache  125ms  ▇▇▇▇▇ 15%
+loading grunt-postcss            58ms  ▇▇▇ 7%
+postcss:server                  134ms  ▇▇▇▇▇ 17%
+postcss:dist                     26ms  ▇ 3%
+Total 812ms
+
+[36mCompleted in 1.318s at Mon May 22 2017 17:58:46 GMT+0200 (CEST)[39m - Waiting...
+[32m>> [39mFile ".tmp/styles/main.css" changed.
+[32m>> [39mFile "app/styles/main.css" changed.
+[4mRunning "newer:copy:styles" (newer) task[24m
+No newer files to process.
+
+[4mRunning "postcss:server" (postcss) task[24m
+[32m>> [39m1 processed stylesheet created.
+
+[4mRunning "postcss:dist" (postcss) task[24m
+[32m>> [39m1 processed stylesheet created.
+
+[32mDone, without errors.[39m
+
+
+Execution Time (2017-05-22 17:58:56 UTC+2)
+loading tasks          280ms  ▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇ 42%
+loading grunt-newer     30ms  ▇▇ 4%
+newer:copy:styles       17ms  ▇ 3%
+loading grunt-postcss   58ms  ▇▇▇▇ 9%
+postcss:server         258ms  ▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇ 38%
+postcss:dist            28ms  ▇▇ 4%
+Total 672ms
+
+[36mCompleted in 1.180s at Mon May 22 2017 17:58:56 GMT+0200 (CEST)[39m - Waiting...
+[32m>> [39mFile ".tmp/styles/main.css" changed.
+[32m>> [39mFile "app/views/bookings.html" changed.
+[36mCompleted in 0.000s at Mon May 22 2017 17:59:33 GMT+0200 (CEST)[39m - Waiting...
+[32m>> [39mFile "app/views/bookings.html" changed.
+[36mCompleted in 0.000s at Mon May 22 2017 17:59:54 GMT+0200 (CEST)[39m - Waiting...
+[32m>> [39mFile "app/views/bookings.html" changed.
+[36mCompleted in 0.001s at Mon May 22 2017 18:01:57 GMT+0200 (CEST)[39m - Waiting...
+[32m>> [39mFile "app/views/bookings.html" changed.
+[36mCompleted in 0.001s at Mon May 22 2017 18:02:22 GMT+0200 (CEST)[39m - Waiting...
+[32m>> [39mFile "app/views/bookings.html" changed.
+[36mCompleted in 0.000s at Mon May 22 2017 18:02:40 GMT+0200 (CEST)[39m - Waiting...
+[32m>> [39mFile "app/views/bookings.html" changed.
+[36mCompleted in 0.000s at Mon May 22 2017 18:02:57 GMT+0200 (CEST)[39m - Waiting...
+[32m>> [39mFile "app/views/bookings.html" changed.
+[36mCompleted in 0.001s at Mon May 22 2017 18:03:23 GMT+0200 (CEST)[39m - Waiting...
+[32m>> [39mFile "app/views/bookings.html" changed.
+[36mCompleted in 0.000s at Mon May 22 2017 18:03:37 GMT+0200 (CEST)[39m - Waiting...
+[32m>> [39mFile "app/views/bookings.html" changed.
+[36mCompleted in 0.000s at Mon May 22 2017 18:03:43 GMT+0200 (CEST)[39m - Waiting...
+[32m>> [39mFile "app/views/bookings.html" changed.
+[36mCompleted in 0.000s at Mon May 22 2017 18:04:17 GMT+0200 (CEST)[39m - Waiting...
