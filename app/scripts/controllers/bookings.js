@@ -46,8 +46,10 @@ application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactor
 				
 				if(plannedDate.getTime() - now.getTime() < 0){
 					booking.status = "PAST";
+					booking.statusText = "In der Vergangeheit";
 				}else{
-					booking.status = "FUTURE";					
+					booking.status = "FUTURE";
+					booking.statusText = "In der Zukunft";
 				}
 				
 				
@@ -217,6 +219,10 @@ application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactor
 			invoice.invoiceID = data.invoiceId;
 			invoice.totalAmount = data.totalAmount;
 			invoice.paid = data.paid;
+			invoice.paidText = "Rechnung offen";
+			if(invoice.paid === "true"){
+				invoice.paidText = "Rechnung bezahlt";
+			}
 			currentBooking.invoice = invoice;
 			
 			$scope.currentBooking = currentBooking;
@@ -261,6 +267,7 @@ application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactor
 				Helper.Get_Address(lat, lon).then(function(address){
 					$scope.new_booking.address_state = "true";
 					$scope.new_booking.address = address;
+					$scope.$apply();
 				}, function(response){
 					$scope.new_booking.address_state = "false";
 				});
