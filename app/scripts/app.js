@@ -78,6 +78,14 @@ application.config(function ($routeProvider, $locationProvider){
 		controller: 'Ctrl_Vehicles'
 	})
 	
+	.when('/stations', {
+		templateUrl: 'views/stations.html',
+	    resolve: {
+			factory: checkRouting
+	    },
+		controller: 'Ctrl_Stations'
+	})
+	
     .when('/users', {
 		templateUrl: 'views/users.html',
 		resolve: {

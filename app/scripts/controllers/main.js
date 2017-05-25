@@ -117,7 +117,7 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 		},
 		Customers_Post: function(data){
 			var url = 'https://' + IP + "/customers";
-			var orig = Promise.resolve(PostCaller.Get(url, data));
+			var orig = Promise.resolve(PostCaller.Post(url, data));
 			return orig;
 		},
 		Customers_Get_CustomerID: function(id){
@@ -158,6 +158,11 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 		Charging_Stations_Get: function(){
 			var url = 'https://' + IP + "/charging-stations";
 			var orig = Promise.resolve(GetCaller.Get(url));
+			return orig;
+		},
+		Charging_Stations_Post: function(data){
+			var url = 'https://' + IP + "/charging-stations";
+			var orig = Promise.resolve(PostCaller.Post(url, data));
 			return orig;
 		},
 		Charging_Stations_Get_Charging_StationID: function(id){

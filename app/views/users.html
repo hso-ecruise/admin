@@ -11,7 +11,7 @@
 			</td>
 		</tr>
 		
-		<tr ng-repeat="(key, customer) in customers track by $index" ng-click="LoadCustomerDetails(key)">
+		<tr ng-repeat="(key, customer) in customers track by $index" ng-click="Load_Details(key)">
 			
 			<td>
 				{{ key }}
@@ -25,6 +25,12 @@
 		</tr>
 	
 	</table>
+	
+	<br/>
+	
+	<input type="button" ng-click="Show_AddCustomer()" value="Hinzufügen"/>
+	
+	<br/>
 	
 	<div ng-switch="view">
 		
@@ -69,8 +75,8 @@
 				<div ng-switch="editDisabled">
 					
 					<div ng-switch-when="false">
-						<input type="button" ng-click="CancelChanges()" value="Verwerfen" />
-						<input type="button" ng-click="SafeChanges()" value="Speichern" />
+						<input type="button" ng-click="Dismiss_Changes()" value="Verwerfen" />
+						<input type="button" ng-click="Safe_Changes()" value="Speichern" />
 					</div>
 					
 					<div ng-switch-when="true">
@@ -94,7 +100,35 @@
 		
 		<div ng-switch-when="add">
 			
+			Nutzer-Angaben:
+			<br/>
+			<input type="text" placeholder="Vorname" ng-model="new_customer.name" ng-required />
+			<br/>
+			<input type="text" placeholder="Nachname" ng-model="new_customer.familyName" ng-required />
+			<br/>
+			<input type="email" placeholder="E-Mail" ng-model="new_customer.email" ng-required />
+			<br/>
+			<input type="text" placeholder="Telefon" ng-model="new_customer.phoneNr" ng-required />
+			<br/>
+			<br/>
+			Adresse:
+			<br/>
+			<input type="text" placeholder="Strasse" ng-model="new_customer.address.street" ng-required />
+			<br/>
+			<input type="text" placeholder="Nummer" ng-model="new_customer.address.number" ng-required />
+			<br/>
+			<input type="text" placeholder="Stadt" ng-model="new_customer.address.city" ng-required />
+			<br/>
+			<input type="number" min="10000" max="99999" placeholder="PLZ" ng-model="new_customer.address.zip" ng-required />
+			<br/>
+			<input type="text" placeholder="Land" ng-model="new_customer.address.country" ng-required />
+			<br/>
+			<input type="text" placeholder="Zusatz" ng-model="new_customer.address.extra" ng-required />
 			
+			<br/>
+			<br/>
+			<input type="button" ng-click="Dismiss_New()" value="Verwerfen"/>
+			<input type="button" ng-click="Safe_New()" value="Speichern"/>
 			
 		</div>
 		

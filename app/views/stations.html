@@ -1,6 +1,89 @@
 <div>
-  Vehicles View
+  Stations View
   
-  <div id='map'></div>
+  <div id="map_stations" style="height: 400px;"></div>
+  
+  <table>
+	
+		<tr>
+			<td>
+				ID
+			</td>
+			<td>
+				Strasse
+			</td>
+		</tr>
+		
+		<tr ng-repeat="(key, station) in stations track by $index" ng-click="Load_Details(key)">
+			
+			<td>
+				{{ key }}
+			</td>
+			
+			
+			<td>
+				{{ station.address.street }}
+			</td>
+			
+		</tr>
+	
+	</table>
+	
+	
+	<br/>
+	
+	<input type="button" ng-click="Show_AddStation()" value="Hinzufügen"/>
+	
+	<br/>
+	
+	
+	<div ng-switch="view">
+		
+		<div ng-switch-when="info" ng-switch="station_selected">
+			
+			Station-Informationen:
+			<br/>
+			
+			<div ng-switch-when="true">
+				
+				ID: {{ currentStation.stationID }}
+				<br/>
+				Slots: {{currentStation.slots}}
+				<br/>
+				Slots belegt: {{currentStation.slotsOccupied}}
+				<br/>
+				Strasse Nr.:  {{currentStation.address.street}} {{currentStation.address.number}}
+				<br/>
+				
+			</div>
+			
+			<div ng-switch-when="false">
+				Bitte wählen Sie eine Ladestation in der linken Liste aus.
+			</div>
+			
+		</div>
+		
+		
+		
+		<div ng-switch-when="add">
+			
+			Station-Angaben:
+			<br/>
+			Slots insgesamt: <input type="number" min="1" ng-model="new_station.slots" ng-required />
+			<br/>
+			Slots belegt: <input type="number" min="0" max="{{new_station.slots}}" ng-model="new_station.slotsOccupied" ng-required />
+			<br/>
+			
+			Strasse Nr.: {{ new_station.address.street }} {{ new_station.address.number }}
+			
+            <div id="map_station_new" style="height: 400px;"></div>
+			<br/>
+			<br/>
+			<input type="button" ng-click="Dismiss_New()" value="Verwerfen"/>
+			<input type="button" ng-click="Safe_New()" value="Speichern"/>
+			
+		</div>
+		
+	</div>
   
 </div>

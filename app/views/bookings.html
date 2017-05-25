@@ -23,7 +23,7 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr ng-repeat="(key, booking) in bookings track by $index" ng-click="LoadBookingDetails2(booking)">
+							<tr ng-repeat="(key, booking) in bookings track by $index" ng-click="Load_Details(booking)">
 								<td>{{key}}</td>
 								<td>{{ booking.customer.name }} {{ booking.customer.familyName }}</td>
 								<td>{{ booking.statusText }}</td>
@@ -35,7 +35,7 @@
 									<div class="md-list-item-text" layout="column">
 										<h4>Neue Buchung hinzufügen</h4>
 									</div>
-								<td>
+								</td>
 							</tr>
 						</tfoot>
 					</table>
@@ -144,7 +144,7 @@
                 </md-toolbar>
                 <md-content layout-padding>
                     <md-input-container>
-                        <input type="number" ng-model="new_booking.customerID" placeholder="Customer-ID" ng-required/>
+                        <input type="number" ng-model="new_booking.customerID" placeholder="Customer-ID" ng-required />
                     </md-input-container>
                     <!--
 <md-input-container >
@@ -180,8 +180,8 @@
                 <div id="map_booking" ></div>
 
                 <md-content flex layout-padding>
-                    <md-button class="md-raised md-primary button-to-right" ng-click="Booking_Safe()"> Speichern </md-button>
-                    <md-button class="md-primary md-hue-1 button-to-right" ng-click="Booking_Cancel()"> Verwerfen </md-button>
+                    <md-button class="md-raised md-primary button-to-right" ng-click="Safe_New()"> Speichern </md-button>
+                    <md-button class="md-primary md-hue-1 button-to-right" ng-click="Dismiss_New()"> Verwerfen </md-button>
                 </md-content>
             </div>
         </div>

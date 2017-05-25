@@ -10,7 +10,6 @@
  
 application.controller('Ctrl_Vehicles', function () {
 
-	var stations_all = {};
 	var cars_all = {};
 
 	var icons = {

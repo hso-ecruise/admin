@@ -64,7 +64,7 @@ application.controller('Ctrl_Users', function ($rootScope, $scope, RESTFactory, 
 		
 	};
 	
-	var LoadCustomerDetails = function(id){
+	var Load_Details = function(id){
 		
 		DisabledEditMode();
 		
@@ -110,6 +110,8 @@ application.controller('Ctrl_Users', function ($rootScope, $scope, RESTFactory, 
 		
 	};
 	
+	
+	
 	var EnableEditMode = function(){
 		$scope.editDisabled = false;
 	};
@@ -119,7 +121,8 @@ application.controller('Ctrl_Users', function ($rootScope, $scope, RESTFactory, 
 	};
 	
 	
-	var SafeChanges = function(){
+	
+	var Safe_Changes = function(){
 		
 		var customer = $scope.currentCustomer;
 		
@@ -155,17 +158,21 @@ application.controller('Ctrl_Users', function ($rootScope, $scope, RESTFactory, 
 			alert("Telefon-Nummer konnte nicht geändert werden");
 		});
 		
-		Update();
+		//REST CALL TO CHAGE VERIFIED STATUS
+		
+		setTimeout(Update(), 2000);
 		
 	};
 	
-	var CancelChanges = function(){
-		LoadCustomerDetails($scope.currentCustomer.customerID);
+	var Dismiss_Changes = function(){
+		Load_Details($scope.currentCustomer.customerID);
 	};
 	
 	
 	
-	var SafeNew = function(customer){
+	var Safe_New = function(){
+		
+		var customer = $scope.new_customer;
 		
 		var user = {};
 		user.firstName = customer.name;
@@ -173,7 +180,11 @@ application.controller('Ctrl_Users', function ($rootScope, $scope, RESTFactory, 
 		user.email = customer.email;
 		user.password = customer.password;
 		
+		console.log(user);
+		
 		RESTFactory.User_Register(user).then(function(response){
+			
+			var customerID = response.id;
 			
 			var address = {};
 			address.street = customer.address.street;
@@ -183,10 +194,20 @@ application.controller('Ctrl_Users', function ($rootScope, $scope, RESTFactory, 
 			address.country = customer.address.country;
 			address.addressExtraLine = customer.address.extra;
 			
+			console.log(address);
+			
 			RESTFactory.Customers_Patch_Address(customerID, address).then(function(response){
 				alert("Adresse erfolgreich geändert");
 			}, function(response){
 				alert("Adresse konnte nicht geändert werden");
+			});
+			
+			var phoneNr = "\"" + customer.phoneNr + "\"";
+			
+			RESTFactory.Customers_Patch_PhoneNr(customerID, phoneNr).then(function(response){
+				alert("Telefonnummer erfolgreich geändert");
+			}, function(response){
+				alert("Telefonnummer konnte nicht geändert werden");
 			});
 			
 			alert("Neuer Nutzer wurde angelegt");
@@ -200,55 +221,68 @@ application.controller('Ctrl_Users', function ($rootScope, $scope, RESTFactory, 
 		
 	};
 	
-	
-	
-	var CancelNew = function(){
+	var Dismiss_New = function(){
+		
 		Hide_AddCustomer();
+		
 	};
 	
+	
+	
 	var Show_AddCustomer = function(){
-		$scope.view = "add";
 		
 		var customer = {};
 		customer.address = {};
 		
+		$scope.view = "add";
 		$scope.new_customer = customer;
+		
 	};
 	
 	var Hide_AddCustomer = function(){
-		
 		$scope.new_customer = {};
-		
 		$scope.view = "info";
 		$scope.customer_selected = "false";
 		$scope.$apply();		
 	};
 	
 	
+	
+	
 	$scope.EnableEditMode = function(){
 		EnableEditMode();
 	};
 	
-	$scope.LoadCustomerDetails = function(customer){
-		LoadCustomerDetails(customer);
+	$scope.Load_Details = function(id){
+		Load_Details(id);
 	};
 	
-	$scope.SafeChanges = function(){
-		SafeChanges();
+	
+	$scope.Safe_Changes = function(){
+		Safe_Changes();
 	};
 	
-	$scope.CancelChanges = function(){
-		CancelChanges();
+	$scope.Dismiss_Changes = function(){
+		Dismiss_Changes();
 	};
 	
-	$scope.SafeNew = function(){
-		var customer = $scope.new_customer;
-		SafeNew(customer);
+	
+	$scope.Safe_New = function(){
+		Safe_New();
 	};
 	
-	$scope.CancelNew = function(){
-		CancelNew();
+	$scope.Dismiss_New = function(){
+		Dismiss_New();
 	};
+	
+	
+	$scope.Show_AddCustomer = function(){
+		Show_AddCustomer();
+	}
+	
+	$scope.Hide_AddCustomer = function(){
+		Hide_AddCustomer();
+	}
 	
 	
 	var Init = function(){

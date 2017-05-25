@@ -12,9 +12,7 @@ application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactor
 	
 	var bookings_all = {};
 	
-
 	
-
 	
 	var Update = function(){
 		
@@ -89,8 +87,7 @@ application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactor
 		
 	};
 	
-
-	var LoadBookingDetails = function(booking){
+	var Load_Details = function(booking){
 		
 		$scope.booking_selected = "true";
 		
@@ -235,6 +232,47 @@ application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactor
 		
 	}
 	
+	
+	
+	var Safe_New = function(){
+		
+		var booking = {};
+		
+		var now = new Date();
+		now.setHours(now.getHours() + 2);
+		
+		var plannedDate = new Date();
+		plannedDate = $scope.new_booking.date;
+		plannedDate.setHours(plannedDate.getHours() + 2);
+		
+		booking.customerId = $scope.new_booking.customerID;
+		booking.bookedPositionLatitude = $scope.new_booking.lat;
+		booking.bookedPositionLongitude = $scope.new_booking.lon;
+		booking.bookingDate = now;
+		booking.plannedDate = plannedDate;
+		
+		console.log(booking);
+		
+		RESTFactory.Bookings_Post(booking).then(function(response){
+			alert("Buchung wurde erfolgreich ausgeführt");
+			Hide_AddBooking();
+			setTimeout(Update(), 2000);
+		}, function(response){
+			alert("Buchung fehlgeschlagen");
+			Hide_AddBooking();
+			setTimeout(Update(), 2000);
+		});
+		
+	}
+	
+	var Dismiss_New = function(){
+		
+		Hide_AddBooking();
+		
+	};
+	
+	
+	
 	var Show_AddBooking = function(){
 		
 		$scope.view = "add";
@@ -282,53 +320,28 @@ application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactor
 	}
 	
 	var Hide_AddBooking = function(){
+		$scope.new_booking = {};
 		$scope.view = "info";
-	}
-	
-	var Booking_Safe = function(){
-		
-		var booking = {};
-		
-		var now = new Date();
-		now.setHours(now.getHours() + 2);
-		
-		var plannedDate = new Date();
-		plannedDate = $scope.new_booking.date;
-		plannedDate.setHours(plannedDate.getHours() + 2);
-		
-		booking.customerId = $scope.new_booking.customerID;
-		booking.bookedPositionLatitude = $scope.new_booking.lat;
-		booking.bookedPositionLongitude = $scope.new_booking.lon;
-		booking.bookingDate = now;
-		booking.plannedDate = plannedDate;
-		
-		console.log(booking);
-		
-		RESTFactory.Bookings_Post(booking).then(function(response){
-			alert("Buchung wurde erfolgreich ausgeführt");
-			Hide_AddBooking();
-		}, function(response){
-			alert("Buchung fehlgeschlagen");
-			Hide_AddBooking();
-		});
-		
+		$scope.booking_selected = "false";
+		$scope.$apply();
 	}
 	
 	
 	
 	
+	$scope.Load_Details = function(input){
+		Load_Details(input);
+	}	
 	
-	$scope.Booking_Safe = function(){
-		Booking_Safe();
+	
+	$scope.Safe_New = function(){
+		Safe_New();
 	}
 	
-	$scope.Booking_Cancel = function(){
+	$scope.Dismiss_New = function(){
 		Hide_AddBooking();
 	}
-	
-	$scope.LoadBookingDetails2 = function(booking){
-		LoadBookingDetails(booking);
-	}
+
 	
 	$scope.Show_AddBooking = function(){
 		Show_AddBooking();
@@ -338,7 +351,7 @@ application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactor
 		Hide_AddBooking();
 	}
 	
-	//+++++++++INIT+++++++++++++++++++++++++++++++++++++++++++++++
+	
 	
 	var Init = function(){
 		
