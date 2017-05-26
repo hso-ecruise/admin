@@ -1,4 +1,4 @@
-<div class="bookings" ng-controller="Ctrl_Bookings" >
+<div class="bookings" >
     <div class="bookings-container" layout="row" layout-wrap>
         <div ng-cloak class="content" flex>
             <md-toolbar class="md-hue-2">
@@ -9,8 +9,9 @@
             <md-content flex layout-padding >
                 <md-input-container class="md-block">
                     <label> Suche nach Buchungs ID</label>
-                    <input ng-model="bookingID" />
+                    <input ng-model="bookingID" my-enter="Enter_Search()"/>
                 </md-input-container>
+				
 
 				<md-content>
 					
@@ -23,7 +24,7 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr ng-repeat="(key, booking) in bookings track by $index" ng-click="Load_Details(booking)">
+							<tr ng-repeat="(key, booking) in bookings track by $index" ng-click="Load_Details(key)">
 								<td>{{key}}</td>
 								<td>{{ booking.customer.name }} {{ booking.customer.familyName }}</td>
 								<td>{{ booking.statusText }}</td>
@@ -84,29 +85,63 @@
 					<br/>
 					
 					<h4>Fahrer</h4>
-					<BLOCKQUOTE>
-						<h5> Vorname: {{ currentBooking.customer.name }} </h5>
-						<h5> Nachname: {{ currentBooking.customer.familyName }} </h5>
-						<h5> ID:  {{ currentBooking.customer.customerID }} </h5>
+					<BLOCKQUOTE ng-switch="currentBooking.customerState">
+						<div ng-switch-when="true">
+							<h5> Vorname: {{ currentBooking.customer.name }} </h5>
+							<h5> Nachname: {{ currentBooking.customer.familyName }} </h5>
+							<h5> ID:  {{ currentBooking.customer.customerID }} </h5>
+						</div>
+						<div ng-switch-when="false">
+							<h5> Nutzer kann nicht abgerufen werden </h5>
+						</div>
 					</BLOCKQUOTE>
 					
-					<h4>Start am {{ currentBooking.trip.start.date }} um {{ currentBooking.trip.start.time }}</h4>
-					<BLOCKQUOTE>
-						<h5> Straße Nr.: {{ currentBooking.trip.start.address.street }} {{ currentBooking.trip.start.address.number }} </h5>
-						<h5> Stadt PLZ: {{ currentBooking.trip.start.address.city }} {{ currentBooking.trip.start.address.zip }} </h5>
-					</BLOCKQUOTE>
+					<h4>Trip</h4>
 					
-					<h4>Ende am {{ currentBooking.trip.end.date }} um {{ currentBooking.trip.end.time }}</h4>
-					<BLOCKQUOTE>
-						<h5> Straße Nr.: {{ currentBooking.trip.end.address.street }} {{ currentBooking.trip.end.address.number }} </h5>
-						<h5> Stadt PLZ: {{ currentBooking.trip.end.address.city }} {{ currentBooking.trip.end.address.zip }} </h5>
+					<BLOCKQUOTE ng-switch="currentBooking.tripState">
+					
+						<div ng-switch-when="true">
+							<h4>Start am {{ currentBooking.trip.start.date }} um {{ currentBooking.trip.start.time }}</h4>
+							<BLOCKQUOTE ng-switch="currentBooking.trip.startState">
+								<div ng-switch-when="true">
+									<h5> Straße Nr.: {{ currentBooking.trip.start.address.street }} {{ currentBooking.trip.start.address.number }} </h5>
+									<h5> Stadt PLZ: {{ currentBooking.trip.start.address.city }} {{ currentBooking.trip.start.address.zip }} </h5>
+								</div>
+								<div ng-switch-when="false">
+									<h5> Trip-Startadresse kann nicht abgerufen werden</h5>
+								</div>
+							</BLOCKQUOTE>
+							
+							<h4>Ende am {{ currentBooking.trip.end.date }} um {{ currentBooking.trip.end.time }}</h4>
+							<BLOCKQUOTE ng-switch="currentBooking.trip.endState">
+								<div ng-switch-when="true">
+									<h5> Straße Nr.: {{ currentBooking.trip.end.address.street }} {{ currentBooking.trip.end.address.number }} </h5>
+									<h5> Stadt PLZ: {{ currentBooking.trip.end.address.city }} {{ currentBooking.trip.end.address.zip }} </h5>
+								</div>
+								<div ng-switch-when="false">
+									<h5> Trip-Endadresse kann nicht abgerufen werden</h5>
+								</div>
+							</BLOCKQUOTE>
+						</div>
+						
+						<div ng-switch-when="false">
+							<BLOCKQUOTE>
+								<h5> Trip kann nicht abgerufen werden </h5>
+							</BLOCKQUOTE>
+						</div>
+						
 					</BLOCKQUOTE>
 					
 					<h4>Rechnung</h4>
-					<BLOCKQUOTE>
-						<h5> ID: {{ currentBooking.invoice.invoiceID }} </h5>
-						<h5> Preis: {{ currentBooking.invoice.totalAmount }} </h5>
-						<h5> Status: {{ currentBooking.invoice.paidText }} </h5>
+					<BLOCKQUOTE ng-switch="currentBooking.invoiceState">
+						<div ng-switch-when="true">
+							<h5> ID: {{ currentBooking.invoice.invoiceID }} </h5>
+							<h5> Preis: {{ currentBooking.invoice.totalAmount }} </h5>
+							<h5> Status: {{ currentBooking.invoice.paidText }} </h5>
+						</div>
+						<div ng-switch-when="false">
+							<h5> Rechnung kann nicht abgerufen werden </h5>
+						</div>
 					</BLOCKQUOTE>
 					
 						<!--

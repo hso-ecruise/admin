@@ -121,3 +121,19 @@ application.config(function ($routeProvider, $locationProvider){
 	.html5Mode(true);
 	
 });
+
+
+
+application.directive('myEnter', function () {
+    return function (scope, element, attrs) {
+        element.bind("keydown keypress", function (event) {
+            if(event.which === 13) {
+                scope.$apply(function (){
+                    scope.$eval(attrs.myEnter);
+                });
+
+                event.preventDefault();
+            }
+        });
+    };
+});

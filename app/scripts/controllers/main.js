@@ -205,8 +205,8 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 			var orig = Promise.resolve(PostCaller.Post(url, data));
 			return orig;
 		},
-		Invoices_Get_Items_ItemID: function(id, itemID){
-			var url = 'https://' + IP + "/invoices/" + id + "/items/" + itemID;
+		Invoices_Get_Items_ItemID: function(itemID){
+			var url = 'https://' + IP + "/invoices/by-invoice-item/" + itemID;
 			var orig = Promise.resolve(GetCaller.Get(url));
 			return orig;
 		},
@@ -231,7 +231,12 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 			return orig;
 		},
 		Bookings_Get: function(){
-			var url = 'https://' + IP + "/bookings/by-customer/";
+			var url = 'https://' + IP + "/bookings/";
+			var orig = Promise.resolve(GetCaller.Get(url));
+			return orig;
+		},
+		Bookings_Get_BookingID: function(id){
+			var url = 'https://' + IP + "/bookings/" + id;
 			var orig = Promise.resolve(GetCaller.Get(url));
 			return orig;
 		}
