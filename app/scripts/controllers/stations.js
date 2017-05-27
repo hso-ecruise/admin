@@ -22,7 +22,7 @@ application.controller('Ctrl_Stations', function ($rootScope, $scope, RESTFactor
         }
     };
 	
-	var AddMarker = function(title, content, image_string, lat, lon){
+	function AddMarker(title, content, image_string, lat, lon){
 
         var img = {
             url: 'images/icons/car_available.png',
@@ -57,7 +57,7 @@ application.controller('Ctrl_Stations', function ($rootScope, $scope, RESTFactor
 		
     }
 	
-	var Delete_Markers = function(){
+	function Delete_Markers(){
 		
 		for(var i = 0; i < markers.length; i++){
 			markers[i].setMap(null);
@@ -65,13 +65,13 @@ application.controller('Ctrl_Stations', function ($rootScope, $scope, RESTFactor
 		
 		markers = [];
 		
-	};
-	
-	var Update_ID = function(id){
-		Update("ID", id);
 	}
 	
-	var Update = function(type, value){
+	function Update_ID(id){
+		new Update("ID", id);
+	}
+	
+	function Update(type, value){
 		
 		stations_all = {};
 		
@@ -81,7 +81,7 @@ application.controller('Ctrl_Stations', function ($rootScope, $scope, RESTFactor
 		
 		$scope.view = "info";
 		
-		Delete_Markers();
+		new Delete_Markers();
 		
 		var prom = {};
 		
@@ -124,9 +124,9 @@ application.controller('Ctrl_Stations', function ($rootScope, $scope, RESTFactor
 				var content =  diff + " von " + station.slots + " Slots frei";
 				
 				if(diff === 0){
-					AddMarker(title, content, "station_occupied", station.lat, station.lon);
+					new AddMarker(title, content, "station_occupied", station.lat, station.lon);
 				}else{
-					AddMarker(title, content, "station_available", station.lat, station.lon);
+					new AddMarker(title, content, "station_available", station.lat, station.lon);
 				}
 				
 				
@@ -156,17 +156,15 @@ application.controller('Ctrl_Stations', function ($rootScope, $scope, RESTFactor
 		
 		});
 		
-	};
+	}
 	
-	var Load_Details = function(id){
+	function Load_Details(id){
 		
-		DisabledEditMode();
+		new DisabledEditMode();
 		
 		RESTFactory.Charging_Stations_Get_Charging_StationID(id).then(function(response){
 			
 			$scope.station_selected = "true";
-			
-			console.log(response);
 			
 			var data_use = response.data;
 			
@@ -201,17 +199,17 @@ application.controller('Ctrl_Stations', function ($rootScope, $scope, RESTFactor
 			
 		});
 		
-	};
+	}
 	
 	
 	
-	var EnableEditMode = function(){
+	function EnableEditMode(){
 		$scope.editDisabled = false;
-	};
+	}
 	
-	var DisabledEditMode = function(){
+	function DisabledEditMode(){
 		$scope.editDisabled = true;
-	};
+	}
 	
 	
 	/*
@@ -231,7 +229,7 @@ application.controller('Ctrl_Stations', function ($rootScope, $scope, RESTFactor
 	*/
 	
 	
-	var Safe_New = function(){
+	function Safe_New(){
 		
 		if($scope.new_station.hasPosition === false){
 			alert("Bitte Position auf Karte markieren");
@@ -245,25 +243,23 @@ application.controller('Ctrl_Stations', function ($rootScope, $scope, RESTFactor
 		station.latitude = $scope.new_station.lat;
 		station.longitude = $scope.new_station.lon;
 		
-		console.log(station);
-		
 		RESTFactory.Charging_Stations_Post(station).then(function(response){
 			alert("Ladestation erfolgreich hinzugefügt");
 		}, function(response){
 			alert("Ladestation konnte nicht hinzugefügt werden");
 		});
 		
-	};
+	}
 	
-	var Dismiss_New = function(){
+	function Dismiss_New(){
 		
-		Hide_AddStation();
+		new Hide_AddStation();
 		
-	};
+	}
 	
 	
 	
-	var Show_AddStation = function(){
+	function Show_AddStation(){
 		
 		$scope.view = "add";
 		
@@ -279,7 +275,7 @@ application.controller('Ctrl_Stations', function ($rootScope, $scope, RESTFactor
 		
 		$scope.new_station = new_station;
 		
-		var Init_Map = function(){
+		function Init_Map(){
 			
 			var map2 = new google.maps.Map(document.getElementById('map_station_new'), {
 				zoom: 16,
@@ -304,28 +300,28 @@ application.controller('Ctrl_Stations', function ($rootScope, $scope, RESTFactor
 				});
 
 			});
-		};
+		}
 		
 		setTimeout(Init_Map, 2000);
 		
-	};
+	}
 	
-	var Hide_AddStation = function(){
+	function Hide_AddStation(){
 		$scope.new_station = {};
 		$scope.view = "info";
 		$scope.station_selected = "false";
 		$scope.$apply();
-	};
+	}
 	
 	
 	
 	
 	$scope.EnableEditMode = function(){
-		EnableEditMode();
+		new EnableEditMode();
 	};
 	
 	$scope.Load_Details = function(id){
-		Load_Details(id);
+		new Load_Details(id);
 	};
 	
 	/*
@@ -339,41 +335,39 @@ application.controller('Ctrl_Stations', function ($rootScope, $scope, RESTFactor
 	*/
 	
 	$scope.Safe_New = function(){
-		Safe_New();
+		new Safe_New();
 	};
 	
 	$scope.Dismiss_New = function(){
-		Dismiss_New();
+		new Dismiss_New();
 	};
 	
 	$scope.Show_AddStation = function(){
-		Show_AddStation();
+		new Show_AddStation();
 	};
 	
 	$scope.Hide_AddStation = function(){
-		Hide_AddStation();
+		new Hide_AddStation();
 	};
 	
 	$scope.Enter_Search = function(){
 		
 		var search = $scope.searchQuery;
 		
-		console.log(search);
-		
 		if(search === undefined || search.length === 0){
-			Update("ALL", undefined);
+			new Update("ALL", undefined);
 		}else{
-			Update_ID(search);			
+			new Update_ID(search);			
 		}
 
-	}
-	
-	var Init = function(){
-		
-		Update();
-		
 	};
+	
+	function Init(){
+		
+		new Update("ALL", undefined);
+		
+	}
 
-	Init();
+	new Init();
 	
 });

@@ -360,12 +360,9 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
 		vehicle.lastKnownPositionLongitude = $scope.new_vehicle.lon;
 		vehicle.lastKnownPositionDate = new Date();
 		
-		console.log(vehicle);
-		
 		RESTFactory.Cars_Post(vehicle).then(function(response){
 			alert("Fahrzeug erfolgreich hinzugefügt");
 		}, function(response){
-			console.log(response);
 			alert("Fahrzeug konnte nicht hinzugefügt werden");
 		});
 		

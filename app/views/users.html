@@ -105,10 +105,38 @@
 				Fahrtinformationen:
 				<br/>
 				Anstehende Fahrten
-				LISTE
+				<br/>
+				<table>
+					<thead>
+						<tr>
+							<td>ID</td>
+							<td>Datum</td>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="(key, booking) in currentCustomer.bookingsOpen track by $index">
+							<td>{{key}}</td>
+							<td>{{ booking.date.date }} um {{ booking.date.time }}</td>
+						</tr>
+					</tbody>
+				</table>
 				<br/>
 				Beendete Fahrten
-				LISTE
+				<br/>
+				<table>
+					<thead>
+						<tr>
+							<td>ID</td>
+							<td>Datum</td>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="(key, booking) in currentCustomer.bookingsDone track by $index">
+							<td>{{key}}</td>
+							<td>{{ booking.date.date }} um {{ booking.date.time }}</td>
+						</tr>
+					</tbody>
+				</table>
 				<br/>
 				<br/>
 				

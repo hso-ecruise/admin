@@ -11,15 +11,15 @@ application.controller('Ctrl_Users', function ($rootScope, $scope, RESTFactory, 
 	
 	var customers_all = {};
 	
-	var Update_Name = function(name){
-		Update("NAME", name);
-	};
+	function Update_Name(name){
+		new Update("NAME", name);
+	}
 	
-	var Update_ID = function(id){
-		Update("ID", id);
-	};
+	function Update_ID(id){
+		new Update("ID", id);
+	}
 	
-	var Update = function(type, value){
+	function Update(type, value){
 		
 		customers_all = {};
 		
@@ -91,15 +91,16 @@ application.controller('Ctrl_Users', function ($rootScope, $scope, RESTFactory, 
 			
 		});
 		
-	};
+	}
 	
-	var Load_Details = function(id){
+	function Load_Details(id){
 		
-		DisabledEditMode();
+		new DisabledEditMode();
 		
 		RESTFactory.Customers_Get_CustomerID(id).then(function(response){
 			
 			$scope.customer_selected = "true";
+			
 			var data_use = response.data;
 			
 			var customer = {};
@@ -122,15 +123,60 @@ application.controller('Ctrl_Users', function ($rootScope, $scope, RESTFactory, 
 			address.country = data_use.country;
 			
 			customer.address = address;
-			customer.invoices = [];
-			customer.bookings = [];
+			customer.invoices = {};
+			customer.bookingsDone = {};
+			customer.bookingsOpen = {};
 			
 			$scope.currentCustomer = customer;
 			$scope.$apply();			
 			
-			//Load some more data
-			
 			//LOAD BOOKING INFOS
+			RESTFactory.Bookings_Get_CustomerID(id).then(function(response){
+				
+				var data = response.data;
+				
+				var bookingsOpen = {};
+				var bookingsDone = {};
+				
+				for(var i = 0; i < data.length; i++){
+					
+					var data_use = data[i];
+					
+					var booking = {};
+					
+					booking.bookingID = data_use.bookingId;
+					booking.tripID = data_use.tripId;
+					booking.customerID = data_use.customerId;
+					booking.invoiceItemID = data_use.invoiceItemId;
+					booking.plannedDate = data_use.plannedDate;
+					
+					var date = {};
+					date.date = Helper.Get_Date(booking.plannedDate);
+					date.time = Helper.Get_Time(booking.plannedDate);
+					
+					booking.date = date;
+					
+					var then = new Date(booking.plannedDate);
+					
+					var now = new Date();
+					now.setHours(now.getHours() + 2);
+					
+					if(then.getTime() - now.getTime() < 0){
+						bookingsDone[booking.bookingID] = booking;
+					}else{
+						bookingsOpen[booking.bookingID] = booking;
+					}
+					
+				}
+				
+				customer.bookingsOpen = bookingsOpen;
+				customer.bookingsDone = bookingsDone;
+				$scope.currentCustomer = customer;
+				$scope.$apply();
+				
+			}, function(response){
+				
+			});
 			
 			//LOAD INVOICE INFOS
 			RESTFactory.Invoices_Get_CustomerID(id).then(function(response){
@@ -172,22 +218,21 @@ application.controller('Ctrl_Users', function ($rootScope, $scope, RESTFactory, 
 			
 		});
 		
-		
-	};
+	}
 	
 	
 	
-	var EnableEditMode = function(){
+	function EnableEditMode(){
 		$scope.editDisabled = false;
-	};
+	}
 	
-	var DisabledEditMode = function(){
+	function DisabledEditMode(){
 		$scope.editDisabled = true;
-	};
+	}
 	
 	
 	
-	var Safe_Changes = function(){
+	function Safe_Changes(){
 		
 		var customer = $scope.currentCustomer;
 		
@@ -223,19 +268,19 @@ application.controller('Ctrl_Users', function ($rootScope, $scope, RESTFactory, 
 			alert("Telefon-Nummer konnte nicht geändert werden");
 		});
 		
-		//REST CALL TO CHAGE VERIFIED STATUS
+		//REST CALL TO CHAGE VERIFIED STATUS AND CHIPID
 		
-		setTimeout(Update(), 2000);
+		setTimeout(new Update("ALL", undefined), 2000);
 		
-	};
+	}
 	
-	var Dismiss_Changes = function(){
-		Load_Details($scope.currentCustomer.customerID);
-	};
+	function Dismiss_Changes(){
+		new Load_Details($scope.currentCustomer.customerID);
+	}
 	
 	
 	
-	var Safe_New = function(){
+	function Safe_New(){
 		
 		var customer = $scope.new_customer;
 		
@@ -284,17 +329,17 @@ application.controller('Ctrl_Users', function ($rootScope, $scope, RESTFactory, 
 		});
 		
 		
-	};
+	}
 	
-	var Dismiss_New = function(){
+	function Dismiss_New(){
 		
-		Hide_AddCustomer();
+		new Hide_AddCustomer();
 		
-	};
+	}
 	
 	
 	
-	var Show_AddCustomer = function(){
+	function Show_AddCustomer(){
 		
 		var customer = {};
 		customer.address = {};
@@ -302,77 +347,77 @@ application.controller('Ctrl_Users', function ($rootScope, $scope, RESTFactory, 
 		$scope.view = "add";
 		$scope.new_customer = customer;
 		
-	};
+	}
 	
-	var Hide_AddCustomer = function(){
+	function Hide_AddCustomer(){
 		$scope.new_customer = {};
 		$scope.view = "info";
 		$scope.customer_selected = "false";
 		$scope.$apply();		
-	};
+	}
 	
 	
 	
 	
 	$scope.EnableEditMode = function(){
-		EnableEditMode();
+		new EnableEditMode();
 	};
 	
 	$scope.Load_Details = function(id){
-		Load_Details(id);
+		new Load_Details(id);
 	};
 	
 	
 	$scope.Safe_Changes = function(){
-		Safe_Changes();
+		new Safe_Changes();
 	};
 	
 	$scope.Dismiss_Changes = function(){
-		Dismiss_Changes();
+		new Dismiss_Changes();
 	};
 	
 	
 	$scope.Safe_New = function(){
-		Safe_New();
+		new Safe_New();
 	};
 	
 	$scope.Dismiss_New = function(){
-		Dismiss_New();
+		new Dismiss_New();
 	};
 	
 	
 	$scope.Show_AddCustomer = function(){
-		Show_AddCustomer();
-	}
+		new Show_AddCustomer();
+	};
 	
 	$scope.Hide_AddCustomer = function(){
-		Hide_AddCustomer();
-	}
+		new Hide_AddCustomer();
+	};
 	
 	$scope.Enter_Search = function(){
 		
 		var search = $scope.searchQuery;
 		
 		if(search === undefined || search.length === 0){
-			Update("ALL", undefined);
+			new Update("ALL", undefined);
 		}else{
 			if(isNaN(search)){
-				Update_Name(search.toLowerCase());				
+				new Update_Name(search.toLowerCase());				
 			}else{
-				Update_ID(search);				
+				new Update_ID(search);				
 			}
 		}
 		
-	}
-	
-	
-	
-	var Init = function(){
-		
-		Update();
-		
 	};
+	
+	
+	
+	function Init(){
+		
+		new Update("ALL", undefined);
+		
+	}
 
-	Init();
+	new Init();
 	
 });

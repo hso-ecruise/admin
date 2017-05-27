@@ -12,10 +12,10 @@ application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactor
 	
 	var bookings_all = {};
 	
-	var Update_UserName = function(name){
+	function Update_UserName(name){
 		
 		//Search for customerName
-		var name = name.toLowerCase();
+		name = name.toLowerCase();
 		
 		RESTFactory.Customers_Get().then(function(response){
 			
@@ -24,7 +24,7 @@ application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactor
 			for(var i = 0; i < data.length; i++){
 				
 				if(data[i].lastName.toLowerCase().includes(name)){
-					Update("NAME", data[i].customerId);
+					new Update("NAME", data[i].customerId);
 				}
 				
 			}
@@ -33,14 +33,13 @@ application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactor
 			alert("Nutzername kann nicht gefunden werden");
 		});
 		
-		Update("NAME", name);
-	};
+	}
 	
-	var Update_ID = function(id){
-		Update("ID", id);
-	};
+	function Update_ID(id){
+		new Update("ID", id);
+	}
 	
-	var Update = function(type, value){
+	function Update(type, value){
 		
 		bookings_all = {};
 		
@@ -53,7 +52,6 @@ application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactor
 		if(type === "ALL"){
 			prom = RESTFactory.Bookings_Get();
 		}else if(type === "ID"){
-			console.log("ID " + value);
 			prom = RESTFactory.Bookings_Get_BookingID(value);
 		}else if(type === "NAME"){
 			prom = RESTFactory.Bookings_Get_CustomerID(value);
@@ -62,8 +60,6 @@ application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactor
 		}
 		
 		prom.then(function(response){
-			
-			console.log(response.data);
 			
 			var data = [];
 			
@@ -139,9 +135,9 @@ application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactor
 		});
 		
 		
-	};
+	}
 	
-	var Load_Details = function(id){
+	function Load_Details(id){
 		
 		$scope.booking_selected = "true";
 		
@@ -271,7 +267,7 @@ application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactor
 					station.lat = data.latitude;
 					station.lon = data.longitude;
 					
-					currentBooking.trip.start.station = station;
+					booking.trip.start.station = station;
 					
 					booking.trip.startState = "true";
 					$scope.currentBooking = booking;
@@ -280,14 +276,14 @@ application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactor
 					
 					Helper.Get_Address(station.lat, station.lon).then(function(address){
 						
-						currentBooking.trip.start.station.address = address;
+						booking.trip.start.station.address = address;
 						
-						$scope.currentBooking = currentBooking;
+						$scope.currentBooking = booking;
 						$scope.$apply();
 						
 					}, function(response){
 						
-					})
+					});
 					
 				}, function(response){
 					
@@ -323,7 +319,7 @@ application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactor
 						var address = response;
 						address.status = true;
 						
-						currentBooking.trip.end.station.address = address;
+						booking.trip.end.station.address = address;
 						
 						$scope.currentBooking = booking;
 						$scope.$apply();
@@ -349,13 +345,13 @@ application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactor
 			});
 			
 			
-		})
+		});
 		
-	};
+	}
 	
 	
 	
-	var Safe_New = function(){
+	function Safe_New(){
 		
 		var booking = {};
 		
@@ -376,25 +372,25 @@ application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactor
 		
 		RESTFactory.Bookings_Post(booking).then(function(response){
 			alert("Buchung wurde erfolgreich ausgeführt");
-			Hide_AddBooking();
-			setTimeout(Update(), 2000);
+			new Hide_AddBooking();
+			setTimeout(Update, 2000);
 		}, function(response){
 			alert("Buchung fehlgeschlagen");
-			Hide_AddBooking();
-			setTimeout(Update(), 2000);
+			new Hide_AddBooking();
+			setTimeout(Update, 2000);
 		});
 		
 	}
 	
-	var Dismiss_New = function(){
+	function Dismiss_New(){
 		
-		Hide_AddBooking();
+		new Hide_AddBooking();
 		
-	};
+	}
 	
 	
 	
-	var Show_AddBooking = function(){
+	function Show_AddBooking(){
 		
 		$scope.view = "add";
 
@@ -408,7 +404,7 @@ application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactor
 		
 		$scope.new_booking = new_booking;
 		
-		var Init_Map = function(){
+		function Init_Map(){
 			
 			var map = new google.maps.Map(document.getElementById('map_booking'), {
 				zoom: 16,
@@ -432,15 +428,13 @@ application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactor
 				});
 
 			});
-		};
+		}
 		
 		setTimeout(Init_Map, 2000);
 
-		
-		
 	}
 	
-	var Hide_AddBooking = function(){
+	function Hide_AddBooking(){
 		$scope.new_booking = {};
 		$scope.view = "info";
 		$scope.booking_selected = "false";
@@ -451,46 +445,46 @@ application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactor
 	
 	
 	$scope.Load_Details = function(input){
-		Load_Details(input);
-	}	
+		new Load_Details(input);
+	};
 	
 	
 	$scope.Safe_New = function(){
-		Safe_New();
-	}
+		new Safe_New();
+	};
 	
 	$scope.Dismiss_New = function(){
-		Hide_AddBooking();
-	}
+		new Hide_AddBooking();
+	};
 
 	
 	$scope.Show_AddBooking = function(){
-		Show_AddBooking();
-	}
+		new Show_AddBooking();
+	};
 	
 	$scope.Hide_AddBooking = function(){
-		Hide_AddBooking();
-	}
+		new Hide_AddBooking();
+	};
 	
 	$scope.Enter_Search = function(){
 		
 		var search = $scope.bookingID;
 		
 		if(search === undefined || search.length === 0){
-			Update("ALL", undefined);
+			new Update("ALL", undefined);
 		}else{
-			Update_ID(search);			
+			new Update_ID(search);			
 		}
 
-	}
-	
-	
-	var Init = function(){
-		
-		Update();
-		
 	};
 	
-	Init();
+	
+	function Init(){
+		
+		new Update();
+		
+	}
+	
+	new Init();
 	
 });
