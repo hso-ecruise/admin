@@ -373,11 +373,11 @@ application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactor
 		RESTFactory.Bookings_Post(booking).then(function(response){
 			alert("Buchung wurde erfolgreich ausgeführt");
 			new Hide_AddBooking();
-			setTimeout(Update, 2000);
+			setTimeout(Update, 1000);
 		}, function(response){
 			alert("Buchung fehlgeschlagen");
 			new Hide_AddBooking();
-			setTimeout(Update, 2000);
+			setTimeout(Update, 1000);
 		});
 		
 	}

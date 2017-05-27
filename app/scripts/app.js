@@ -102,6 +102,14 @@ application.config(function ($routeProvider, $locationProvider){
 		controller: 'Ctrl_Bookings'
 	})
 	
+	.when('/invoices', {
+		templateUrl: 'views/invoices.html',
+		resolve: {
+			factory: checkRouting
+	    },
+		controller: 'Ctrl_Invoices'
+	})
+	
 	.when('/statistics', {
 		templateUrl: 'views/statistics.html',
 		resolve: {

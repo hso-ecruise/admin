@@ -1,0 +1,169 @@
+<div class="bookings" >
+    <div class="bookings-container" layout="row" layout-wrap>
+        <div ng-cloak class="content" flex>
+            <md-toolbar class="md-hue-2">
+                <div class="md-toolbar-tools">
+                    <h2 class="md-flex">Rechnungen</h2>
+                </div>
+            </md-toolbar>
+            <md-content flex layout-padding >
+                <md-input-container class="md-block">
+                    <label> Suche nach Rechnungs ID</label>
+                    <input ng-model="searchQuery" my-enter="Enter_Search()"/>
+                </md-input-container>
+				
+
+				<md-content>
+					
+					<table>
+						<thead>
+							<tr>
+								<td>ID</td>
+								<td>Fahrer</td>
+								<td>Status</td>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="(key, invoice) in invoices track by $index" ng-click="Load_Details(key)">
+								<td>{{key}}</td>
+								<td>{{ invoice.customer.name }} {{ invoice.customer.familyName }}</td>
+								<td>{{ invoice.paidText }}</td>
+							</tr>
+						</tbody>
+						<!--
+						<tfoot>
+							<tr ng-click="Show_AddInvoice()">
+								<td colspan="2">
+									<div class="md-list-item-text" layout="column">
+										<h4>Neue Rechnung hinzufügen</h4>
+									</div>
+								</td>
+							</tr>
+						</tfoot>
+						-->
+					</table>
+					
+				</md-content>
+				<!--
+                <md-list flex>
+                    <md-list-item><h4>ID Fahrer Status</h4></md-list-item>
+                    <md-list-item class="md-1-line" ng-repeat="(key, booking) in bookings track by $index" ng-click="LoadBookingDetails2(booking)">
+                        <div class="md-list-item-text" layout="column" ng-switch on="booking.status">
+                            <h4 ng-switch-when="FUTURE">{{ key }} {{ booking.customer.name }} {{ booking.customer.familyName }} FUTURE</h4>
+                            <h4 ng-switch-when="PAST">{{ key }} {{ booking.customer.name }} {{ booking.customer.familyName }} PAST</h4>
+                        </div>
+                        <md-divider ></md-divider>
+                    </md-list-item>
+                    <md-list-item class="md-1-line" ng-click="Show_AddBooking()">
+                        <div class="md-list-item-text" layout="column">
+                            <h4>Neue Buchung hinzufügen</h4>
+                        </div>
+                    </md-list-item>
+                </md-list>
+				-->
+            </md-content>
+
+        </div>
+        <div style="padding:15px;"></div>
+
+        <div ng-switch="view" ng-cloak class="content booking-right" flex>
+            <div ng-switch-when="info" ng-switch="invoice_selected">
+                <md-toolbar class="md-hue-2">
+                    <div class="md-toolbar-tools">
+                        <h2 class="md-flex">Rechnungsdetails</h2>
+                    </div>
+                </md-toolbar>
+				
+                <div ng-switch-when="false">
+                    <md-content layout-padding>
+                        <h4>W&auml;hlen Sie eine Rechnung aus oder f&uuml;gen Sie eine Neue hinzu</h4>
+                    </md-content>
+                </div>
+
+                <div ng-switch-when="true">
+                    <md-content layout-padding>
+						<label> Rechnungs-ID: {{ currentInvoice.invoiceID }} </label>
+						<label> Status: {{ currentInvoice.paidText }}</label>
+						<br/>
+						
+						<h4>Fahrer</h4>
+						<BLOCKQUOTE ng-switch="currentInvoice.customerState">
+							<div ng-switch-when="true">
+								<h5> Vorname: {{ currentInvoice.customer.name }} </h5>
+								<h5> Nachname: {{ currentInvoice.customer.familyName }} </h5>
+								<h5> ID:  {{ currentInvoice.customer.customerID }} </h5>
+							</div>
+							<div ng-switch-when="false">
+								<h5> Nutzer kann nicht abgerufen werden </h5>
+							</div>
+						</BLOCKQUOTE>
+						
+						<h4>Rechnungselemente</h4>
+						
+						<div ng-switch="currentInvoice.itemState">
+						
+							<BLOCKQUOTE ng-switch-when="true" ng-repeat="(key, item) in currentInvoice.items track by $index">
+								
+								<h5>ID: {{ item.itemID }}</h5>
+								<h5>Preis: {{ item.amount }}</h5>
+								<h5>Grund: {{ item.reason }}</h5>
+								<h5>Typ: {{ item.type }}</h5>
+								
+							</BLOCKQUOTE>
+							
+							<div ng-switch-when="false">
+								<BLOCKQUOTE>
+									<h5> Keine Rechnungselemente vorhanden oder abrufen nicht erfolgreich </h5>
+								</BLOCKQUOTE>
+							</div>
+							
+						</div>
+						
+						<input type="button" ng-click="ShowItemAddPopUp(currentInvoice.invoiceID)" value="Neues Element"/>
+					
+                    </md-content>
+                </div>
+            </div>
+
+            <div ng-switch-when="add">
+                <md-toolbar class="md-hue-2">
+                    <div class="md-toolbar-tools">
+                        <h2 class="md-flex">Rechnung Hinzuf&uuml;gen</h2>
+                    </div>
+                </md-toolbar>
+                <md-content layout-padding>
+                    <md-input-container>
+                        <input type="number" ng-model="new_booking.customerID" placeholder="Customer-ID" ng-required />
+                    </md-input-container>
+<!--
+                </md-content>
+                <md-content layout-padding>
+                    <md-input-container flex-gt-sm>
+                        <input type="number" ng-model="new_invoice.customerID" placeholder="Nutzer-ID"/>
+                    </md-input-container>
+                    <md-input-container flex-gt-sm>
+                        <input type="time" ng-model="new_booking.date" placeholder="Zeit"/>
+                    </md-input-container>
+                </md-content>
+                <md-content layout-padding>
+                    <md-input-container flex-gt-sm ng-switch="new_booking.address_state">
+                        <p ng-switch-when="true">
+                            <input type="text" ng-model="new_booking.address.street" placeholder="Strasse" disabled/>
+                        </p>
+                        <p ng-switch-when="false">
+                            <input type="text" placeholder="Strasse" value="Keine Adresse gefunden" disabled/>
+                        </p>
+                    </md-input-container>
+                    <md-input-container flex-gt-sm>
+                        <input type="text" ng-model="new_booking.address.number" placeholder="Nr" disabled/>
+                    </md-input-container>
+                </md-content>
+-->
+                <md-content flex layout-padding>
+                    <md-button class="md-raised md-primary button-to-right" ng-click="Safe_New()"> Speichern </md-button>
+                    <md-button class="md-primary md-hue-1 button-to-right" ng-click="Dismiss_New()"> Verwerfen </md-button>
+                </md-content>
+            </div>
+        </div>
+    </div>
+</div>

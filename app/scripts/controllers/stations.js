@@ -245,8 +245,12 @@ application.controller('Ctrl_Stations', function ($rootScope, $scope, RESTFactor
 		
 		RESTFactory.Charging_Stations_Post(station).then(function(response){
 			alert("Ladestation erfolgreich hinzugefügt");
+			new Hide_AddStation();
+			setTimeout(Update, 1000);
 		}, function(response){
 			alert("Ladestation konnte nicht hinzugefügt werden");
+			new Hide_AddStation();
+			setTimeout(Update, 1000);
 		});
 		
 	}
@@ -270,7 +274,7 @@ application.controller('Ctrl_Stations', function ($rootScope, $scope, RESTFactor
 		new_station.lat = 0;
 		new_station.lon = 0;
 		new_station.address_state = "false";
-		$scope.new_station.hasPosition = false;
+		new_station.hasPosition = false;
 
 		
 		$scope.new_station = new_station;

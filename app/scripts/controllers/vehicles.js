@@ -362,8 +362,12 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
 		
 		RESTFactory.Cars_Post(vehicle).then(function(response){
 			alert("Fahrzeug erfolgreich hinzugefügt");
+			new Hide_AddVehicle();
+			setTimeout(Update, 1000);
 		}, function(response){
 			alert("Fahrzeug konnte nicht hinzugefügt werden");
+			new Hide_AddVehicle();
+			setTimeout(Update, 1000);
 		});
 		
 	}
@@ -393,7 +397,7 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
 		new_vehicle.model = "";
 		new_vehicle.yearOfConstruction = 0;
 		new_vehicle.address_state = "false";
-		$scope.new_vehicle.hasPosition = false;
+		new_vehicle.hasPosition = false;
 		
 
 		$scope.new_vehicle = new_vehicle;
@@ -496,128 +500,5 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
 	}
 
 	new Init();
-	
-	
-	
-	/*
-	var init = function(){
-		
-		var input = document.getElementById('search_input');
-		var searchBox = new google.maps.places.SearchBox(input);
-		
-		map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
-			
-		map.addListener('bounds_changed', function() {
-			searchBox.setBounds(map.getBounds());
-		});
-		
-        // Listen for the event fired when the user selects a prediction and retrieve
-        // more details for that place.
-        searchBox.addListener('places_changed', function() {
-			
-			var places = searchBox.getPlaces();
-
-			if (places.length === 0) {
-				return;
-			}
-			
-			var place = places[0].geometry.location;
-			
-			var lat = place.lat();
-			var lon = place.lng();
-			
-			var prom_addr = Helper.Get_Address(lat, lon);
-			prom_addr.then(function(response){
-				ShowInputPopUp(response, lat, lon);
-			});
-			
-        });
-		
-		
-		//GET NEXT BOOKINGS
-		var prom_bookings = RESTFactory.Bookings_Get_CustomerID(customerID);
-		
-		prom_bookings.then(function(response){
-			
-			var bookings = response.data;
-			
-			var interested = [];
-			
-			var soon_bookings = [];
-			
-			for(var jk = 0; jk < bookings.length; jk++){
-				
-				var booking = bookings[jk];
-				
-				var d = new Date(booking.plannedDate);
-				var now = new Date();
-				var dif = (d.getTime() - now.getTime()) / 1000 / 60;
-				
-				if(dif < 30 && dif > 0){
-					interested.push(booking);
-				}
-				
-			}
-			
-			for(var kl = 0; kl < interested.length; kl++){
-				
-				var booking2 = interested[kl];
-				
-				var prom_trip = RESTFactory.Trips_Get_TripID(booking2.TripId);
-				
-				prom_trip.then(function(response){
-					
-					var trip = response.data;
-					
-					var carID = trip.CarId;
-					var chargingID = trip.startChargingStationId;
-					
-					var prom_charge = RESTFactory.Charging_Stations_Get_Charging_StationID(chargingID);
-					
-					prom_charge.then(function(response){
-						
-						var station = response.data;
-						
-						var lat = station.latitude;
-						var lon = station.longitude;
-						
-						Helper.Get_Address(lat, lon).then(function(address){
-							
-							var soon_booking = {};
-						
-							soon_booking.lat = lat;
-							soon_booking.lon = lon;
-							soon_booking.stationID = chargingID;
-							soon_booking.carID = carID;
-							soon_booking.address = address;
-							soon_booking.date = Helper.Get_Date(booking2.plannedDate);
-							soon_booking.time = Helper.Get_Time(booking2.plannedDate);
-							
-							soon_bookings.push(soon_booking);
-							
-							var content = "Ihr Fahrzeug mit der ID: " + soon_booking.carID + " steht ab " + soon_booking.time + " am " + soon_booking.date + " an der Station " + soon_booking.stationID + " bereit";
-							
-							AddMarker("Ihre Reservierung", content, "car_reserved", lat, lon);
-							
-						});
-						
-					});
-					
-				});
-				
-			}
-			
-		}, function(response){
-			console.log("Cant get bookings for init maps");
-		});
-		
-	};
-	
-
-	init();
-	*/
-	
-
-
 
 });
