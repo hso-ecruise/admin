@@ -4,6 +4,8 @@ application.controller('Ctrl_Stations', function ($rootScope, $scope, RESTFactor
 
 	var stations_all = {};
 	
+	var markers = [];
+	
 	
 	var map = new google.maps.Map(document.getElementById('map_stations'), {
         zoom: 16,
@@ -50,10 +52,28 @@ application.controller('Ctrl_Stations', function ($rootScope, $scope, RESTFactor
                 alert = undefined;
             });
         });
-
+		
+		markers.push(marker);
+		
     }
 	
-	var Update = function(){
+	var Delete_Markers = function(){
+		
+		for(var i = 0; i < markers.length; i++){
+			markers[i].setMap(null);
+		}
+		
+		markers = [];
+		
+	};
+	
+	var Update_ID = function(id){
+		Update("ID", id);
+	}
+	
+	var Update = function(type, value){
+		
+		stations_all = {};
 		
 		$scope.station_selected = "false";
 		
@@ -61,9 +81,25 @@ application.controller('Ctrl_Stations', function ($rootScope, $scope, RESTFactor
 		
 		$scope.view = "info";
 		
-		RESTFactory.Charging_Stations_Get().then(function(response){
+		Delete_Markers();
+		
+		var prom = {};
+		
+		if(type === "ID"){
+			prom = RESTFactory.Charging_Stations_Get_Charging_StationID(value);
+		}else{
+			prom = RESTFactory.Charging_Stations_Get();
+		}
+		
+		prom.then(function(response){
 			
-			var data = response.data;
+			var data = [];
+			
+			if(type === "ID"){
+				data.push(response.data);
+			}else{
+				data = response.data;
+			}
 			
 			for(var i = 0; i < data.length; i++){
 				
@@ -115,6 +151,9 @@ application.controller('Ctrl_Stations', function ($rootScope, $scope, RESTFactor
 			
 		}, function(response){
 			
+			$scope.stations = stations_all;
+			$scope.$apply();
+		
 		});
 		
 	};
@@ -133,9 +172,9 @@ application.controller('Ctrl_Stations', function ($rootScope, $scope, RESTFactor
 			
 			var station = {};
 			
-			station.chargingStationID = data_use.chargingStationId;
+			station.stationID = data_use.chargingStationId;
 			station.slots = data_use.slots;
-			station.slotsOccupied = data_use.slotsOccupied;
+			station.slotsOccupied = data_use.slotsOccupuied;
 			station.lat = data_use.latitude;
 			station.lon = data_use.longitude;
 			
@@ -194,6 +233,11 @@ application.controller('Ctrl_Stations', function ($rootScope, $scope, RESTFactor
 	
 	var Safe_New = function(){
 		
+		if($scope.new_station.hasPosition === false){
+			alert("Bitte Position auf Karte markieren");
+			return;
+		}
+		
 		var station = {};
 		
 		station.slots = $scope.new_station.slots;
@@ -230,7 +274,9 @@ application.controller('Ctrl_Stations', function ($rootScope, $scope, RESTFactor
 		new_station.lat = 0;
 		new_station.lon = 0;
 		new_station.address_state = "false";
+		$scope.new_station.hasPosition = false;
 
+		
 		$scope.new_station = new_station;
 		
 		var Init_Map = function(){
@@ -240,6 +286,7 @@ application.controller('Ctrl_Stations', function ($rootScope, $scope, RESTFactor
 				center: new google.maps.LatLng(49.5, 8.434),
 				mapTypeId: 'roadmap'
 			});
+			
 			map2.addListener("click", function(event){
 
 				var lat = event.latLng.lat();
@@ -247,6 +294,7 @@ application.controller('Ctrl_Stations', function ($rootScope, $scope, RESTFactor
 				
 				$scope.new_station.lat = lat;
 				$scope.new_station.lon = lon;
+				$scope.new_station.hasPosition = true;
 				
 				Helper.Get_Address(lat, lon).then(function(address){
 					$scope.new_station.address_state = "true";
@@ -298,7 +346,6 @@ application.controller('Ctrl_Stations', function ($rootScope, $scope, RESTFactor
 		Dismiss_New();
 	};
 	
-	
 	$scope.Show_AddStation = function(){
 		Show_AddStation();
 	};
@@ -307,6 +354,19 @@ application.controller('Ctrl_Stations', function ($rootScope, $scope, RESTFactor
 		Hide_AddStation();
 	};
 	
+	$scope.Enter_Search = function(){
+		
+		var search = $scope.searchQuery;
+		
+		console.log(search);
+		
+		if(search === undefined || search.length === 0){
+			Update("ALL", undefined);
+		}else{
+			Update_ID(search);			
+		}
+
+	}
 	
 	var Init = function(){
 		

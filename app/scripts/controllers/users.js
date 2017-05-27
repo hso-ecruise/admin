@@ -11,9 +11,17 @@ application.controller('Ctrl_Users', function ($rootScope, $scope, RESTFactory, 
 	
 	var customers_all = {};
 	
+	var Update_Name = function(name){
+		Update("NAME", name);
+	};
 	
+	var Update_ID = function(id){
+		Update("ID", id);
+	};
 	
-	var Update = function(){
+	var Update = function(type, value){
+		
+		customers_all = {};
 		
 		$scope.customer_selected = "false";
 		
@@ -21,9 +29,27 @@ application.controller('Ctrl_Users', function ($rootScope, $scope, RESTFactory, 
 		
 		$scope.view = "info";
 		
-		RESTFactory.Customers_Get().then(function(response){
+		var prom = {};
+		
+		if(type === "ID"){
+			prom = RESTFactory.Customers_Get_CustomerID(value);
+		}else if(type === "NAME"){
+			prom = RESTFactory.Customers_Get_Name(value);
+		}else{
+			prom = RESTFactory.Customers_Get();
+		}
+		
+		
+		
+		prom.then(function(response){
 			
-			var data = response.data;
+			var data = [];
+			
+			if(type === "ID"){
+				data.push(response.data);
+			}else{
+				data = response.data;
+			}
 			
 			for(var i = 0; i < data.length; i++){
 				
@@ -60,6 +86,9 @@ application.controller('Ctrl_Users', function ($rootScope, $scope, RESTFactory, 
 			
 		}, function(response){
 			
+			$scope.customers = customers_all;
+			$scope.$apply();
+			
 		});
 		
 	};
@@ -93,11 +122,47 @@ application.controller('Ctrl_Users', function ($rootScope, $scope, RESTFactory, 
 			address.country = data_use.country;
 			
 			customer.address = address;
+			customer.invoices = [];
+			customer.bookings = [];
 			
 			$scope.currentCustomer = customer;
 			$scope.$apply();			
 			
 			//Load some more data
+			
+			//LOAD BOOKING INFOS
+			
+			//LOAD INVOICE INFOS
+			RESTFactory.Invoices_Get_CustomerID(id).then(function(response){
+				
+				var data = response.data;
+				
+				var invoices = {};
+				
+				for(var i = 0; i < data.length; i++){
+					
+					var data_use = data[i];
+					
+					var invoice = {};
+					
+					invoice.invoiceID = data_use.invoiceId;
+					invoice.totalAmount = data_use.totalAmount;
+					invoice.paid = data_use.paid;
+					invoice.paidText = "Nicht bezahlt";
+					if(invoice.paid === true){ invoice.paidText = "Bezahlt"; }
+					
+					
+					invoices[invoice.invoiceID] = invoice;
+					
+				}
+				
+				customer.invoices = invoices;
+				$scope.currentCustomer = customer;
+				$scope.$apply();
+				
+			}, function(response){
+				
+			});
 			
 			
 		}, function(response){
@@ -283,6 +348,23 @@ application.controller('Ctrl_Users', function ($rootScope, $scope, RESTFactory, 
 	$scope.Hide_AddCustomer = function(){
 		Hide_AddCustomer();
 	}
+	
+	$scope.Enter_Search = function(){
+		
+		var search = $scope.searchQuery;
+		
+		if(search === undefined || search.length === 0){
+			Update("ALL", undefined);
+		}else{
+			if(isNaN(search)){
+				Update_Name(search.toLowerCase());				
+			}else{
+				Update_ID(search);				
+			}
+		}
+		
+	}
+	
 	
 	
 	var Init = function(){

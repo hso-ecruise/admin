@@ -125,6 +125,11 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 			var orig = Promise.resolve(GetCaller.Get(url));
 			return orig;
 		},
+		Customers_Get_Name: function(name){
+			var url = 'https://' + IP + "/customers/by-lastname/" + name;
+			var orig = Promise.resolve(GetCaller.Get(url));
+			return orig;
+		},
 		Customers_Patch_Password: function(id, pwd){
 			var url = 'https://' + IP + "/customers/" + id + "/password";
 			var orig = Promise.resolve(PatchCaller.Patch(url, pwd));
@@ -148,6 +153,11 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 		Cars_Get: function(){
 			var url = 'https://' + IP + "/cars";
 			var orig = Promise.resolve(GetCaller.Get(url));
+			return orig;
+		},
+		Cars_Post: function(data){
+			var url = 'https://' + IP + "/cars";
+			var orig = Promise.resolve(PostCaller.Post(url, data));
 			return orig;
 		},
 		Cars_Get_CarID: function(id){
@@ -190,6 +200,11 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 			var orig = Promise.resolve(GetCaller.Get(url));
 			return orig;
 		},
+		Invoices_Get_CustomerID: function(id){
+			var url = 'https://' + IP + "/invoices/by-customer/" + id;
+			var orig = Promise.resolve(GetCaller.Get(url));
+			return orig;
+		},
 		Invoices_Patch_Paid: function(id, data){
 			var url = 'https://' + IP + "/invoices/" + id + "/paid";
 			var orig = Promise.resolve(PatchCaller.Patch(url, data));
@@ -200,7 +215,7 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 			var orig = Promise.resolve(GetCaller.Get(url));
 			return orig;
 		},
-		Invoices_Post: function(id, data){
+		Invoices_Post_Items: function(id, data){
 			var url = 'https://' + IP + "/invoices/" + id + "/items";
 			var orig = Promise.resolve(PostCaller.Post(url, data));
 			return orig;

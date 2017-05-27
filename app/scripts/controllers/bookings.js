@@ -37,7 +37,6 @@ application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactor
 	};
 	
 	var Update_ID = function(id){
-		//Search for bookingID
 		Update("ID", id);
 	};
 	
@@ -54,6 +53,7 @@ application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactor
 		if(type === "ALL"){
 			prom = RESTFactory.Bookings_Get();
 		}else if(type === "ID"){
+			console.log("ID " + value);
 			prom = RESTFactory.Bookings_Get_BookingID(value);
 		}else if(type === "NAME"){
 			prom = RESTFactory.Bookings_Get_CustomerID(value);
@@ -63,7 +63,16 @@ application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactor
 		
 		prom.then(function(response){
 			
-			var data = response.data;
+			console.log(response.data);
+			
+			var data = [];
+			
+			if(type === "ID"){
+				data.push(response.data);
+			}else{
+				data = response.data;
+			}
+			
 			
 			for(var i = 0; i < data.length; i++){
 				
@@ -467,16 +476,12 @@ application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactor
 		
 		var search = $scope.bookingID;
 		
-		Update_ID(search);
-		/*
-		if(typeof search === 'number'){
-			Update_ID(search);
-		}else if(typeof search === 'string'){
-			Update_UserName(search.toLowerCase());
-		}else{
+		if(search === undefined || search.length === 0){
 			Update("ALL", undefined);
+		}else{
+			Update_ID(search);			
 		}
-		*/
+
 	}
 	
 	

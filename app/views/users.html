@@ -1,36 +1,50 @@
 <div>
 
-  	<table>
+	<div ng-cloak class="content" flex>
 	
-		<tr>
-			<td>
-				ID
-			</td>
-			<td>
-				Nutzer
-			</td>
-		</tr>
-		
-		<tr ng-repeat="(key, customer) in customers track by $index" ng-click="Load_Details(key)">
+            <md-toolbar class="md-hue-2">
+                <div class="md-toolbar-tools">
+                    <h2 class="md-flex">Nutzer</h2>
+                </div>
+            </md-toolbar>
 			
-			<td>
-				{{ key }}
-			</td>
-			
-			
-			<td>
-				{{ customer.name }} {{ customer.familyName }}
-			</td>
-			
-		</tr>
-	
-	</table>
-	
-	<br/>
-	
-	<input type="button" ng-click="Show_AddCustomer()" value="Hinzufügen"/>
-	
-	<br/>
+            <md-content flex layout-padding >
+                <md-input-container class="md-block">
+                    <label> Suche nach Nutzer ID oder Nachname</label>
+                    <input ng-model="searchQuery" my-enter="Enter_Search()"/>
+                </md-input-container>
+				
+				<md-content>
+					
+					<table>
+						<thead>
+							<tr>
+								<td>ID</td>
+								<td>Name</td>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="(key, customer) in customers track by $index" ng-click="Load_Details(key)">
+								<td>{{key}}</td>
+								<td>{{ customer.name }} {{ customer.familyName }}</td>
+							</tr>
+						</tbody>
+						<tfoot>
+							<tr ng-click="Show_AddCustomer()">
+								<td colspan="2">
+									<div class="md-list-item-text" layout="column">
+										<h4>Neuen Nutzer hinzufügen</h4>
+									</div>
+								</td>
+							</tr>
+						</tfoot>
+					</table>
+					
+				</md-content>
+
+            </md-content>
+
+        </div>
 	
 	<div ng-switch="view">
 		
@@ -39,6 +53,8 @@
 			Nutzer-Informationen:
 			<br/>
 			
+			<!--HIER EINEN REITER FÜR STAMMDATEN UND EINEN FÜR SONSTIGES-->
+			<!--Stammdaten-->
 			<div ng-switch-when="true">
 				
 				ID: {{ currentCustomer.customerID }}
@@ -84,6 +100,34 @@
 					</div>
 					
 				</div>
+				
+				<!--SONSTIGES-->
+				Fahrtinformationen:
+				<br/>
+				Anstehende Fahrten
+				LISTE
+				<br/>
+				Beendete Fahrten
+				LISTE
+				<br/>
+				<br/>
+				
+				Rechnungen
+				<br/>
+				<table>
+					<thead>
+						<tr>
+							<td>ID</td>
+							<td>Status</td>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="(key, invoice) in currentCustomer.invoices track by $index">
+							<td>{{key}}</td>
+							<td>{{ invoice.paidText }}</td>
+						</tr>
+					</tbody>
+				</table>
 				
 				
 			</div>
