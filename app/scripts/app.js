@@ -40,7 +40,6 @@ var checkRouting= function ($rootScope, $location, Helper) {
 		}
 		
 		console.log("FAILED ");
-		alert("test");
 		$location.path("/start");
     }
     else
@@ -108,6 +107,14 @@ application.config(function ($routeProvider, $locationProvider){
 			factory: checkRouting
 	    },
 		controller: 'Ctrl_Invoices'
+	})
+	
+	.when('/maintenances', {
+		templateUrl: 'views/maintenances.html',
+		resolve: {
+			factory: checkRouting
+	    },
+		controller: 'Ctrl_Maintenances'
 	})
 	
 	.when('/statistics', {

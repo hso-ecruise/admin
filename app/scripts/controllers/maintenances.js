@@ -8,9 +8,9 @@
  * give some description here
  */
  
-application.controller('Ctrl_Invoices', function ($rootScope, $scope, RESTFactory, Helper, $mdDialog) {
+application.controller('Ctrl_Maintenances', function ($rootScope, $scope, RESTFactory, Helper, $mdDialog) {
 	
-	var invoices_all = {};
+	var maintenances_all = {};
 	
 	
 	function Update_ID(id){
@@ -19,18 +19,18 @@ application.controller('Ctrl_Invoices', function ($rootScope, $scope, RESTFactor
 	
 	function Update(type, value){
 		
-		invoices_all = {};
+		maintenances_all = {};
 		
-		$scope.invoice_selected = "false";
+		$scope.maintenance_selected = "false";
 		
 		$scope.view = "info";
 		
 		var prom = {};
 		
 		if(type === "ID"){
-			prom = RESTFactory.Invoices_Get_InvoiceID(value);
+			prom = RESTFactory.Maintances_Get_MaintenanceID(value);
 		}else{
-			prom = RESTFactory.Invoices_Get();
+			prom = RESTFactory.Maintances_Get();
 		}
 		
 		prom.then(function(response){
@@ -48,54 +48,32 @@ application.controller('Ctrl_Invoices', function ($rootScope, $scope, RESTFactor
 				
 				var data_use = data[i];
 				
-				var invoice = {};
+				var maintenance = {};
 				
-				var ID_STR = data_use.invoiceId;
+				var ID_STR = data_use.maintenanceId;
 				
+				maintenance.maintenanceID = data_use.maintenanceId;
+				maintenance.spontan = data_use.spontanesously;
+				maintenance.atMileage = data_use.atMileage;
+				maintenance.atDate = data_use.atDate;
 				
-				invoice.invoiceID = data_use.invoiceId;
-				invoice.totalAmount = data_use.totalAmount;
-				invoice.customerID = data_use.customerId;
-				invoice.paid = data_use.paid;
-				invoice.paidText = "Nicht bezahlt";
-				if(invoice.paid === true){ invoice.paidText = "Bezahlt"; }
+				var date = {};
+				date.date = Helper.Get_Date(data_use.atDate);
+				date.time = Helper.Get_Time(data_use.atDate);
 				
-				invoice.customerState = "false";
+				maintenance.date = date;
 				
-				invoices_all[ID_STR] = invoice;
-				
-				$scope.invoices = invoices_all;
-				$scope.$apply();
-				
-				
-				//GET CUSTOMER
-				RESTFactory.Customers_Get_CustomerID(invoice.customerID).then(function(response){
-					
-					var custom_data = response.data;
-					
-					var customer = {};
-					
-					customer.customerID = custom_data.customerId;
-					customer.name = custom_data.firstName;
-					customer.familyName = custom_data.lastName;
-					
-					invoice.customer = customer;
-					invoice.customerState = "true";
-					
-					invoices_all[ID_STR] = invoice;
-					$scope.invoices = invoices_all;
-					$scope.$apply();
-					
-				}, function(response){
-					
-				});
+				maintenances_all[ID_STR] = maintenance;
 				
 			}
+			
+			$scope.maintenances = maintenances_all;
+			$scope.$apply();
 			
 			
 		}, function(response){
 			
-			$scope.invoices = invoices_all;
+			$scope.maintenances = maintenances_all;
 			$scope.$apply();
 			
 		});
@@ -105,28 +83,26 @@ application.controller('Ctrl_Invoices', function ($rootScope, $scope, RESTFactor
 	
 	function Load_Details(id){
 		
-		$scope.invoice_selected = "true";
+		$scope.maintenance_selected = "true";
 		
-		RESTFactory.Invoices_Get_InvoiceID(id).then(function(response){
+		RESTFactory.Maintances_Get_MaintenanceID(id).then(function(response){
 			
 			var data_use = response.data;
 			
-			var invoice = {};
+			var maintenance = {};
 			
-			invoice.invoiceID = data_use.invoiceId;
-			invoice.totalAmount = data_use.totalAmount;
-			invoice.customerID = data_use.customerId;
-			invoice.paid = data_use.paid;
-			invoice.paidText = "Nicht bezahlt";
-			if(invoice.paid === true){ invoice.paidText = "Bezahlt"; }
+			maintenance.maintenanceID = data_use.maintenanceId;
+			maintenance.spontan = data_use.spontanesously;
+			maintenance.atMileage = data_use.atMileage;
+			maintenance.atDate = data_use.atDate;
 			
-			invoice.customer = {};
-			invoice.customerState = "false";
+			var date = {};
+			date.date = Helper.Get_Date(data_use.atDate);
+			date.time = Helper.Get_Time(data_use.atDate);
 			
-			invoice.items = {};
-			invoice.itemState = "false";
+			maintenance.date = date;
 			
-			$scope.currentInvoice = invoice;
+			$scope.currentMaintenance = maintenance;
 			$scope.$apply();
 			
 			
@@ -205,7 +181,7 @@ application.controller('Ctrl_Invoices', function ($rootScope, $scope, RESTFactor
 		
 		RESTFactory.Invoices_Post(invoice).then(function(response){
 			alert("Rechnung wurde erfolgreich ausgeführt");
-			new Hide_AddInvoice();
+			new Hide_AddBooking();
 			setTimeout(Update, 2000);
 		}, function(response){
 			alert("Rechnung fehlgeschlagen");
@@ -343,7 +319,7 @@ application.controller('Ctrl_Invoices', function ($rootScope, $scope, RESTFactor
 	};
 	
 	$scope.Dismiss_New = function(){
-		new Dismiss_New();
+		new Hide_AddBooking();
 	};
 
 	
@@ -377,6 +353,10 @@ application.controller('Ctrl_Invoices', function ($rootScope, $scope, RESTFactor
 	
 	
 	function Init(){
+		
+		console.log(Helper.Get_Now());
+		
+		console.log(Helper.Get_Zeit("2017-05-28T14:29:53.344Z"));
 		
 		new Update();
 		

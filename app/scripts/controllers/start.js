@@ -11,7 +11,7 @@ application.controller('Ctrl_Main', function ($rootScope, $scope, Helper, $locat
     
     var inited = false;
     
-    var init = function(){
+    function Init(){
 	
 		if(inited === true){
 			return;
@@ -32,14 +32,15 @@ application.controller('Ctrl_Main', function ($rootScope, $scope, Helper, $locat
 		inited = true;
 		
 		$scope.loggedIN = $rootScope.loggedIN;
-
-		if(loggedIN === true){
-			$rootScope.$apply( function(){$location.path('/bookings'); } );
+		
+		if(loggedIN === "true"){
+			$location.path('/bookings'); 
+//			$rootScope.$apply( function(){$location.path('/bookings'); } );
 		}
 		
     };
     
-    init();
+    Init();
     
     $scope.Logout = function(){
 	
@@ -66,8 +67,6 @@ application.controller('Ctrl_Main', function ($rootScope, $scope, Helper, $locat
 
 		password = "\"" + password + "\"";
 		
-		console.log("login with" + email + "  " + password);
-		
 		RESTFactory.User_Login(email, password).then(function(response){
 			
 			var data = response.data;
@@ -76,7 +75,8 @@ application.controller('Ctrl_Main', function ($rootScope, $scope, Helper, $locat
 			$rootScope.customerID = data.id;
 			
 			$rootScope.loggedIN = true;
-			$scope.loggedIN = true;
+			$scope.loggedIN = "true";
+			$scope.$apply();
 			
 			//Save data in cookies
 			Helper.Cookie_Set("loggedIN", true);

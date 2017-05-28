@@ -29,7 +29,7 @@
         <!-- Add your site or application content here -->
         <base href="/index.html">
 
-        <div id="mainCtrl" ng-controller="Ctrl_Main" ng-cloak ng-switch on="loggedIN">
+        <div id="mainCtrl" ng-controller="Ctrl_Main" ng-cloak ng-switch="loggedIN">
             <nav class="navbar navbar-default"> <!-- nav  -->
 
                 <div class="container-fluid"> <!-- div container-fluid -->
@@ -42,11 +42,12 @@
                     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1"> <!-- div collapase navbar-collapse -->
                         <ul class="nav navbar-nav" ng-switch-when="true">
                             <li><a href="vehicles" name="vehicles"> Fahrzeuge </a></li>
+                            <li><a href="stations" name="stations"> Ladestationen </a></li>
+                            <li><a href="maintenances" name="maintenances"> Instandhaltungen </a></li>
                             <li><a href="users" name="users"> Nutzer </a></li>
                             <li><a href="bookings" name="bookings"> Buchungen </a></li>
                             <li><a href="invoices" name="invoices"> Rechnungen </a></li>
                             <li><a href="statistics" name="statistics"> Tagesstatistik </a></li>
-                            <li><a href="stations" name="stations"> Ladestationen </a></li>
                         </ul>
 						<!--
                         <div ng-switch-when="false"> 
@@ -111,6 +112,7 @@
     <script src="scripts/controllers/invoices.js"></script>
     <script src="scripts/controllers/statistics.js"></script>
     <script src="scripts/controllers/stations.js"></script>
+    <script src="scripts/controllers/maintenances.js"></script>
 
 
     <script src="styles/design.js"></script>
