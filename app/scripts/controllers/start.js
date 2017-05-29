@@ -34,7 +34,7 @@ application.controller('Ctrl_Main', function ($rootScope, $scope, Helper, $locat
 		$scope.loggedIN = $rootScope.loggedIN;
 		
 		if(loggedIN === "true"){
-			$location.path('/bookings'); 
+			$location.path('/vehicles'); 
 //			$rootScope.$apply( function(){$location.path('/bookings'); } );
 		}
 		
@@ -83,9 +83,7 @@ application.controller('Ctrl_Main', function ($rootScope, $scope, Helper, $locat
 			Helper.Cookie_Set("token", data.token);
 			Helper.Cookie_Set("customerID", data.id);
 			
-			alert("Als Admin eingeloggt");
-			
-			$rootScope.$apply( function(){$location.path('/bookings'); } );
+			$rootScope.$apply( function(){$location.path('/vehicles'); } );
 			
 		}, function(response){
 			

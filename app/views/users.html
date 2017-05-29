@@ -109,11 +109,11 @@
 
                                 <div ng-switch="editDisabled">
                                     <div ng-switch-when="false">
-                                        <input type="button" ng-click="Dismiss_Changes()" value="Verwerfen" />
-                                        <input type="button" ng-click="Safe_Changes()" value="Speichern" />
+										<md-button class="md-raised md-primary button-to-right" ng-click="Safe_Changes()"> Speichern </md-button>
+										<md-button class="md-primary md-hue-1 button-to-right" ng-click="Dismiss_Changes()"> Verwerfen </md-button>
                                     </div>
                                     <div ng-switch-when="true">
-                                        <input type="button" ng-click="EnableEditMode()" value="Bearbeiten" />
+										<md-button class="md-primary md-hue-1 button-to-right" ng-click="EnableEditMode()"> Bearbeiten </md-button>
                                     </div>
                                 </div>
                             </md-content>

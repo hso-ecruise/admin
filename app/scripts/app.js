@@ -39,7 +39,6 @@ var checkRouting= function ($rootScope, $location, Helper) {
 			$rootScope.loggedIN = false;
 		}
 		
-		console.log("FAILED ");
 		$location.path("/start");
     }
     else
