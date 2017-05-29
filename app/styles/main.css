@@ -1,14 +1,13 @@
 
-.bookings-container{
-    height: 80%;
-}
 md-input-container{
     height: 37px;
 }
-
-.bookings{
+.mainview-container{
     margin: auto;
     width: 60%;
+}
+.bookings-container{
+    height: 80%;
 }
 #map_booking{
     height: 300px;
@@ -24,31 +23,14 @@ md-input-container{
     float: right;
 }
 
-.manage-flex-container{
-    display:flex;
-    width: 80%;
-    margin: auto;
-    margin-top: 10px;
-    margin-bottom: 0; 
-}
-
 md-nav-bar md-nav-ink-bar {
     background: blue;
     accentPalette:blue;
-}
-
-.profile-flex-container{
-    display:flex;
-    width: 55%;
-    margin: auto;
 }
 .navbar{
     width: 60%;
     margin:auto;
     margin-bottom: 10px;
-}
-.booking-dialog{
-    min-width: 350px;
 }
 
 #ng_view{
@@ -56,7 +38,6 @@ md-nav-bar md-nav-ink-bar {
 }
 
 #search_input{
-
     background-color: #fff;
     font-family: Roboto;
     font-size: 15px;
@@ -68,27 +49,6 @@ md-nav-bar md-nav-ink-bar {
     width: 300px;
 
 }
-
-.user-edit-left{
-    max-width: 450px;
-}
-.user-edit-right{
-    max-width: 450px;
-}
-body {
-    overflow:hidden;
-}
-
-
-.user-edit-right md-content {
-    background-color: transparent !important; }
-.user-edit-right md-content md-tabs {
-    background: #fafafa;
-    border: 2px solid #ebebeb; }
-.user-edit-right md-content md-tabs md-tabs-wrapper {
-    background: white; }
-.user-edit-right md-content h1:first-child {
-    margin-top: 0; }
 
 .content{
     background: #fafafa;
