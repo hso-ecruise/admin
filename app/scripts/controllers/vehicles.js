@@ -55,13 +55,23 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
 	
 	var LOADING_STATES = {
 		0: {
-			ws: "Verfügbar",
-			be: "AVAILABLE",
+			text: "Entladen",
+			be: "DISCHARGING",
 			id: 0
+		},
+		1: {
+			text: "Laden",
+			be: "CHARGING",
+			id: 1
+		},
+		2: {
+			text: "Geladen",
+			be: "FULL",
+			id: 2
 		}
 	}
 	
-	var bookingStates = {
+	var BOOKING_STATES = {
 		0: {
 			text: "Verfügbar",
 			be: "AVAILABLE",
@@ -78,6 +88,8 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
 			id: 2
 		}
 	};
+	
+	
 	
 	function AddMarker(title, content, image_string, lat, lon){
 	
@@ -297,11 +309,9 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
 			vehicle.vehicleID = data_use.carId;
 			vehicle.licensePlate = data_use.licensePlate;
 			
-			var loadingState = LOADING_STATES[data_use.chargingState];
+			vehicle.bookingStateObj = BOOKING_STATES[data_use.bookingState];
+			vehicle.loadingStateObj = LOADING_STATES[data_use.chargingState];
 			
-			
-			vehicle.chargingState = data_use.chargingState;
-			vehicle.bookingState = bookingStates[data_use.bookingState].text;
 			vehicle.mileage = data_use.mileage;
 			vehicle.chargeLevel = data_use.chargeLevel;
 			vehicle.kilowatts = data_use.kilowatts;
@@ -331,7 +341,6 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
 				vehicle.address_state = "false";
 				$scope.currentVehicle = vehicle;
 				$scope.$apply();
-				
 			});
 			
 		}, function(response){
@@ -360,14 +369,18 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
 		
 		var vehicleID = vehicle.vehicleID;
 		
+		var bookingState = vehicle.bookingStateObj.be;
+		var chargingState = vehicle.loadingStateObj.be;
+		
+		
 		//REST CALL TO MAKE CHANGES
-		RESTFactory.Cars_Patch_ChargingState(vehicleID, vehicle.chargingState).then(function(response){
+		RESTFactory.Cars_Patch_ChargingState(vehicleID, chargingState).then(function(response){
 			alert("Fahrzeug Ladezustand erfolgreich geändert");
 		}, function(response){
 			alert("Fahrzeug Ladezustand konnte nicht geändert werden");
 		});
 		
-		RESTFactory.Cars_Patch_BookingState(vehicleID, bookingStates[vehicle.bookingState.id].be).then(function(response){
+		RESTFactory.Cars_Patch_BookingState(vehicleID, bookingState).then(function(response){
 			alert("Fahrzeug Reservierungszustand erfolgreich geändert");
 		}, function(response){
 			alert("Fahrzeug Reservierungszustand konnte nicht geändert werden");
@@ -407,8 +420,10 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
 		var vehicle = {};
 		
 		vehicle.licensePlate = $scope.new_vehicle.licensePlate;
-		vehicle.chargingState = $scope.new_vehicle.chargingState;
-		vehicle.bookingState = $scope.new_vehicle.bookingState;
+		
+		vehicle.bookingState = $scope.new_vehicle.bookingStateObj.be;
+		vehicle.chargingState = $scope.new_vehicle.loadingStateObj.be;
+		
 		vehicle.mileage = $scope.new_vehicle.mileage;
 		vehicle.chargeLevel = $scope.new_vehicle.chargeLevel;
 		vehicle.kilowatts = $scope.new_vehicle.kilowatts;
@@ -418,6 +433,8 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
 		vehicle.lastKnownPositionLatitude = $scope.new_vehicle.lat;
 		vehicle.lastKnownPositionLongitude = $scope.new_vehicle.lon;
 		vehicle.lastKnownPositionDate = new Date();
+		
+		console.log(vehicle);
 		
 		RESTFactory.Cars_Post(vehicle).then(function(response){
 			alert("Fahrzeug erfolgreich hinzugefügt");
@@ -448,6 +465,8 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
 		//TODO
 		new_vehicle.licensePlate = "";
 		new_vehicle.chargingState = "";
+		new_vehicle.bookingStateObj = BOOKING_STATES[0];
+		new_vehicle.loadingStateObj = LOADING_STATES[0];
 		new_vehicle.bookingState = "";
 		new_vehicle.mileage = 0;
 		new_vehicle.chargeLevel = 0;
@@ -546,7 +565,6 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
 	
 	
 	
-	
 	$scope.EnableEditMode = function(){
 		new EnableEditMode();
 	};
@@ -596,7 +614,12 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
 
 	};
 	
+	
+	
 	function Init(){
+		
+		$scope.bookingStates = BOOKING_STATES;
+		$scope.loadingStates = LOADING_STATES;
 		
 		new Update("ALL", undefined);
 		

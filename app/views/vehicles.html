@@ -66,13 +66,39 @@ Fahrzeug View
 				<br/>
 				
 				
-				<!--VERÄNDERBAR AUßER DATE UND BATTERIESTAND-->
+				<!--VERÄNDERBAR AUßER-->
+				
+				<md-input-container flex-gt-sm>
+					Reservierungszustand:
+                       <md-menu>
+						<md-button ng-disabled="editDisabled" ng-mouseenter="$mdMenu.open()">{{currentVehicle.bookingStateObj.text}}</md-button>
+						<md-menu-content width="4" ng-mouseleave="$mdMenu.close()">
+							<md-menu-item ng-repeat="item in bookingStates">
+								<md-button ng-click="currentVehicle.bookingStateObj = item">
+									{{item.text}}
+								</md-button>
+							</md-menu-item>
+						</md-menu-content>
+					</md-menu>
+                </md-input-container>
+				
+				<md-input-container flex-gt-sm>
+					Ladezustand:
+                    <md-menu>
+						<md-button ng-disabled="editDisabled" ng-mouseenter="$mdMenu.open()">{{currentVehicle.loadingStateObj.text}}</md-button>
+						<md-menu-content width="4" ng-mouseleave="$mdMenu.close()">
+							<md-menu-item ng-repeat="item in loadingStates">
+								<md-button ng-click="currentVehicle.loadingStateObj = item">
+									{{item.text}}
+								</md-button>
+							</md-menu-item>
+						</md-menu-content>
+					</md-menu>
+                </md-input-container>
+				
+				
 				<br/>
-				Ladestatus:		<input type="text" ng-model="currentVehicle.chargingState" ng-disabled="editDisabled"/>
-				<br/>
-				Batteriestand:	<input type="number" ng-model="currentVehicle.chargeLevel" ng-disabled="true"/>
-				<br/>
-				Buchungsstand:	<input type="text" ng-model="currentVehicle.bookingState" ng-disabled="editDisabled"/>
+				Batteriestand:	<input type="number" ng-model="currentVehicle.chargeLevel" ng-disabled="editDisabled"/>
 				<br/>
 				Strasse		<input type="text" ng-model="currentVehicle.address.street" ng-disabled="true"/>
 				
@@ -120,17 +146,23 @@ Fahrzeug View
                     <md-input-container flex-gt-sm>
                         <input type="text" placeholder="Nummernschild" ng-model="new_vehicle.licensePlate" ng-required />
                     </md-input-container>
+					
+					<!--
                     <md-input-container flex-gt-sm>
                         <input type="number" placeholder="Ladezustand" ng-model="new_vehicle.chargingState" ng-required />
                     </md-input-container>
                     <md-input-container flex-gt-sm>
                         <input type="number" placeholder="Reservierungszustand" ng-model="new_vehicle.bookingState" ng-required />
                     </md-input-container>
+					-->
                     <md-input-container flex-gt-sm>
                         <input type="number" placeholder="Kilometer-Stand" ng-model="new_vehicle.mileage" ng-required />
                     </md-input-container>
                     <md-input-container flex-gt-sm>
                         <input type="number" placeholder="Kilowatt" ng-model="new_vehicle.kilowatts" ng-required />
+                    </md-input-container>
+					<md-input-container flex-gt-sm>
+                        <input type="number" placeholder="Batteriestand" ng-model="new_vehicle.chargeLevel" ng-required />
                     </md-input-container>
 					
                     <md-input-container flex-gt-sm>
@@ -149,6 +181,38 @@ Fahrzeug View
                     <md-input-container flex-gt-sm>
                         <input type="text" placeholder="Nummer" ng-model="new_vehicle.address.number" disabled />
                     </md-input-container>
+					<br/>
+					
+					<md-input-container flex-gt-sm>
+						Reservierungszustand:
+                        <md-menu>
+							<md-button ng-mouseenter="$mdMenu.open()">{{new_vehicle.bookingStateObj.text}}</md-button>
+							<md-menu-content width="4" ng-mouseleave="$mdMenu.close()">
+								<md-menu-item ng-repeat="item in bookingStates">
+									<md-button ng-click="new_vehicle.bookingStateObj = item">
+										{{item.text}}
+									</md-button>
+								</md-menu-item>
+							</md-menu-content>
+						</md-menu>
+                    </md-input-container>
+					
+					<br/>
+					
+					<md-input-container flex-gt-sm>
+						Ladezustand:
+                        <md-menu>
+							<md-button ng-mouseenter="$mdMenu.open()">{{new_vehicle.loadingStateObj.text}}</md-button>
+							<md-menu-content width="4" ng-mouseleave="$mdMenu.close()">
+								<md-menu-item ng-repeat="item in loadingStates">
+									<md-button ng-click="new_vehicle.loadingStateObj = item">
+										{{item.text}}
+									</md-button>
+								</md-menu-item>
+							</md-menu-content>
+						</md-menu>
+                    </md-input-container>
+					
 					<br/>
 
 					<input type="text" id='search_input' value="" placeholder="Suchen"/>
