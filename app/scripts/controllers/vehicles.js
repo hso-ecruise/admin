@@ -369,9 +369,8 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
 		
 		var vehicleID = vehicle.vehicleID;
 		
-		var bookingState = vehicle.bookingStateObj.be;
-		var chargingState = vehicle.loadingStateObj.be;
-		
+		var bookingState = "\"" + vehicle.bookingStateObj.be + "\"";
+		var chargingState = "\"" + vehicle.loadingStateObj.be + "\"";
 		
 		//REST CALL TO MAKE CHANGES
 		RESTFactory.Cars_Patch_ChargingState(vehicleID, chargingState).then(function(response){
