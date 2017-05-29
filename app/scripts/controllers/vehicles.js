@@ -493,16 +493,15 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
 				new PositionSelected(map2, lat, lon);
 				
 			});
-			
-			
+				
+				
 			map2.addListener("click", function(event){
-
 				var lat = event.latLng.lat();
 				var lon = event.latLng.lng();
 				
 				new PositionSelected(map2, lat, lon);
-
 			});
+			
 		}
 		
 		setTimeout(Init_Map, 2000);

@@ -285,10 +285,10 @@ application.controller('Ctrl_Stations', function ($rootScope, $scope, RESTFactor
 		
 		function Init_Map(){
 			
-						var input = document.getElementById('search_input');
+			var input = document.getElementById('search_input');
 			var searchBox = new google.maps.places.SearchBox(input);
 			
-			var map2 = new google.maps.Map(document.getElementById('map_vehicle_new'), {
+			var map2 = new google.maps.Map(document.getElementById('map_station_new'), {
 				zoom: 16,
 				center: new google.maps.LatLng(49.5, 8.434),
 				mapTypeId: 'roadmap'
@@ -309,14 +309,14 @@ application.controller('Ctrl_Stations', function ($rootScope, $scope, RESTFactor
 				}
 				
 				var place = places[0].geometry.location;
-				
+			
 				var lat = place.lat();
 				var lon = place.lng();
 				
 				new PositionSelected(map2, lat, lon);
 				
 			});
-			
+				
 			
 			map2.addListener("click", function(event){
 
@@ -324,8 +324,8 @@ application.controller('Ctrl_Stations', function ($rootScope, $scope, RESTFactor
 				var lon = event.latLng.lng();
 				
 				new PositionSelected(map2, lat, lon);
-
 			});
+			
 		}
 		
 		setTimeout(Init_Map, 2000);
