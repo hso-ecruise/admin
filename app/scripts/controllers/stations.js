@@ -6,6 +6,8 @@ application.controller('Ctrl_Stations', function ($rootScope, $scope, RESTFactor
 	
 	var markers = [];
 	
+	var marker_Address = undefined;
+	
 	
 	var map = new google.maps.Map(document.getElementById('map_stations'), {
         zoom: 16,
@@ -281,33 +283,80 @@ application.controller('Ctrl_Stations', function ($rootScope, $scope, RESTFactor
 		
 		function Init_Map(){
 			
-			var map2 = new google.maps.Map(document.getElementById('map_station_new'), {
+						var input = document.getElementById('search_input');
+			var searchBox = new google.maps.places.SearchBox(input);
+			
+			var map2 = new google.maps.Map(document.getElementById('map_vehicle_new'), {
 				zoom: 16,
 				center: new google.maps.LatLng(49.5, 8.434),
 				mapTypeId: 'roadmap'
 			});
+			
+			map2.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+			
+			map2.addListener('bounds_changed', function() {
+				searchBox.setBounds(map2.getBounds());
+			});
+			
+			searchBox.addListener('places_changed', function() {
+				
+				var places = searchBox.getPlaces();
+
+				if (places.length === 0) {
+					return;
+				}
+				
+				var place = places[0].geometry.location;
+				
+				var lat = place.lat();
+				var lon = place.lng();
+				
+				new PositionSelected(map2, lat, lon);
+				
+			});
+			
 			
 			map2.addListener("click", function(event){
 
 				var lat = event.latLng.lat();
 				var lon = event.latLng.lng();
 				
-				$scope.new_station.lat = lat;
-				$scope.new_station.lon = lon;
-				$scope.new_station.hasPosition = true;
-				
-				Helper.Get_Address(lat, lon).then(function(address){
-					$scope.new_station.address_state = "true";
-					$scope.new_station.address = address;
-				}, function(response){
-					$scope.new_station.address_state = "false";
-				});
+				new PositionSelected(map2, lat, lon);
 
 			});
 		}
 		
 		setTimeout(Init_Map, 2000);
 		
+	}
+	
+		function PositionSelected(map2, lat, lon){
+		
+		map2.panTo(new google.maps.LatLng(lat, lon));
+		
+		$scope.new_station.lat = lat;
+		$scope.new_station.lon = lon;
+		$scope.new_station.hasPosition = true;
+		
+		Helper.Get_Address(lat, lon).then(function(address){
+			$scope.new_station.address_state = "true";
+			$scope.new_station.address = address;
+			$scope.$apply();
+			
+			if(marker_Address !== undefined){
+				marker_Address.setMap(null);
+			}
+			
+			marker_Address = new google.maps.Marker({
+				position: new google.maps.LatLng(lat, lon),
+				map: map2,
+				title: "Aktuelle Position"
+			});
+			
+		}, function(response){
+			$scope.new_station.address_state = "false";
+		});
+
 	}
 	
 	function Hide_AddStation(){

@@ -14,6 +14,8 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
 
 	var markers = [];
 	
+	var marker_Address = undefined;
+	
 	
 	var map = new google.maps.Map(document.getElementById('map_vehicles'), {
         zoom: 16,
@@ -327,7 +329,32 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
 		var vehicleID = vehicle.vehicleID;
 		
 		//REST CALL TO MAKE CHANGES
+		RESTFactory.Cars_Patch_ChargingState(vehicleID, vehicle.chargingState).then(function(response){
+			alert("Fahrzeug Ladezustand erfolgreich geändert");
+		}, function(response){
+			alert("Fahrzeug Ladezustand konnte nicht geändert werden");
+		});
 		
+		RESTFactory.Cars_Patch_BookingState(vehicleID, vehicle.bookingState).then(function(response){
+			alert("Fahrzeug Reservierungszustand erfolgreich geändert");
+		}, function(response){
+			alert("Fahrzeug Reservierungszustand konnte nicht geändert werden");
+		});
+		
+		RESTFactory.Cars_Patch_Mileage(vehicleID, vehicle.mileage).then(function(response){
+			alert("Fahrzeug Kilometerstand erfolgreich geändert");
+		}, function(response){
+			alert("Fahrzeug Kilometerstand konnte nicht geändert werden");
+		});
+		
+		RESTFactory.Cars_Patch_ChargeLevel(vehicleID, vehicle.chargeLevel).then(function(response){
+			alert("Fahrzeug Akkustand erfolgreich geändert");
+		}, function(response){
+			alert("Fahrzeug Akkustand konnte nicht geändert werden");
+		});
+		
+		
+		setTimeout(new Update("ALL", undefined), 2000);
 		
 		
 	}
@@ -399,10 +426,12 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
 		new_vehicle.address_state = "false";
 		new_vehicle.hasPosition = false;
 		
-
 		$scope.new_vehicle = new_vehicle;
 		
 		function Init_Map(){
+			
+			var input = document.getElementById('search_input');
+			var searchBox = new google.maps.places.SearchBox(input);
 			
 			var map2 = new google.maps.Map(document.getElementById('map_vehicle_new'), {
 				zoom: 16,
@@ -410,28 +439,71 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
 				mapTypeId: 'roadmap'
 			});
 			
+			map2.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+			
+			map2.addListener('bounds_changed', function() {
+				searchBox.setBounds(map2.getBounds());
+			});
+			
+			searchBox.addListener('places_changed', function() {
+				
+				var places = searchBox.getPlaces();
+
+				if (places.length === 0) {
+					return;
+				}
+				
+				var place = places[0].geometry.location;
+				
+				var lat = place.lat();
+				var lon = place.lng();
+				
+				new PositionSelected(map2, lat, lon);
+				
+			});
+			
+			
 			map2.addListener("click", function(event){
 
 				var lat = event.latLng.lat();
 				var lon = event.latLng.lng();
 				
-				$scope.new_vehicle.lat = lat;
-				$scope.new_vehicle.lon = lon;
-				$scope.new_vehicle.hasPosition = true;
-				
-				Helper.Get_Address(lat, lon).then(function(address){
-					$scope.new_vehicle.address_state = "true";
-					$scope.new_vehicle.address = address;
-				}, function(response){
-					console.log(response);
-					$scope.new_vehicle.address_state = "false";
-				});
+				new PositionSelected(map2, lat, lon);
 
 			});
 		}
 		
 		setTimeout(Init_Map, 2000);
 		
+	}
+	
+	function PositionSelected(map2, lat, lon){
+		
+		map2.panTo(new google.maps.LatLng(lat, lon));
+		
+		$scope.new_vehicle.lat = lat;
+		$scope.new_vehicle.lon = lon;
+		$scope.new_vehicle.hasPosition = true;
+		
+		Helper.Get_Address(lat, lon).then(function(address){
+			$scope.new_vehicle.address_state = "true";
+			$scope.new_vehicle.address = address;
+			$scope.$apply();
+			
+			if(marker_Address !== undefined){
+				marker_Address.setMap(null);
+			}
+			
+			marker_Address = new google.maps.Marker({
+				position: new google.maps.LatLng(lat, lon),
+				map: map2,
+				title: "Aktuelle Position"
+			});
+			
+		}, function(response){
+			$scope.new_vehicle.address_state = "false";
+		});
+
 	}
 	
 	function Hide_AddVehicle(){

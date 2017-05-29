@@ -211,9 +211,11 @@
                         <input type="text" ng-model="new_booking.address.number" placeholder="Nr" disabled/>
                     </md-input-container>
                 </md-content>
+				
+				<input type="text" id='search_input' value="" placeholder="Suchen"/>
 
                 <div id="map_booking" ></div>
-
+				
                 <md-content flex layout-padding>
                     <md-button class="md-raised md-primary button-to-right" ng-click="Safe_New()"> Speichern </md-button>
                     <md-button class="md-primary md-hue-1 button-to-right" ng-click="Dismiss_New()"> Verwerfen </md-button>

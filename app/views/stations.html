@@ -65,26 +65,35 @@
 			
 		</div>
 		
-		
-		
-		<div ng-switch-when="add">
-			
-			Station-Angaben:
-			<br/>
-			Slots insgesamt: <input type="number" min="1" ng-model="new_station.slots" ng-required />
-			<br/>
-			Slots belegt: <input type="number" min="0" max="{{new_station.slots}}" ng-model="new_station.slotsOccupied" ng-required />
-			<br/>
-			
-			Strasse Nr.: {{ new_station.address.street }} {{ new_station.address.number }}
-			
-            <div id="map_station_new" style="height: 400px;"></div>
-			<br/>
-			<br/>
-			<input type="button" ng-click="Dismiss_New()" value="Verwerfen"/>
-			<input type="button" ng-click="Safe_New()" value="Speichern"/>
-			
-		</div>
+			<div ng-switch-when="add">
+                <md-toolbar class="md-hue-2">
+                    <div class="md-toolbar-tools">
+                        <h2 class="md-flex">Neues Fahrzeug hinzuf&uuml;gen</h2>
+                    </div>
+                </md-toolbar>
+                <md-content layout-padding>
+                    <md-input-container flex-gt-sm>
+                        <input type="number" placeholder="Slots insgesamt" min="1" ng-model="new_station.slots" ng-required />
+                    </md-input-container>
+                    <md-input-container flex-gt-sm>
+                        <input type="number" placeholder="Slots belegt" min="0" max="{{new_station.slots}}" ng-model="new_station.slotsOccupied" ng-required />
+                    </md-input-container>
+					
+					<md-input-container flex-gt-sm ng-switch="new_station.address_state">
+						<input ng-switch-when="true" type="text" placeholder="Strasse" ng-model="new_station.address.street" disabled />
+						<input ng-switch-when="false" type="text" placeholder="Strasse" value="Bitte Addresse auswählen" disabled />
+					</md-input-container>
+					<md-input-container flex-gt-sm>
+						<input type="text" placeholder="Nummer" ng-model="new_station.address.number" disabled />
+					</md-input-container>
+					
+					<br/>
+					<div id="map_station_new" style="height: 400px;"></div>
+                    <br/>
+                    <md-button class="md-raised md-primary button-to-right" ng-click="Safe_New()"> Speichern </md-button>
+                    <md-button class="md-primary md-hue-1 button-to-right" ng-click="Dismiss_New()"> Verwerfen </md-button>
+                </md-content>
+            </div>
 		
 	</div>
   

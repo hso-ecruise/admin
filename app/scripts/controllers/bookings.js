@@ -12,6 +12,8 @@ application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactor
 	
 	var bookings_all = {};
 	
+	var marker_Address = undefined;
+	
 	function Update_UserName(name){
 		
 		//Search for customerName
@@ -411,26 +413,73 @@ application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactor
 				center: new google.maps.LatLng(49.5, 8.434),
 				mapTypeId: 'roadmap'
 			});
+			
+			var input = document.getElementById('search_input');
+			var searchBox = new google.maps.places.SearchBox(input);
+			
+			map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+			
+			map.addListener('bounds_changed', function() {
+				searchBox.setBounds(map.getBounds());
+			});
+			
+			searchBox.addListener('places_changed', function() {
+				
+				var places = searchBox.getPlaces();
+
+				if (places.length === 0) {
+					return;
+				}
+				
+				var place = places[0].geometry.location;
+				
+				var lat = place.lat();
+				var lon = place.lng();
+				
+				new PositionSelected(map, lat, lon);
+				
+			});
+			
 			map.addListener("click", function(event){
 
 				var lat = event.latLng.lat();
 				var lon = event.latLng.lng();
 				
-				$scope.new_booking.lat = lat;
-				$scope.new_booking.lon = lon;
-				
-				Helper.Get_Address(lat, lon).then(function(address){
-					$scope.new_booking.address_state = "true";
-					$scope.new_booking.address = address;
-					$scope.$apply();
-				}, function(response){
-					$scope.new_booking.address_state = "false";
-				});
+				new PositionSelected(map, lat, lon);
 
 			});
 		}
 		
 		setTimeout(Init_Map, 2000);
+
+	}
+	
+	function PositionSelected(map2, lat, lon){
+		
+		map2.panTo(new google.maps.LatLng(lat, lon));
+		
+		$scope.new_booking.lat = lat;
+		$scope.new_booking.lon = lon;
+		$scope.new_booking.hasPosition = true;
+		
+		Helper.Get_Address(lat, lon).then(function(address){
+			$scope.new_booking.address_state = "true";
+			$scope.new_booking.address = address;
+			$scope.$apply();
+			
+			if(marker_Address !== undefined){
+				marker_Address.setMap(null);
+			}
+			
+			marker_Address = new google.maps.Marker({
+				position: new google.maps.LatLng(lat, lon),
+				map: map2,
+				title: "Aktuelle Position"
+			});
+			
+		}, function(response){
+			$scope.new_booking.address_state = "false";
+		});
 
 	}
 	
