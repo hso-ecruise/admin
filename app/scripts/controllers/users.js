@@ -249,6 +249,11 @@ application.controller('Ctrl_Users', function ($rootScope, $scope, RESTFactory, 
 		
 		var email = "\"" + customer.email + "\"";
 		var phoneNr = "\"" + customer.phoneNr + "\"";
+		var verified = customer.verified;
+		var chipID = customer.chipID;
+		
+		console.log(verified);
+		console.log(chipID);
 		
 		RESTFactory.Customers_Patch_Address(customerID, address).then(function(response){
 			alert("Adresse erfolgreich geändert");
@@ -268,7 +273,17 @@ application.controller('Ctrl_Users', function ($rootScope, $scope, RESTFactory, 
 			alert("Telefon-Nummer konnte nicht geändert werden");
 		});
 		
-		//REST CALL TO CHAGE VERIFIED STATUS AND CHIPID
+		RESTFactory.Customers_Patch_Verified(customerID, verified).then(function(response){
+			alert("Verifizierungsstatus erfolgreich geändert");
+		}, function(response){
+			alert("Verifizierungsstatus konnte nicht geändert werden");
+		});
+		
+		RESTFactory.Customers_Patch_ChipCard(customerID, chipID).then(function(response){
+			alert("ChipkartenID erfolgreich geändert");
+		}, function(response){
+			alert("ChipkartenID konnte nicht geändert werden");
+		});
 		
 		setTimeout(new Update("ALL", undefined), 2000);
 		
@@ -290,6 +305,7 @@ application.controller('Ctrl_Users', function ($rootScope, $scope, RESTFactory, 
 		user.email = customer.email;
 		user.password = customer.password;
 		
+		
 		RESTFactory.User_Register(user).then(function(response){
 			
 			var customerID = response.data.id;
@@ -302,11 +318,14 @@ application.controller('Ctrl_Users', function ($rootScope, $scope, RESTFactory, 
 			address.country = customer.address.country;
 			address.addressExtraLine = customer.address.extra;
 			
+			alert("Neuer Nutzer wurde angelegt");
+			
 			RESTFactory.Customers_Patch_Address(customerID, address).then(function(response){
 				alert("Adresse erfolgreich geändert");
 			}, function(response){
 				alert("Adresse konnte nicht geändert werden");
 			});
+			
 			
 			var phoneNr = customer.phoneNr;
 			
@@ -316,7 +335,24 @@ application.controller('Ctrl_Users', function ($rootScope, $scope, RESTFactory, 
 				alert("Telefonnummer konnte nicht geändert werden");
 			});
 			
-			alert("Neuer Nutzer wurde angelegt");
+			
+			var verified = customer.verified;
+			
+			RESTFactory.Customers_Patch_Verified(customerID, verified).then(function(response){
+				alert("Verifizierungsstatus erfolgreich geändert");
+			}, function(response){
+				alert("Verifizierungsstatus konnte nicht geändert werden");
+			});
+			
+			
+			var chipID = customer.chipID;
+			
+			RESTFactory.Customers_Patch_ChipCard(customerID, chipID).then(function(response){
+				alert("ChipkartenID erfolgreich geändert");
+			}, function(response){
+				alert("ChipkartenID konnte nicht geändert werden");
+			});
+			
 			
 		}, function(response){
 			

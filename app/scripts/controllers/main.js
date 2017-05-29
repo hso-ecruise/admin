@@ -166,7 +166,16 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 			var orig = Promise.resolve(PatchCaller.Patch(url, address));
 			return orig;
 		},
-		
+		Customers_Patch_ChipCard: function(id, chipID){
+			var url = IP + "/customers/" + id + "/chipcarduid";
+			var orig = Promise.resolve(PatchCaller.Patch(url, chipID));
+			return orig;
+		},
+		Customers_Patch_Verified: function(id, verified){
+			var url = IP + "/customers/" + id + "/verified";
+			var orig = Promise.resolve(PatchCaller.Patch(url, verified));
+			return orig;
+		},
 		
 		
 		

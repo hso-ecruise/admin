@@ -87,9 +87,9 @@
 						<h4>Fahrer</h4>
 						<BLOCKQUOTE ng-switch="currentInvoice.customerState">
 							<div ng-switch-when="true">
+								<h5> ID:  {{ currentInvoice.customer.customerID }} </h5>
 								<h5> Vorname: {{ currentInvoice.customer.name }} </h5>
 								<h5> Nachname: {{ currentInvoice.customer.familyName }} </h5>
-								<h5> ID:  {{ currentInvoice.customer.customerID }} </h5>
 							</div>
 							<div ng-switch-when="false">
 								<h5> Nutzer kann nicht abgerufen werden </h5>
@@ -104,8 +104,8 @@
 								
 								<h5>ID: {{ item.itemID }}</h5>
 								<h5>Preis: {{ item.amount }}</h5>
+								<h5>Typ: {{ item.typeObj.text }}</h5>
 								<h5>Grund: {{ item.reason }}</h5>
-								<h5>Typ: {{ item.type }}</h5>
 								
 							</BLOCKQUOTE>
 							
@@ -117,7 +117,7 @@
 							
 						</div>
 						
-						<input type="button" ng-click="ShowItemAddPopUp(currentInvoice.invoiceID)" value="Neues Element"/>
+						<md-button class="md-raised md-primary button-to-right" ng-click="ShowItemAddPopUp(currentInvoice.invoiceID)"> Neues Element </md-button>
 					
                     </md-content>
                 </div>

@@ -271,12 +271,27 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
 				vehicle.lastLat = data_use.lastKnownPositionLatitude;
 				vehicle.lastLon = data_use.lastKnownPositionLongitude;
 				vehicle.lastDate = data_use.lastKnownPositionDate;
+				vehicle.address_state = "false";
 				
 				new Cars_AddMarker(vehicle);
 				
 				vehicles_all[ID_STR] = vehicle;
 				$scope.vehicles = vehicles_all;
 				$scope.$apply();
+				
+				Helper.Get_Address(vehicle.lastLat, vehicle.lastLon).then(function(address){
+				
+					vehicle.address_state = "true";
+					vehicle.address = address;
+					
+					vehicles_all[ID_STR] = vehicle;
+					$scope.vehicles = vehicles_all;
+					$scope.$apply();
+					
+				}, function(response){
+				
+				});
+				
 				
 			}
 			
@@ -326,8 +341,6 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
 			$scope.currentVehicle = vehicle;
 			$scope.$apply();
 			
-			
-			//GET CUSTOMER
 			Helper.Get_Address(vehicle.lastLat, vehicle.lastLon).then(function(address){
 				
 				vehicle.address_state = "true";
@@ -338,9 +351,7 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
 				$scope.$apply();
 				
 			}, function(response){
-				vehicle.address_state = "false";
-				$scope.currentVehicle = vehicle;
-				$scope.$apply();
+				
 			});
 			
 		}, function(response){

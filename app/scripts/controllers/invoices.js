@@ -12,6 +12,20 @@ application.controller('Ctrl_Invoices', function ($rootScope, $scope, RESTFactor
 	
 	var invoices_all = {};
 	
+	var INVOICE_TYPES = {
+		0: {
+			text: "Abbuchung",
+			be: "DEBIT",
+			id: 0
+		},
+		1: {
+			text: "Gutschrift",
+			be: "CREDIT",
+			id: 1
+		}
+	};
+	
+	
 	
 	function Update_ID(id){
 		new Update("ID", id);
@@ -133,7 +147,6 @@ application.controller('Ctrl_Invoices', function ($rootScope, $scope, RESTFactor
 			//GET CUSTOMER
 			RESTFactory.Customers_Get_CustomerID(invoice.customerID).then(function(response){
 				
-				
 				var custom_data = response.data;
 				
 				var customer = {};
@@ -144,8 +157,6 @@ application.controller('Ctrl_Invoices', function ($rootScope, $scope, RESTFactor
 				
 				invoice.customer = customer;
 				invoice.customerState = "true";
-				
-				console.log(invoice);
 				
 				$scope.currentInvoice = invoice;
 				$scope.$apply();
@@ -168,7 +179,7 @@ application.controller('Ctrl_Invoices', function ($rootScope, $scope, RESTFactor
 					item.itemID = data_use.invoiceItemId;
 					item.invoiceID = data_use.invoiceId;
 					item.reason = data_use.reason;
-					item.type = data_use.type;
+					item.typeObj = INVOICE_TYPES[data_use.type];
 					item.amount = data_use.amount;
 					
 					invoice.items[item.itemID] = item;
@@ -262,42 +273,54 @@ application.controller('Ctrl_Invoices', function ($rootScope, $scope, RESTFactor
 
             '		<md-content flex layout-padding>' +
             '			<div>' +
-            '				<label> RechnungsID: {{ item.invoiceID }} </label>' +
+            '				<label> RechnungsID: {{ new_item.invoiceID }} </label>' +
             '			</div>' +
             '		</md-content>' +
-
-            '		<md-content flex layout-padding>' +
-            '			<md-input-container>' +
-            '				<input type="text" placeholder="Grund" class="md-input" ng-model="item.reason" ng-required="true" >' +   
-            '			</md-input-container>' +
 			
-            '			<md-input-container>' +
-            '				<input type="text" placeholder="Preis" class="md-input" ng-model="item.amount" pattern="\\d+(,\\d{2})?" ng-required="true" >' +
-            '			</md-input-container>' +
+			'		<form name="item_Form">' +
+            '			<md-content flex layout-padding>' +
+            '				<md-input-container>' +
+            '					<input type="text" placeholder="Grund" class="md-input" minlength="1" ng-model="new_item.reason" ng-required="true" >' +   
+            '				</md-input-container>' +
 			
-            '			<md-input-container>' +
-            '				<input type="text" placeholder="Typ" class="md-input" ng-model="item.type" ng-required="true" >' +
-            '			</md-input-container>' +
-            '		</md-content>' +
+            '				<md-input-container>' +
+            '					<input type="text" placeholder="Preis" class="md-input" ng-model="new_item.amount" pattern="\\d+(.\\d{2})?" ng-required="true" >' +
+            '				</md-input-container>' +
+			
+			'				<md-input-container flex-gt-sm>' +
+            '           		<md-menu>' +
+			'						<md-button ng-mouseenter="$mdMenu.open()">{{new_item.typeObj.text}}</md-button>' +
+			'						<md-menu-content width="4" ng-mouseleave="$mdMenu.close()">' +
+			'							<md-menu-item ng-repeat="item in invoiceTypes">' +
+			'								<md-button ng-click="new_item.typeObj = item">' +
+			'									{{item.text}}' +
+			'								</md-button>' +
+			'							</md-menu-item>' +
+			'						</md-menu-content>' +
+			'					</md-menu>' +
+            '       		</md-input-container>' +
+			
+            '			</md-content>' +
 
-            '		<md-content flex layout-padding>' +
-            '			<md-button class="md-raised md-primary button-to-right" ng-click="Save()"> Speichern </md-button>' +
-            '			<md-button class="md-primary md-hue-1 button-to-right" ng-click="closeDialog()"> Verwerfen </md-button>' +
-            '		</md-content>' +
+            '			<md-content flex layout-padding>' +
+            '				<md-button class="md-raised md-primary button-to-right" ng-click="Save()" ng-disabled="item_Form.$invalid"> Speichern </md-button>' +
+            '				<md-button class="md-primary md-hue-1 button-to-right" ng-click="closeDialog()"> Verwerfen </md-button>' +
+            '			</md-content>' +
+			'		</form>' +
 
             '	</md-dialog-content>' +
             '</md-dialog>',
 
             controller: function DialogController($scope, $mdDialog){
 
-				var item = {};
+				var new_item = {};
 				
-				item.invoiceID = invoiceID;
-				item.reason = "";
-				item.amount = "0,00";
-				item.type = "Rechnung";	//Gutschrift
+				new_item.invoiceID = invoiceID;
+				new_item.reason = "";
+				new_item.amount = "0,00";
+				new_item.typeObj = INVOICE_TYPES[0];
 				
-                $scope.item = item;
+                $scope.new_item = new_item;
 				
 
                 $scope.closeDialog = function(){
@@ -306,17 +329,14 @@ application.controller('Ctrl_Invoices', function ($rootScope, $scope, RESTFactor
 
                 $scope.Save = function(){
 					
-					var item = $scope.item;
+					var item = $scope.new_item;
 					
 					var data = {
 						invoiceId: item.invoiceID,
 						amount: parseFloat(item.amount),
 						reason: item.reason,
-						type: item.type
+						type: item.typeObj.be
 					};
-					
-					console.log(data);
-					
 					
 					RESTFactory.Invoices_Post_Items(invoiceID, data).then(function(response){
 						alert("Element erfolgreich hinzugefügt");
@@ -377,6 +397,8 @@ application.controller('Ctrl_Invoices', function ($rootScope, $scope, RESTFactor
 	
 	
 	function Init(){
+		
+		$scope.invoiceTypes = INVOICE_TYPES;
 		
 		new Update();
 		
