@@ -188,40 +188,45 @@
                     </div>
                 </md-toolbar>
                 <md-content layout-padding>
-                    <md-input-container flex-gt-sm>
-                        <input type="text" placeholder="Vorname" ng-model="new_customer.name" ng-required />
-                    </md-input-container>
-                    <md-input-container flex-gt-sm>
-                        <input type="text" placeholder="Nachname" ng-model="new_customer.familyName" ng-required />
-                    </md-input-container>
-                    <md-input-container flex-gt-sm>
-                        <input type="email" placeholder="E-Mail" ng-model="new_customer.email" ng-required />
-                    </md-input-container>
-                    <md-input-container flex-gt-sm>
-                        <input type="text" placeholder="Telefon" ng-model="new_customer.phoneNr" ng-required />
-                    </md-input-container>
-                    <md-input-container flex-gt-sm>
-                        <input type="text" placeholder="Strasse" ng-model="new_customer.address.street" ng-required />
-                    </md-input-container>
-                    <md-input-container flex-gt-sm>
-                        <input type="text" placeholder="Nummer" ng-model="new_customer.address.number" ng-required />
-                    </md-input-container>
-                    <md-input-container flex-gt-sm>
-                        <input type="text" placeholder="Stadt" ng-model="new_customer.address.city" ng-required />
-                    </md-input-container>
-                    <md-input-container flex-gt-sm>
-                        <input type="number" min="10000" max="99999" placeholder="PLZ" ng-model="new_customer.address.zip" ng-required />
-                    </md-input-container>
-                    <md-input-container flex-gt-sm>
-                        <input type="text" placeholder="Land" ng-model="new_customer.address.country" ng-required />
-                    </md-input-container>
-                    <md-input-container flex-gt-sm>
-                        <input type="text" placeholder="Zusatz" ng-model="new_customer.address.extra" ng-required />
-                    </md-input-container>
-                    <br>
-                    <md-button class="md-raised md-primary button-to-right" ng-click="Safe_New()"> Speichern </md-button>
-                    <md-button class="md-primary md-hue-1 button-to-right" ng-click="Dismiss_New()"> Verwerfen </md-button>
-                </md-content>
+					<form name="user_Form">
+						<md-input-container flex-gt-sm>
+							<input type="text" placeholder="Vorname" ng-model="new_customer.name" pattern="[A-Z]+[a-z]{1,20}" ng-required="true" />
+						</md-input-container>
+						<md-input-container flex-gt-sm>
+							<input type="text" placeholder="Nachname" ng-model="new_customer.familyName" pattern="[A-Z]+[a-z]{1,20}" ng-required="true" />
+						</md-input-container>
+						<md-input-container flex-gt-sm>
+							<input type="email" placeholder="E-Mail" ng-model="new_customer.email" pattern="[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[a-z]{2,3}$" title="E-Mail muss folgend aufgebaut sein: xxx@yyy.zzz" ng-required="true" />
+						</md-input-container>
+						<md-input-container flex-gt-sm>
+							<input type="password" placeholder="Passwort" ng-model="new_customer.password" pattern="(?=.*[a-z])(?=.*[0-9]).{8,}" title="Passwort muss mindestens eine Zahl und einen kleinen oder großen Buchstaben enthalten und mindestens 7 Zeichen lang sein" ng-required="true" />
+						</md-input-container>
+						<md-input-container flex-gt-sm>
+							<input type="text" placeholder="Telefon" pattern="[\+]{0,1}[0-9]{8,}" ng-model="new_customer.phoneNr" ng-required="true" />
+						</md-input-container>
+						<md-input-container flex-gt-sm>
+							<input type="text" placeholder="Strasse" ng-model="new_customer.address.street" pattern="[A-Za-z\-\s]{5,}" title="Verwenden Sie 'ss' statt 'ß' " ng-required="true" />
+						</md-input-container>
+						<md-input-container flex-gt-sm>
+							<input type="text" placeholder="Nummer" ng-model="new_customer.address.number" pattern="[0-9]{1,}.*" ng-required="true" />
+						</md-input-container>
+						<md-input-container flex-gt-sm>
+							<input type="text" placeholder="Stadt" ng-model="new_customer.address.city" pattern="[A-Za-z\-\s]{5,}" ng-required="true" />
+						</md-input-container>
+						<md-input-container flex-gt-sm>
+							<input type="number" min="10000" max="99999" placeholder="PLZ" ng-model="new_customer.address.zip" ng-required="true" />
+						</md-input-container>
+						<md-input-container flex-gt-sm>
+							<input type="text" placeholder="Land" ng-model="new_customer.address.country" pattern="[A-Z]{2,3}" title="Bitte geben Sie Ihr Länderkürzel an" ng-required="true" />
+						</md-input-container>
+						<md-input-container flex-gt-sm>
+							<input type="text" placeholder="Zusatz" ng-model="new_customer.address.extra" ng-required="false" />
+						</md-input-container>
+						<br>
+						<md-button class="md-raised md-primary button-to-right" ng-click="Safe_New()" ng-disabled="user_Form.$invalid"> Speichern </md-button>
+						<md-button class="md-primary md-hue-1 button-to-right" ng-click="Dismiss_New()"> Verwerfen </md-button>
+					</form>
+				</md-content>
             </div>
         </div>
     </div>

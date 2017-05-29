@@ -290,11 +290,9 @@ application.controller('Ctrl_Users', function ($rootScope, $scope, RESTFactory, 
 		user.email = customer.email;
 		user.password = customer.password;
 		
-		console.log(user);
-		
 		RESTFactory.User_Register(user).then(function(response){
 			
-			var customerID = response.id;
+			var customerID = response.data.id;
 			
 			var address = {};
 			address.street = customer.address.street;
@@ -304,15 +302,13 @@ application.controller('Ctrl_Users', function ($rootScope, $scope, RESTFactory, 
 			address.country = customer.address.country;
 			address.addressExtraLine = customer.address.extra;
 			
-			console.log(address);
-			
 			RESTFactory.Customers_Patch_Address(customerID, address).then(function(response){
 				alert("Adresse erfolgreich geändert");
 			}, function(response){
 				alert("Adresse konnte nicht geändert werden");
 			});
 			
-			var phoneNr = "\"" + customer.phoneNr + "\"";
+			var phoneNr = customer.phoneNr;
 			
 			RESTFactory.Customers_Patch_PhoneNr(customerID, phoneNr).then(function(response){
 				alert("Telefonnummer erfolgreich geändert");

@@ -357,20 +357,24 @@ application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactor
 		
 		var booking = {};
 		
-		var now = new Date();
-		now.setHours(now.getHours() + 2);
+		var date = new Date($scope.new_booking.date);
+		var time = new Date($scope.new_booking.time);
 		
-		var plannedDate = new Date();
-		plannedDate = $scope.new_booking.date;
-		plannedDate.setHours(plannedDate.getHours() + 2);
+		var plannedDate = new Date(date.getFullYear(), date.getMonth(), date.getDate(), time.getHours(), time.getMinutes(), 0, 0);
+		
+		var now = new Date();
+		
+		//TRITT EIGENTLICH NIE AUF
+		if(plannedDate.getTime() - now.getTime() < 0){
+			alert("Die Startzeit liegt in der Vergangenheit. Bitte überprüfen Sie Ihre Eingaben.");
+			return;
+		}
 		
 		booking.customerId = $scope.new_booking.customerID;
 		booking.bookedPositionLatitude = $scope.new_booking.lat;
 		booking.bookedPositionLongitude = $scope.new_booking.lon;
 		booking.bookingDate = now;
 		booking.plannedDate = plannedDate;
-		
-		console.log(booking);
 		
 		RESTFactory.Bookings_Post(booking).then(function(response){
 			alert("Buchung wurde erfolgreich ausgeführt");
@@ -398,9 +402,25 @@ application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactor
 
 		var new_booking = {};
 		
-		new_booking.date = new Date();
-		new_booking.date.setSeconds(0);
-		new_booking.date.setMilliseconds(0);
+		var timeInput = new Date();
+		timeInput.setMilliseconds(0);
+		timeInput.setSeconds(0);
+		
+		var minTime = timeInput;
+		minTime.setMinutes(timeInput.getMinutes() - 1);
+		
+		
+		var dateInput = new Date();
+		dateInput.setMilliseconds(0);
+		dateInput.setSeconds(0);
+		
+		var minDate = dateInput;
+		
+		new_booking.time = timeInput;
+		new_booking.minTime = minTime;
+		
+		new_booking.date = dateInput;
+		new_booking.minDate = minDate;
 		
 		new_booking.address_state = "false";
 		
@@ -487,7 +507,7 @@ application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactor
 		$scope.new_booking = {};
 		$scope.view = "info";
 		$scope.booking_selected = "false";
-		$scope.$apply();
+		new Update("ALL", undefined);
 	}
 	
 	

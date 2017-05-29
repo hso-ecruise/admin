@@ -53,6 +53,32 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
         }
     };
 	
+	var LOADING_STATES = {
+		0: {
+			ws: "Verfügbar",
+			be: "AVAILABLE",
+			id: 0
+		}
+	}
+	
+	var bookingStates = {
+		0: {
+			text: "Verfügbar",
+			be: "AVAILABLE",
+			id: 0
+		},
+		1: {
+			text: "Gebucht",
+			be: "BOOKED",
+			id: 1
+		},
+		2: {
+			text: "Geblockt",
+			be: "BLOCKED",
+			id: 2
+		}
+	};
+	
 	function AddMarker(title, content, image_string, lat, lon){
 	
         var img = {
@@ -67,20 +93,22 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
         var marker = new google.maps.Marker({
             position: new google.maps.LatLng(lat, lon),
             map: map,
-            icon: img
+            icon: img,
+			optimized: false
         });
 
         marker.addListener('click', function(event){
-            alert = $mdDialog.alert({
+            var new_alert = $mdDialog.alert({
                 title: title,
                 textContent: content,
+				clickOutsideToClose: true,
                 ok: 'OK'
             });
 
             $mdDialog
-                .show( alert )
+                .show( new_alert )
                 .finally(function() {
-                alert = undefined;
+                new_alert = undefined;
             });
         });
 		
@@ -268,8 +296,12 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
 			
 			vehicle.vehicleID = data_use.carId;
 			vehicle.licensePlate = data_use.licensePlate;
+			
+			var loadingState = LOADING_STATES[data_use.chargingState];
+			
+			
 			vehicle.chargingState = data_use.chargingState;
-			vehicle.bookingState = data_use.bookingState;
+			vehicle.bookingState = bookingStates[data_use.bookingState].text;
 			vehicle.mileage = data_use.mileage;
 			vehicle.chargeLevel = data_use.chargeLevel;
 			vehicle.kilowatts = data_use.kilowatts;
@@ -335,7 +367,7 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
 			alert("Fahrzeug Ladezustand konnte nicht geändert werden");
 		});
 		
-		RESTFactory.Cars_Patch_BookingState(vehicleID, vehicle.bookingState).then(function(response){
+		RESTFactory.Cars_Patch_BookingState(vehicleID, bookingStates[vehicle.bookingState.id].be).then(function(response){
 			alert("Fahrzeug Reservierungszustand erfolgreich geändert");
 		}, function(response){
 			alert("Fahrzeug Reservierungszustand konnte nicht geändert werden");

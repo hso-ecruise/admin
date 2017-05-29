@@ -27,7 +27,7 @@ application.controller('Ctrl_Stations', function ($rootScope, $scope, RESTFactor
 	function AddMarker(title, content, image_string, lat, lon){
 
         var img = {
-            url: 'images/icons/car_available.png',
+            url: 'images/icons/station_available.png',
             scaledSize: new google.maps.Size(60, 87),
             origin: new google.maps.Point(0, 0),
             anchor: new google.maps.Point(30, 87)
@@ -38,20 +38,22 @@ application.controller('Ctrl_Stations', function ($rootScope, $scope, RESTFactor
         var marker = new google.maps.Marker({
             position: new google.maps.LatLng(lat, lon),
             map: map,
-            icon: img
+            icon: img,
+			optimized: false
         });
 
         marker.addListener('click', function(event){
-            alert = $mdDialog.alert({
+            var new_alert = $mdDialog.alert({
                 title: title,
                 textContent: content,
+				clickOutsideToClose: true,
                 ok: 'OK'
             });
 
             $mdDialog
-                .show( alert )
+                .show( new_alert )
                 .finally(function() {
-                alert = undefined;
+                new_alert = undefined;
             });
         });
 		
