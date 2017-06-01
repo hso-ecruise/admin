@@ -24,7 +24,7 @@ application.controller('Ctrl_Stations', function ($rootScope, $scope, RESTFactor
         }
     };
 	
-	function AddMarker(title, content, image_string, lat, lon){
+	function AddMarker(id, title, content, image_string, lat, lon){
 
         var img = {
             url: 'images/icons/station_available.png',
@@ -39,7 +39,8 @@ application.controller('Ctrl_Stations', function ($rootScope, $scope, RESTFactor
             position: new google.maps.LatLng(lat, lon),
             map: map,
             icon: img,
-			optimized: false
+			optimized: false,
+			id: id
         });
 
         marker.addListener('click', function(event){
@@ -124,13 +125,13 @@ application.controller('Ctrl_Stations', function ($rootScope, $scope, RESTFactor
 				$scope.$apply();
 				
 				var diff = station.slots - station.slotsOccupied;
-				var title = "Ladestation";
+				var title = "Ladestation " + ID_STR;
 				var content =  diff + " von " + station.slots + " Slots frei";
 				
 				if(diff === 0){
-					new AddMarker(title, content, "station_occupied", station.lat, station.lon);
+					new AddMarker(ID_STR, title, content, "station_occupied", station.lat, station.lon);
 				}else{
-					new AddMarker(title, content, "station_available", station.lat, station.lon);
+					new AddMarker(ID_STR, title, content, "station_available", station.lat, station.lon);
 				}
 				
 				

@@ -91,7 +91,7 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
 	
 	
 	
-	function AddMarker(title, content, image_string, lat, lon){
+	function AddMarker(id, title, content, image_string, lat, lon){
 	
         var img = {
             url: 'images/icons/car_available.png',
@@ -106,7 +106,8 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
             position: new google.maps.LatLng(lat, lon),
             map: map,
             icon: img,
-			optimized: false
+			optimized: false,
+			id: id
         });
 
         marker.addListener('click', function(event){
@@ -147,7 +148,7 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
             var bat = car.chargeLevel;
             var carID = car.vehicleID;
 
-            var title = "Fahrzeugdetails: ID " + carID;
+            var title = "Fahrzeugdetails " + carID;
 
             if(bat < 100){
 				
@@ -170,13 +171,13 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
 								var content = "Das Fahrzeug lädt. Ladezustand " + parseInt(bat) + "%. Voraussichtliches Ende: gegen " + time;
 
 								if(bat < 25){
-									new AddMarker(title, content, "car_loading_00", lat, lon);
+									new AddMarker(carID, title, content, "car_loading_00", lat, lon);
 								}else if (bat < 50){
-									new AddMarker(title, content, "car_loading_25", lat, lon);
+									new AddMarker(carID, title, content, "car_loading_25", lat, lon);
 								}else if (bat < 75){
-									new AddMarker(title, content, "car_loading_50", lat, lon);
+									new AddMarker(carID, title, content, "car_loading_50", lat, lon);
 								}else if (bat < 100){
-									new AddMarker(title, content, "car_loading_75", lat, lon);
+									new AddMarker(carID, title, content, "car_loading_75", lat, lon);
 								}
 
 							}
@@ -191,13 +192,13 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
 					var content = "Das Fahrzeug lädt. Ladezustand " + parseInt(bat) + "%. Voraussichtliches Ende: kann nicht abgerufen werden";
 					
 					if(bat < 25){
-						new AddMarker(title, content, "car_loading_00", lat, lon);
+						new AddMarker(carID, title, content, "car_loading_00", lat, lon);
 					}else if (bat < 50){
-						new AddMarker(title, content, "car_loading_25", lat, lon);
+						new AddMarker(carID, title, content, "car_loading_25", lat, lon);
 					}else if (bat < 75){
-						new AddMarker(title, content, "car_loading_50", lat, lon);
+						new AddMarker(carID, title, content, "car_loading_50", lat, lon);
 					}else if (bat < 100){
-						new AddMarker(title, content, "car_loading_75", lat, lon);
+						new AddMarker(carID, title, content, "car_loading_75", lat, lon);
 					}
 					
                 });
@@ -208,7 +209,7 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
 
                 var content = "Das Fahrzeug ist voll geladen und kann benutzt werden.";
 
-                new AddMarker(title, content, "car_available", lat, lon);
+                new AddMarker(carID, title, content, "car_available", lat, lon);
 
             }
 
