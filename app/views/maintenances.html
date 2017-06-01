@@ -19,28 +19,26 @@
 						<thead>
 							<tr>
 								<td>ID</td>
-								<td>Fahrer</td>
-								<td>Status</td>
+								<td>Datum</td>
 							</tr>
 						</thead>
 						<tbody>
-							<tr ng-repeat="(key, invoice) in invoices track by $index" ng-click="Load_Details(key)">
-								<td>{{key}}</td>
-								<td>{{ invoice.customer.name }} {{ invoice.customer.familyName }}</td>
-								<td>{{ invoice.paidText }}</td>
+							<tr ng-repeat="(key, maintenance) in maintenances track by $index" ng-click="Load_Details(key)">
+								<td>{{ key }}</td>
+								<td>{{ maintenance.date.date }}</td>
 							</tr>
 						</tbody>
-						<!--
+						
 						<tfoot>
-							<tr ng-click="Show_AddInvoice()">
+							<tr ng-click="Show_AddMaintenance()">
 								<td colspan="2">
 									<div class="md-list-item-text" layout="column">
-										<h4>Neue Rechnung hinzufügen</h4>
+										<h4>Neue Instandhaltung hinzufügen</h4>
 									</div>
 								</td>
 							</tr>
 						</tfoot>
-						-->
+						
 					</table>
 					
 				</md-content>

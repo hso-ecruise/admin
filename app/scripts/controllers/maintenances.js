@@ -56,12 +56,7 @@ application.controller('Ctrl_Maintenances', function ($rootScope, $scope, RESTFa
 				maintenance.spontan = data_use.spontanesously;
 				maintenance.atMileage = data_use.atMileage;
 				maintenance.atDate = data_use.atDate;
-				
-				var date = {};
-				date.date = Helper.Get_Date(data_use.atDate);
-				date.time = Helper.Get_Time(data_use.atDate);
-				
-				maintenance.date = date;
+				maintenance.date = Helper.Get_Zeit(data_use.atDate);
 				
 				maintenances_all[ID_STR] = maintenance;
 				
@@ -95,12 +90,7 @@ application.controller('Ctrl_Maintenances', function ($rootScope, $scope, RESTFa
 			maintenance.spontan = data_use.spontanesously;
 			maintenance.atMileage = data_use.atMileage;
 			maintenance.atDate = data_use.atDate;
-			
-			var date = {};
-			date.date = Helper.Get_Date(data_use.atDate);
-			date.time = Helper.Get_Time(data_use.atDate);
-			
-			maintenance.date = date;
+			maintenance.date = Helper.Get_Zeit(data_use.atDate);
 			
 			$scope.currentMaintenance = maintenance;
 			$scope.$apply();
