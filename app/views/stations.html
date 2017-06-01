@@ -1,32 +1,37 @@
-<div class="mainview-container" >
+<div class="stations-container" >
     <div class="" layout="row" layout-wrap>
 
-        <div id="map_stations" style="height: 600px; width:34%" class="content"></div>
+        <div id="map_stations" style="height: 700px; width:50%" class="content">
+        </div>
 
         <div style="padding: 15px;"></div>
 
-        <div class="content" style="width:30%">
+        <div class="content" style="width:15%">
             <md-toolbar class="md-hue-2">
                 <div class="md-toolbar-tools">
                     <h2 class="md-flex">Ladestationen</h2>
                 </div>
             </md-toolbar>
-            <input ng-model="searchQuery" my-enter="Enter_Search()"/>
+            <md-input-container style="width:100%">
+                <input ng-model="searchQuery" my-enter="Enter_Search()" placeholder="Suchen nach ID" />
+            </md-input-container>	
+
             <table>
                 <tr>
                     <td>
-                        ID
+                        <h4> ID  &nbsp;&nbsp;</h4>
                     </td>
+
                     <td>
-                        Strasse
+                        <h4> Strasse </h4>
                     </td>
                 </tr>
                 <tr ng-repeat="(key, station) in stations track by $index" ng-click="Load_Details(key)">
                     <td>
-                        {{ key }}
+                        <h5>{{ key }}</h5>
                     </td>
                     <td>
-                        {{ station.address.street }}
+                        <h6>{{ station.address.street }}</h6>
                     </td>
                 </tr>
             </table>
@@ -44,17 +49,19 @@
 
                 <br/>
                 <div ng-switch-when="true">
-                    ID: {{ currentStation.stationID }}
-                    <br/>
-                    Slots: {{currentStation.slots}}
-                    <br/>
-                    Slots belegt: {{currentStation.slotsOccupied}}
-                    <br/>
-                    Strasse Nr.:  {{currentStation.address.street}} {{currentStation.address.number}}
-                    <br/>
+                    <h4>
+                        ID: {{ currentStation.stationID }}
+                        <br/>
+                        Slots: {{currentStation.slots}}
+                        <br/>
+                        Slots belegt: {{currentStation.slotsOccupied}}
+                        <br/>
+                        Strasse Nr.:  {{currentStation.address.street}} {{currentStation.address.number}}
+
+                    </h4>
                 </div>
                 <div ng-switch-when="false">
-                    Bitte wählen Sie eine Ladestation in der linken Liste aus.
+                    <h4>Bitte wählen Sie eine Ladestation in der linken Liste aus.</h4>
                 </div>
             </div>
 

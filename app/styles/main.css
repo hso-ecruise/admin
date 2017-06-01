@@ -6,6 +6,10 @@ md-input-container{
     margin: auto;
     width: 60%;
 }
+.stations-container{
+    margin: auto;
+    width: 90%;
+}
 .bookings-container{
     height: 80%;
 }
