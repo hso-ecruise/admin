@@ -7,7 +7,7 @@
  * # StartCtrl
  * give some description here
  */
-application.controller('Ctrl_Main', function ($rootScope, $scope, Helper, $location, RESTFactory) {
+application.controller('Ctrl_Main', function ($rootScope, $scope, Helper, $location, RESTFactory, $mdDialog) {
     
     var inited = false;
     
@@ -33,11 +33,6 @@ application.controller('Ctrl_Main', function ($rootScope, $scope, Helper, $locat
 		
 		$scope.loggedIN = $rootScope.loggedIN;
 		
-		if(loggedIN === "true"){
-			$location.path('/vehicles'); 
-//			$rootScope.$apply( function(){$location.path('/bookings'); } );
-		}
-		
     };
     
     Init();
@@ -60,12 +55,101 @@ application.controller('Ctrl_Main', function ($rootScope, $scope, Helper, $locat
 	
     };
 	
+	$scope.showLogin = function(){
+		
+		$mdDialog.show({
+            clickOutsideToClose: true,
+            scope: $scope,
+            preserveScope: true,
+            template:
+            '<md-dialog class="login-dialog">'+
+            '	<md-dialog-content>' +
+			'		<form ng-submit="Login()">' +
+            '			<md-toolbar class="md-hue-2">' +
+            '				<div class="md-toolbar-tools">' +
+            '					<h2 class="md-flex">Anmelden</h2>' +
+            '				</div>' +
+            '			</md-toolbar>' +
+
+            '			<md-content flex layout-padding>' +
+			
+			'				<md-input-container>' +
+			'					<input placeholder="E-Mail" type="email" ng-model="login_email" ng-required="true" />' +
+			'				</md-input-container>' +
+			
+			'				<md-input-container>' +
+			'					<input placeholder="Passwort" type="password" pattern="(?=.*[A-Za-z])(?=.*[0-9]).{8,}" title="Passwort muss mindestens eine Zahl und einen kleinen oder großen Buchstaben enthalten und mindestens 8 Zeichen lang sein" ng-model="login_password" ng-required="true" /> ' +
+			'				</md-input-container>' +
+			
+            '			</md-content>' +
+
+            '			<md-content flex layout-padding>' +
+			'				<input type="submit" style="position: absolute; left: -9999px; width: 1px; height: 1px;" value=""/>' +
+            '				<md-button class="md-raised md-primary button-to-right" ng-click="Login()"> Login </md-button>' +
+            '			</md-content>' +
+			'		</form>' +
+            '	</md-dialog-content>' +
+            '</md-dialog>',
+
+            controller: function DialogController($scope, $rootScope, $location, $mdDialog, RESTFactory, Helper){
+				
+
+                $scope.closeDialog = function(){
+                    $mdDialog.hide();
+                };
+
+                $scope.Login = function(){
+
+					var email = $scope.login_email;
+					var password = String($scope.login_password);
+					
+					var use_pwd = "\"" + password + "\"";
+					
+					var prom_Login = RESTFactory.User_Login(email, use_pwd);
+					
+					prom_Login.then(function(response){
+						
+						var data = response.data;
+						
+						$rootScope.token = data.token;
+						$rootScope.customerID = data.id;
+						
+						$rootScope.loggedIN = true;
+						$scope.loggedIN = true;
+						
+						//Save data in cookies
+						Helper.Cookie_Set("loggedIN", true);
+						Helper.Cookie_Set("token", data.token);
+						Helper.Cookie_Set("customerID", data.id);
+						Helper.Cookie_Set("password", password);
+						
+						$rootScope.$apply( function(){$location.path('/vehicles'); } );
+						
+					}, function(response){
+						
+						alert("Anmelden fehlgeschlagen");
+						
+					});
+					
+					$scope.closeDialog();
+					
+                };
+
+            }
+        });
+		
+	};
+	/*
 	$scope.Login = function(){
 
+	
+	
 		var email = $scope.login_email;
 		var password = $scope.login_password;
 
 		password = "\"" + password + "\"";
+		
+			$scope.loggedIN = true;
 		
 		RESTFactory.User_Login(email, password).then(function(response){
 			
@@ -75,7 +159,6 @@ application.controller('Ctrl_Main', function ($rootScope, $scope, Helper, $locat
 			$rootScope.customerID = data.id;
 			
 			$rootScope.loggedIN = true;
-			$scope.loggedIN = "true";
 			$scope.$apply();
 			
 			//Save data in cookies
@@ -83,13 +166,16 @@ application.controller('Ctrl_Main', function ($rootScope, $scope, Helper, $locat
 			Helper.Cookie_Set("token", data.token);
 			Helper.Cookie_Set("customerID", data.id);
 			
-			$rootScope.$apply( function(){$location.path('/vehicles'); } );
+			console.log($scope.loggedIN);
+			
+			//$rootScope.$apply( function(){$location.path('/vehicles'); } );
 			
 		}, function(response){
 			
-			alert("Anmelden fehlgeschlagen")
+			alert("Anmelden fehlgeschlagen");
 		
 		});
-    
+	
     }
+	*/
 });
