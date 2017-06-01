@@ -1,71 +1,64 @@
-<div>
-  Stations View
-  
-  <div id="map_stations" style="height: 400px;"></div>
-  
-  <input ng-model="searchQuery" my-enter="Enter_Search()"/>
-  
-  <table>
-	
-		<tr>
-			<td>
-				ID
-			</td>
-			<td>
-				Strasse
-			</td>
-		</tr>
-		
-		<tr ng-repeat="(key, station) in stations track by $index" ng-click="Load_Details(key)">
-			
-			<td>
-				{{ key }}
-			</td>
-			
-			
-			<td>
-				{{ station.address.street }}
-			</td>
-			
-		</tr>
-	
-	</table>
-	
-	
-	<br/>
-	
-	<input type="button" ng-click="Show_AddStation()" value="Hinzufügen"/>
-	
-	<br/>
-	
-	
-	<div ng-switch="view">
-		
-		<div ng-switch-when="info" ng-switch="station_selected">
-			
-			Station-Informationen:
-			<br/>
-			
-			<div ng-switch-when="true">
-				
-				ID: {{ currentStation.stationID }}
-				<br/>
-				Slots: {{currentStation.slots}}
-				<br/>
-				Slots belegt: {{currentStation.slotsOccupied}}
-				<br/>
-				Strasse Nr.:  {{currentStation.address.street}} {{currentStation.address.number}}
-				<br/>
-				
-			</div>
-			
-			<div ng-switch-when="false">
-				Bitte wählen Sie eine Ladestation in der linken Liste aus.
-			</div>
-			
-		</div>
-		
-			<div ng-switch-when="add">
+<div class="mainview-container" >
+    <div class="" layout="row" layout-wrap>
+
+        <div id="map_stations" style="height: 600px; width:34%" class="content"></div>
+
+        <div style="padding: 15px;"></div>
+
+        <div class="content" style="width:30%">
+            <md-toolbar class="md-hue-2">
+                <div class="md-toolbar-tools">
+                    <h2 class="md-flex">Ladestationen</h2>
+                </div>
+            </md-toolbar>
+            <input ng-model="searchQuery" my-enter="Enter_Search()"/>
+            <table>
+                <tr>
+                    <td>
+                        ID
+                    </td>
+                    <td>
+                        Strasse
+                    </td>
+                </tr>
+                <tr ng-repeat="(key, station) in stations track by $index" ng-click="Load_Details(key)">
+                    <td>
+                        {{ key }}
+                    </td>
+                    <td>
+                        {{ station.address.street }}
+                    </td>
+                </tr>
+            </table>
+            <md-button class="md-raised md-primary button-to-right" ng-click="Show_AddStation()"> Hinzufügen </md-button>
+        </div>
+        <div style="padding: 15px;"></div>
+
+        <div ng-switch="view" class="content" style="width:30%">
+            <md-toolbar class="md-hue-2">
+                <div class="md-toolbar-tools">
+                    <h2 class="md-flex">Station-Informationen</h2>
+                </div>
+            </md-toolbar>
+            <div ng-switch-when="info" ng-switch="station_selected">
+
+                <br/>
+                <div ng-switch-when="true">
+                    ID: {{ currentStation.stationID }}
+                    <br/>
+                    Slots: {{currentStation.slots}}
+                    <br/>
+                    Slots belegt: {{currentStation.slotsOccupied}}
+                    <br/>
+                    Strasse Nr.:  {{currentStation.address.street}} {{currentStation.address.number}}
+                    <br/>
+                </div>
+                <div ng-switch-when="false">
+                    Bitte wählen Sie eine Ladestation in der linken Liste aus.
+                </div>
+            </div>
+
+            <div ng-switch-when="add" >
                 <md-toolbar class="md-hue-2">
                     <div class="md-toolbar-tools">
                         <h2 class="md-flex">Neues Fahrzeug hinzuf&uuml;gen</h2>
@@ -78,24 +71,21 @@
                     <md-input-container flex-gt-sm>
                         <input type="number" placeholder="Slots belegt" min="0" max="{{new_station.slots}}" ng-model="new_station.slotsOccupied" ng-required />
                     </md-input-container>
-					
-					<md-input-container flex-gt-sm ng-switch="new_station.address_state">
-						<input ng-switch-when="true" type="text" placeholder="Strasse" ng-model="new_station.address.street" disabled />
-						<input ng-switch-when="false" type="text" placeholder="Strasse" value="Bitte Addresse auswählen" disabled />
-					</md-input-container>
-					<md-input-container flex-gt-sm>
-						<input type="text" placeholder="Nummer" ng-model="new_station.address.number" disabled />
-					</md-input-container>
-					
-					<br/>
-					<input type="text" id='search_input' value="" placeholder="Suchen"/>
-					<div id="map_station_new" style="height: 400px;"></div>
+                    <md-input-container flex-gt-sm ng-switch="new_station.address_state">
+                        <input ng-switch-when="true" type="text" placeholder="Strasse" ng-model="new_station.address.street" disabled />
+                        <input ng-switch-when="false" type="text" placeholder="Strasse" value="Bitte Addresse auswählen" disabled />
+                    </md-input-container>
+                    <md-input-container flex-gt-sm>
+                        <input type="text" placeholder="Nummer" ng-model="new_station.address.number" disabled />
+                    </md-input-container>
+                    <br/>
+                    <input type="text" id='search_input' value="" placeholder="Suchen"/>
+                    <div id="map_station_new" style="height: 400px;"></div>
                     <br/>
                     <md-button class="md-raised md-primary button-to-right" ng-click="Safe_New()"> Speichern </md-button>
                     <md-button class="md-primary md-hue-1 button-to-right" ng-click="Dismiss_New()"> Verwerfen </md-button>
                 </md-content>
             </div>
-		
-	</div>
-  
+        </div>
+    </div>
 </div>
