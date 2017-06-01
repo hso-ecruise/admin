@@ -19,7 +19,7 @@
             <table>
                 <tr>
                     <td>
-                        <h4> ID  &nbsp;&nbsp;</h4>
+                        <h4> ID  &nbsp;</h4>
                     </td>
 
                     <td>
@@ -39,7 +39,7 @@
         </div>
         <div style="padding: 15px;"></div>
 
-        <div ng-switch="view" class="content" style="width:30%">
+        <div ng-switch="view" class="content" style="width:30%;">
             <md-toolbar class="md-hue-2">
                 <div class="md-toolbar-tools">
                     <h2 class="md-flex">Station-Informationen</h2>
@@ -49,16 +49,16 @@
 
                 <br/>
                 <div ng-switch-when="true">
-                    <h4>
-                        ID: {{ currentStation.stationID }}
-                        <br/>
-                        Slots: {{currentStation.slots}}
-                        <br/>
-                        Slots belegt: {{currentStation.slotsOccupied}}
-                        <br/>
-                        Strasse Nr.:  {{currentStation.address.street}} {{currentStation.address.number}}
 
-                    </h4>
+                        <h4>
+                            ID: {{ currentStation.stationID }}
+                            <br/>
+                            Slots: {{currentStation.slots}}
+                            <br/>
+                            Slots belegt: {{currentStation.slotsOccupied}}
+                            <br/>
+                            Strasse Nr.:  {{currentStation.address.street}} {{currentStation.address.number}}
+                        </h4>
                 </div>
                 <div ng-switch-when="false">
                     <h4>Bitte wählen Sie eine Ladestation in der linken Liste aus.</h4>
