@@ -53,7 +53,7 @@ application.controller('Ctrl_Maintenances', function ($rootScope, $scope, RESTFa
 				var ID_STR = data_use.maintenanceId;
 				
 				maintenance.maintenanceID = data_use.maintenanceId;
-				maintenance.spontan = data_use.spontanesously;
+				maintenance.spontan = data_use.spontaneously;
 				maintenance.atMileage = data_use.atMileage;
 				maintenance.atDate = data_use.atDate;
 				maintenance.date = Helper.Get_Zeit(data_use.atDate);
@@ -87,71 +87,83 @@ application.controller('Ctrl_Maintenances', function ($rootScope, $scope, RESTFa
 			var maintenance = {};
 			
 			maintenance.maintenanceID = data_use.maintenanceId;
-			maintenance.spontan = data_use.spontanesously;
+			maintenance.spontan = data_use.spontaneously;
 			maintenance.atMileage = data_use.atMileage;
 			maintenance.atDate = data_use.atDate;
 			maintenance.date = Helper.Get_Zeit(data_use.atDate);
 			
+			maintenance.car_maintenance_state = "false";
+			
 			$scope.currentMaintenance = maintenance;
 			$scope.$apply();
 			
-			
-			//GET CUSTOMER
-			RESTFactory.Customers_Get_CustomerID(invoice.customerID).then(function(response){
+			//GET CAR MAINTENCE
+			RESTFactory.Car_Maintances_Get_MaintenanceID(maintenance.maintenanceID).then(function(response){
 				
+				maintenance.car_maintenance_state = "true";
 				
-				var custom_data = response.data;
+				var data_use = response.data;
 				
-				var customer = {};
+				var car_maintenance = {};
+				car_maintenance.carMaintenanceID = data_use.carMaintenanceId;
+				car_maintenance.carID = data_use.carId;
+				car_maintenance.maintenanceID = data_use.maintenanceId;
+				car_maintenance.invoiceItemID = data_use.invoiceItemId;
+				car_maintenance.plannedDate = Helper.Get_Zeit(data_use.plannedDate);
+				car_maintenance.completedDate = Helper.Get_Zeit(data_use.completedDate);
 				
-				customer.customerID = custom_data.customerId;
-				customer.name = custom_data.firstName;
-				customer.familyName = custom_data.lastName;
+				car_maintenance.text = "Letzte Wartung";
 				
-				invoice.customer = customer;
-				invoice.customerState = "true";
+				var now = new Date();
 				
-				console.log(invoice);
+				if(now.GetTime() - car_maintenance.plannedDate.value > 0){
+					car_maintenance.text = "Nächste Wartung";
+				}
 				
-				$scope.currentInvoice = invoice;
+				car_maintenance.invoice_state = "false";
+				
+				maintenance.car_maintenance = car_maintenance;
+				
+				$scope.currentMaintenance = maintenance;
 				$scope.$apply();
+				
+				
+				
+				//GET INVOICE INFOS
+				RESTFactory.Invoices_Get_Items_ItemID(booking.invoiceItemID).then(function(response){
+				
+					car_maintenance.invoice_state = "true";
+				
+					var data = response.data;
+					
+					var invoice = {};
+					
+					invoice.invoiceID = data.invoiceId;
+					invoice.customerId = data.customerID;
+					invoice.totalAmount = data.totalAmount;
+					invoice.paid = data.paid;
+					invoice.paidText = "Rechnung offen";
+					if(invoice.paid === "true"){
+						invoice.paidText = "Rechnung bezahlt";
+					}
+					
+					car_maintenance.invoice = invoice;
+					
+					maintenance.car_maintenance = car_maintenance;
+					
+					$scope.currentMaintenance = maintenance;
+					$scope.$apply();
+					
+				}, function(response){
+					
+				
+				});
+				
 				
 			}, function(response){
 				
 			});
 			
-			//GET INVOICE ITEMS
-			RESTFactory.Invoices_Get_Items(invoice.invoiceID).then(function(response){
-				
-				var data = response.data;
-				
-				for(var i = 0; i < data.length; i++){
-					
-					var data_use = data[i];
-					
-					var item = {};
-					
-					item.itemID = data_use.invoiceItemId;
-					item.invoiceID = data_use.invoiceId;
-					item.reason = data_use.reason;
-					item.type = data_use.type;
-					item.amount = data_use.amount;
-					
-					invoice.items[item.itemID] = item;
-					
-				}
-				
-				if(data.length > 0){
-					invoice.itemState = "true";
-				}
-				
-				
-				$scope.currentInvoice = invoice;
-				$scope.$apply();
-				
-			}, function(response){
-				
-			});
 		
 		}, function(response){
 			
@@ -163,14 +175,14 @@ application.controller('Ctrl_Maintenances', function ($rootScope, $scope, RESTFa
 	
 	function Safe_New(){
 		
-		var invoice = {};
+		var maintenance = {};
 		
-		invoice.paid = $scope.new_invoice.paid;
-		invoice.totalAmount = $scope.new_invoice.totalAmount;
-		invoice.customerId = $scope.new_invoice.customerID;
+		maintenance.spontaneously = $scope.new_maintenance.spontan;
+		maintenance.atMileage = $scope.new_maintenance.atMileage;
+		maintenance.atDate = $scope.new_maintenance.date;
 		
-		RESTFactory.Invoices_Post(invoice).then(function(response){
-			alert("Rechnung wurde erfolgreich ausgeführt");
+		RESTFactory.Maintances_Post(maintenance).then(function(response){
+			alert("Instandhaltung wurde erfolgreich hinzugefügt");
 			new Hide_AddBooking();
 			setTimeout(Update, 2000);
 		}, function(response){
@@ -188,29 +200,30 @@ application.controller('Ctrl_Maintenances', function ($rootScope, $scope, RESTFa
 	}
 	
 	
-	function Show_AddInvoice(){
+	function Show_AddMaintenance(){
 		
 		$scope.view = "add";
 
-		var new_invoice = {};
+		var new_maintenance = {};
 		
-		new_invoice.paid = false;
-		new_invoice.totalAmount = 0;
-		new_invoice.customerID = 0;
+		new_maintenance.spontan = false;
+		new_maintenance.atMileage = 0;
+		new_maintenance.date = new Date();
+		new_maintenance.minDate = new Date();
 		
-		$scope.new_invoice = new_invoice;
+		$scope.new_maintenance = new_maintenance;
 
 	}
 	
-	function Hide_AddInvoice(){
-		$scope.new_invoice = {};
+	function Hide_AddMaintenance(){
+		$scope.new_maintenance = {};
 		$scope.view = "info";
-		$scope.invoice_selected = "false";
+		$scope.maintenance_selected = "false";
 		$scope.$apply();
 	}
 	
 	
-	function Show_AddItem_PopUp(invoiceID){
+	function Show_AddItem_PopUp(maintenanceID){
 
         $mdDialog.show({
             clickOutsideToClose: true,
@@ -219,38 +232,37 @@ application.controller('Ctrl_Maintenances', function ($rootScope, $scope, RESTFa
             template:
             '<md-dialog class="booking-dialog">'+
             '	<md-dialog-content>' +
-
+			
             '		<md-toolbar class="md-hue-2">' +
             '			<div class="md-toolbar-tools">' +
-            '				<h2 class="md-flex">Elementinformationen eingeben</h2>' +
+            '				<h2 class="md-flex">Fahrzeuginstandhaltung</h2>' +
             '			</div>' +
             '		</md-toolbar>' +
 
+			'	<form name="form_CarMain">' +
             '		<md-content flex layout-padding>' +
             '			<div>' +
-            '				<label> RechnungsID: {{ item.invoiceID }} </label>' +
+            '				<label> InstandhaltungsID: {{ item.maintenanceID }} </label>' +
             '			</div>' +
             '		</md-content>' +
 
             '		<md-content flex layout-padding>' +
-            '			<md-input-container>' +
-            '				<input type="text" placeholder="Grund" class="md-input" ng-model="item.reason" ng-required="true" >' +   
+			'			<md-input-container>' +
+            '				<input type="text" placeholder="FahrzeugID" pattern="[0-9]{1,}" class="md-input" ng-model="item.carID" ng-required="true" >' +   
             '			</md-input-container>' +
 			
             '			<md-input-container>' +
-            '				<input type="text" placeholder="Preis" class="md-input" ng-model="item.amount" pattern="\\d+(,\\d{2})?" ng-required="true" >' +
+            '				<input type="date" placeholder="Geplantes Datum" min="{{item.minDate}}" class="md-input" ng-model="item.date" ng-required="true" >' +   
             '			</md-input-container>' +
 			
-            '			<md-input-container>' +
-            '				<input type="text" placeholder="Typ" class="md-input" ng-model="item.type" ng-required="true" >' +
-            '			</md-input-container>' +
             '		</md-content>' +
 
             '		<md-content flex layout-padding>' +
-            '			<md-button class="md-raised md-primary button-to-right" ng-click="Save()"> Speichern </md-button>' +
+            '			<md-button class="md-raised md-primary button-to-right" ng-disabled="form_CarMain.$invalid" ng-click="Save()"> Speichern </md-button>' +
             '			<md-button class="md-primary md-hue-1 button-to-right" ng-click="closeDialog()"> Verwerfen </md-button>' +
             '		</md-content>' +
-
+			'		</form>' +
+			
             '	</md-dialog-content>' +
             '</md-dialog>',
 
@@ -258,10 +270,10 @@ application.controller('Ctrl_Maintenances', function ($rootScope, $scope, RESTFa
 
 				var item = {};
 				
-				item.invoiceID = invoiceID;
-				item.reason = "";
-				item.amount = "0,00";
-				item.type = "Rechnung";	//Gutschrift
+				item.maintenanceID = maintenanceID;
+				item.carID = 0;
+				item.plannedDate = new Date();
+				item.minDate = new Date();
 				
                 $scope.item = item;
 				
@@ -275,16 +287,15 @@ application.controller('Ctrl_Maintenances', function ($rootScope, $scope, RESTFa
 					var item = $scope.item;
 					
 					var data = {
-						invoiceId: item.invoiceID,
-						amount: parseFloat(item.amount),
-						reason: item.reason,
-						type: item.type
+						maintenanceId: item.maintenanceID,
+						carId: parseInt(item.carID),
+						reason: item.plannedDate
 					};
 					
 					console.log(data);
 					
 					
-					RESTFactory.Invoices_Post_Items(invoiceID, data).then(function(response){
+					RESTFactory.Car_Maintances_Post(maintenanceID, data).then(function(response){
 						alert("Element erfolgreich hinzugefügt");
 					}, function(response){
 						alert("Element hinzufügen fehlgeschlagen");
@@ -309,23 +320,21 @@ application.controller('Ctrl_Maintenances', function ($rootScope, $scope, RESTFa
 	};
 	
 	$scope.Dismiss_New = function(){
-		new Hide_AddBooking();
+		new Hide_AddMaintenance();
 	};
 
 	
-	$scope.Show_AddInvoice = function(){
-		new Show_AddInvoice();
+	$scope.Show_AddMaintenance = function(){
+		new Show_AddMaintenance();
 	};
 	
-	$scope.Hide_AddInvoice = function(){
-		new Hide_AddInvoice();
+	$scope.Hide_AddMaintenance = function(){
+		new Hide_AddMaintenance();
 	};
 	
 	$scope.Enter_Search = function(){
 		
 		var search = $scope.searchQuery;
-		
-		console.log(search);
 		
 		if(search === undefined || search.length === 0){
 			new Update("ALL", undefined);
@@ -343,10 +352,6 @@ application.controller('Ctrl_Maintenances', function ($rootScope, $scope, RESTFa
 	
 	
 	function Init(){
-		
-		console.log(Helper.Get_Now());
-		
-		console.log(Helper.Get_Zeit("2017-05-28T14:29:53.344Z"));
 		
 		new Update();
 		

@@ -115,7 +115,7 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 			return orig;
 		},
 		User_Register: function(data){
-			var url = IP + "/customers";
+			var url = IP + "/public/register";
 			var orig = Promise.resolve(PostCaller.Post(url, data));
 			return orig;
 		},
@@ -141,7 +141,7 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 		},
 		
 		Customers_Post: function(data){
-			var url = IP + "/customers";
+			var url = IP + "/public/register";		// "/customers";
 			var orig = Promise.resolve(PostCaller.Post(url, data));
 			return orig;
 		},

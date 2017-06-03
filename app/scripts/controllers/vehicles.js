@@ -338,6 +338,7 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
 			vehicle.lastLon = data_use.lastKnownPositionLongitude;
 			vehicle.lastDate = data_use.lastKnownPositionDate;
 			vehicle.address_state = "false";
+			vehicle.maintenance_state = "false";
 			
 			$scope.currentVehicle = vehicle;
 			$scope.$apply();
@@ -354,6 +355,42 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
 			}, function(response){
 				
 			});
+			
+			
+			RESTFactory.Car_Maintances_Get_CarID(vehicle.vehicleID).then(function(response){
+				
+				vehicle.maintenance_state = "true";
+				
+				var data = response.data;
+				
+				var data_use = data;
+				
+				var maintenance = {};
+				maintenance.carMaintenanceID = data_use.carMaintenanceId;
+				maintenance.carID = data_use.carId;
+				maintenance.maintenanceID = data_use.maintenanceId;
+				maintenance.invoiceItemID = data_use.invoiceItemId;
+				maintenance.plannedDate = Helper.Get_Zeit(data_use.plannedDate);
+				maintenance.completedDate = Helper.Get_Zeit(data_use.completedDate);
+				
+				maintenance.text = "Letzte Wartung";
+				
+				var now = new Date();
+				
+				if(now.GetTime() - maintenance.plannedDate.value > 0){
+					maintenance.text = "Nächste Wartung";
+				}
+				
+				vehicle.maintenance = maintenance;
+				
+				$scope.currentVehicle = vehicle;
+				$scope.$apply();
+				
+			}, function(response){
+				
+			});
+			
+			
 			
 		}, function(response){
 			$scope.vehicle_selected = "false";

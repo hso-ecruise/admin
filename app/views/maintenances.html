@@ -65,59 +65,69 @@
         <div style="padding:15px;"></div>
 
         <div ng-switch="view" ng-cloak class="content booking-right" flex>
-            <div ng-switch-when="info" ng-switch="invoice_selected">
+            <div ng-switch-when="info" ng-switch="maintenance_selected">
                 <md-toolbar class="md-hue-2">
                     <div class="md-toolbar-tools">
-                        <h2 class="md-flex">Rechnungsdetails</h2>
+                        <h2 class="md-flex">Instandhaltungsdetails</h2>
                     </div>
                 </md-toolbar>
 				
                 <div ng-switch-when="false">
                     <md-content layout-padding>
-                        <h4>W&auml;hlen Sie eine Rechnung aus oder f&uuml;gen Sie eine Neue hinzu</h4>
+                        <h4>W&auml;hlen Sie eine Instandhaltung aus oder f&uuml;gen Sie eine Neue hinzu</h4>
                     </md-content>
                 </div>
 
                 <div ng-switch-when="true">
                     <md-content layout-padding>
-						<label> Rechnungs-ID: {{ currentInvoice.invoiceID }} </label>
-						<label> Status: {{ currentInvoice.paidText }}</label>
+						<label> Instandhaltungs-ID: {{ currentMaintenance.maintenanceID }} </label>
+						<br/>
+						<label> Spontan: <input type="checked" value="{{currentMaintenance.spontan}}" ng-disabled="true"/> </label>
+						<br/>
+						<label> Bei Kilometerstand: {{ currentMaintenance.atMileage }} </label>
+						<br/>
+						<label> Datum: {{ currentMaintenance.date.date }} </label>
+						
+						<br/>
 						<br/>
 						
-						<h4>Fahrer</h4>
-						<BLOCKQUOTE ng-switch="currentInvoice.customerState">
+						
+						<h4>Fahrzeug-Instandhaltung</h4>
+						<BLOCKQUOTE ng-switch="currentMaintenance.car_maintenance_state">
 							<div ng-switch-when="true">
-								<h5> Vorname: {{ currentInvoice.customer.name }} </h5>
-								<h5> Nachname: {{ currentInvoice.customer.familyName }} </h5>
-								<h5> ID:  {{ currentInvoice.customer.customerID }} </h5>
+								<h5> Fahrzeugsinstandhaltungs-ID: {{ currentMaintenance.car_maintenance.carMaintenanceID }} </h5>
+								<h5> Fahrzeug-ID: {{ currentMaintenance.car_maintenance.carID }} </h5>
+								<h5> Geplantes Datum: {{ currentMaintenance.car_maintenance.plannedDate.date }} </h5>
+								<h5> End Datum:  {{ currentMaintenance.car_maintenance.completedDate.date }} </h5>
 							</div>
 							<div ng-switch-when="false">
-								<h5> Nutzer kann nicht abgerufen werden </h5>
+								<h5> Fahrzeug-Instandhaltung kann nicht abgerufen werden </h5>
 							</div>
 						</BLOCKQUOTE>
 						
-						<h4>Rechnungselemente</h4>
+						<h4>Rechnungselement</h4>
 						
-						<div ng-switch="currentInvoice.itemState">
+						<div ng-switch="currentMaintenance.car_maintenance.invoice_state">
 						
-							<BLOCKQUOTE ng-switch-when="true" ng-repeat="(key, item) in currentInvoice.items track by $index">
+							<BLOCKQUOTE ng-switch-when="true">
 								
-								<h5>ID: {{ item.itemID }}</h5>
-								<h5>Preis: {{ item.amount }}</h5>
-								<h5>Grund: {{ item.reason }}</h5>
-								<h5>Typ: {{ item.type }}</h5>
+								<h5>Rechnungs-ID: {{ currentMaintenance.car_maintenance.invoice.invoiceID }}</h5>
+								<h5>Element-ID: {{ currentMaintenance.car_maintenance.invoiceItemID }}</h5>
+								<h5>Status: {{ currentMaintenance.car_maintenance.invoice.paidText }}</h5>
+								
 								
 							</BLOCKQUOTE>
 							
 							<div ng-switch-when="false">
 								<BLOCKQUOTE>
-									<h5> Keine Rechnungselemente vorhanden oder abrufen nicht erfolgreich </h5>
+									<h5> Rechnungselement nicht vorhanden oder abrufen nicht möglich </h5>
+									<input type="button" ng-click="ShowItemAddPopUp(currentInvoice.invoiceID)" value="Neues Element"/>
 								</BLOCKQUOTE>
 							</div>
 							
+
 						</div>
 						
-						<input type="button" ng-click="ShowItemAddPopUp(currentInvoice.invoiceID)" value="Neues Element"/>
 					
                     </md-content>
                 </div>
