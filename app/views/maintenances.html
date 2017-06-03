@@ -134,43 +134,33 @@
             </div>
 
             <div ng-switch-when="add">
-                <md-toolbar class="md-hue-2">
-                    <div class="md-toolbar-tools">
-                        <h2 class="md-flex">Rechnung Hinzuf&uuml;gen</h2>
-                    </div>
-                </md-toolbar>
-                <md-content layout-padding>
-                    <md-input-container>
-                        <input type="number" ng-model="new_booking.customerID" placeholder="Customer-ID" ng-required />
-                    </md-input-container>
-<!--
-                </md-content>
-                <md-content layout-padding>
-                    <md-input-container flex-gt-sm>
-                        <input type="number" ng-model="new_invoice.customerID" placeholder="Nutzer-ID"/>
-                    </md-input-container>
-                    <md-input-container flex-gt-sm>
-                        <input type="time" ng-model="new_booking.date" placeholder="Zeit"/>
-                    </md-input-container>
-                </md-content>
-                <md-content layout-padding>
-                    <md-input-container flex-gt-sm ng-switch="new_booking.address_state">
-                        <p ng-switch-when="true">
-                            <input type="text" ng-model="new_booking.address.street" placeholder="Strasse" disabled/>
-                        </p>
-                        <p ng-switch-when="false">
-                            <input type="text" placeholder="Strasse" value="Keine Adresse gefunden" disabled/>
-                        </p>
-                    </md-input-container>
-                    <md-input-container flex-gt-sm>
-                        <input type="text" ng-model="new_booking.address.number" placeholder="Nr" disabled/>
-                    </md-input-container>
-                </md-content>
--->
-                <md-content flex layout-padding>
-                    <md-button class="md-raised md-primary button-to-right" ng-click="Safe_New()"> Speichern </md-button>
-                    <md-button class="md-primary md-hue-1 button-to-right" ng-click="Dismiss_New()"> Verwerfen </md-button>
-                </md-content>
+			
+				<form name="form_NewMain">
+					<md-toolbar class="md-hue-2">
+						<div class="md-toolbar-tools">
+							<h2 class="md-flex">Instandhaltung Hinzuf&uuml;gen</h2>
+						</div>
+					</md-toolbar>
+					
+					<md-content layout-padding>
+						<md-input-container>
+						<!--HIER N LABLE ODER SO DAVOR-->
+							<input type="checkbox" ng-model="new_maintenance.spontan" placeholder="Spontan" ng-required />
+						</md-input-container>
+						
+						<md-input-container>
+							<input type="number" ng-model="new_maintenance.atMileage" placeholder="Bei Kilometerstand" ng-required />
+						</md-input-container>
+						
+						<md-input-container>
+							<input type="date" ng-model="new_maintenance.date" min="new_maintenance.minDate" placeholder="Datum" ng-required />
+						</md-input-container>
+
+					<md-content flex layout-padding>
+						<md-button class="md-raised md-primary button-to-right" ng-disabled="form_NewMain.$invalid" ng-click="Safe_New()"> Speichern </md-button>
+						<md-button class="md-primary md-hue-1 button-to-right" ng-click="Dismiss_New()"> Verwerfen </md-button>
+					</md-content>
+				</form>
             </div>
         </div>
     </div>

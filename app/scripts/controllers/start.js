@@ -129,6 +129,18 @@ application.controller('Ctrl_Main', function ($rootScope, $scope, Helper, $locat
 						
 						alert("Anmelden fehlgeschlagen");
 						
+						$rootScope.token = "TOKEN";
+						$rootScope.customerID = 1;
+						
+						$rootScope.loggedIN = true;
+						$scope.loggedIN = true;
+						
+						//Save data in cookies
+						Helper.Cookie_Set("loggedIN", true);
+						Helper.Cookie_Set("token", "TOKEN");
+						Helper.Cookie_Set("customerID", 1);
+						Helper.Cookie_Set("password", password);
+						
 					});
 					
 					$scope.closeDialog();
