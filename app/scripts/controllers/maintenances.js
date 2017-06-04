@@ -240,9 +240,19 @@ application.controller('Ctrl_Maintenances', function ($rootScope, $scope, RESTFa
 		
 		var maintenance = {};
 		
-		maintenance.spontaneously = $scope.new_maintenance.spontan;
-		maintenance.atMileage = $scope.new_maintenance.atMileage;
-		maintenance.atDate = $scope.new_maintenance.date;
+		if($scope.new_maintenance.stateObj.id === 0){
+			maintenance.spontaneously = true;
+			maintenance.atMileage = null;
+			maintenance.atDate = null;
+		}else if($scope.new_maintenance.stateObj.id === 1){
+			maintenance.spontaneously = false;
+			maintenance.atMileage = $scope.new_maintenance.atMileage;
+			maintenance.atDate = null;
+		}else if($scope.new_maintenance.stateObj.id === 0){
+			maintenance.spontaneously = false;
+			maintenance.atMileage = null;
+			maintenance.atDate = $scope.new_maintenance.date;
+		}
 		
 		RESTFactory.Maintances_Post(maintenance).then(function(response){
 			alert("Instandhaltung wurde erfolgreich hinzugefügt");
