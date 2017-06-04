@@ -438,6 +438,18 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 			var url = IP + "/car-maintenances/" + id + "/completed-date";
 			var orig = Promise.resolve(PatchCaller.Patch(url, data));
 			return orig;
+		},
+		
+	//STATISTICS
+		Statistics_Get: function(){
+			var url = IP + '/statistics';
+			var orig = Promise.resolve(GetCaller.Get(url));
+			return orig;
+		},
+		Statistics_Get_ByDate: function(date){
+			var url = IP + '/statistics/' + date;
+			var orig = Promise.resolve(GetCaller.Get(url));
+			return orig;
 		}
 		
 		
@@ -454,6 +466,9 @@ application.factory('Helper', function (RESTFactory, $cookies) {
 	Get_Time: function (input){
 	    var d = new Date(input);
 	    var time = d.getHours() + ":" + d.getMinutes();
+		if(d.getMinutes() < 10){
+			time = d.getHours() + ":0" + d.getMinutes();
+		}
 	    return time;
 	},
 	Get_Date: function (input){
@@ -462,7 +477,7 @@ application.factory('Helper', function (RESTFactory, $cookies) {
 	    var month = d.getMonth() + 1;
 	    var year = d.getFullYear();
 	    if(month < 10){
-		month = "0" + month;
+			month = "0" + month;
 	    }
 	    var date = day + "." + month + "." + year;
 	    return date;
@@ -523,6 +538,9 @@ application.factory('Helper', function (RESTFactory, $cookies) {
 		
 		date.date = now.getDate() + "." + (now.getMonth() + 1) + "." + now.getFullYear();
 		date.time = now.getHours() + ":" + now.getMinutes();
+		if(now.getMinutes() < 10){
+			date.time = now.getHours() + ":0" + now.getMinutes();
+		}
 		date.value = now.getTime();
 		date.string = now;
 		
@@ -547,6 +565,9 @@ application.factory('Helper', function (RESTFactory, $cookies) {
 		
 		date.date = now.getDate() + "." + (now.getMonth() + 1) + "." + now.getFullYear();
 		date.time = now.getHours() + ":" + now.getMinutes();
+		if(now.getMinutes() < 10){
+			date.time = now.getHours() + ":0" + now.getMinutes();
+		}
 		date.value = now.getTime();
 		date.string = now;
 		

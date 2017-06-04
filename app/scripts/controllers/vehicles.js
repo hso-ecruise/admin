@@ -141,7 +141,9 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
 	
 	function Cars_AddMarker(car){
 
-        if(car.bookingState === 0){
+		console.log("CALLED");
+	
+        if(car.bookingState !== 1000){
 
             var lat = car.lastLat;
             var lon = car.lastLon;
@@ -251,9 +253,7 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
 				data = response.data;
 			}
 			
-			for(var i = 0; i < data.length; i++){
-				
-				var data_use = data[i];
+			data.forEach(function(data_use, index){
 				
 				var vehicle = {};
 				
@@ -294,7 +294,7 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
 				});
 				
 				
-			}
+			});
 			
 		}, function(response){
 			
@@ -343,6 +343,9 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
 			$scope.currentVehicle = vehicle;
 			$scope.$apply();
 			
+			
+			map.panTo(new google.maps.LatLng(vehicle.lastLat, vehicle.lastLon));
+			
 			Helper.Get_Address(vehicle.lastLat, vehicle.lastLon).then(function(address){
 				
 				vehicle.address_state = "true";
@@ -377,7 +380,7 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
 				
 				var now = new Date();
 				
-				if(now.GetTime() - maintenance.plannedDate.value > 0){
+				if(now.getTime() - maintenance.plannedDate.value > 0){
 					maintenance.text = "Nächste Wartung";
 				}
 				

@@ -72,9 +72,8 @@ application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactor
 			}
 			
 			
-			for(var i = 0; i < data.length; i++){
-				
-				var in_booking = data[i];
+			data.forEach(function(in_booking, index){
+				//var in_booking = data[i];
 				
 				var booking = {};
 				
@@ -97,6 +96,7 @@ application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactor
 					booking.statusText = "In der Zukunft";
 				}
 				
+				console.booking;
 				
 				bookings_all[ID_STR] = booking;
 				$scope.bookings = bookings_all;
@@ -104,7 +104,7 @@ application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactor
 				
 				
 				//GET CUSTOMER
-				RESTFactory.Customers_Get_CustomerID(booking.customerID).then(function(response){
+				RESTFactory.Customers_Get_CustomerID(bookings_all[ID_STR].customerID).then(function(response){
 					
 					var custom_data = response.data;
 					
@@ -125,9 +125,14 @@ application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactor
 				}, function(response){
 					
 				});
+			});
+			/*
+			for(var i = 0; i < data.length; i++){
+				
+				
 				
 			}
-			
+			*/
 			
 		}, function(response){
 			

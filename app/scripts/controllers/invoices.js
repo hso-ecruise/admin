@@ -57,10 +57,7 @@ application.controller('Ctrl_Invoices', function ($rootScope, $scope, RESTFactor
 				data = response.data;
 			}
 			
-			
-			for(var i = 0; i < data.length; i++){
-				
-				var data_use = data[i];
+			data.forEach(function(data_use, index){
 				
 				var invoice = {};
 				
@@ -104,7 +101,7 @@ application.controller('Ctrl_Invoices', function ($rootScope, $scope, RESTFactor
 					
 				});
 				
-			}
+			});
 			
 			
 		}, function(response){
@@ -337,6 +334,8 @@ application.controller('Ctrl_Invoices', function ($rootScope, $scope, RESTFactor
 						reason: item.reason,
 						type: item.typeObj.be
 					};
+					
+					console.log(data);
 					
 					RESTFactory.Invoices_Post_Items(invoiceID, data).then(function(response){
 						alert("Element erfolgreich hinzugefügt");

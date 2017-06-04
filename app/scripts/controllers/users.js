@@ -10,6 +10,7 @@
 application.controller('Ctrl_Users', function ($rootScope, $scope, RESTFactory, Helper, $mdDialog) {
 	
 	var customers_all = {};
+	var customer_old = {};
 	
 	function Update_Name(name){
 		new Update("NAME", name);
@@ -95,6 +96,8 @@ application.controller('Ctrl_Users', function ($rootScope, $scope, RESTFactory, 
 	
 	function Load_Details(id){
 		
+		customer_old = {};
+		
 		new DisabledEditMode();
 		
 		RESTFactory.Customers_Get_CustomerID(id).then(function(response){
@@ -122,10 +125,20 @@ application.controller('Ctrl_Users', function ($rootScope, $scope, RESTFactory, 
 			address.extra = data_use.addressExtraLine;
 			address.country = data_use.country;
 			
+			if(address.extra === null){
+				address.extra = "";
+			}
+			
+			if(customer.chipID === null){
+				customer.chipID = "";
+			}
+			
 			customer.address = address;
 			customer.invoices = {};
 			customer.bookingsDone = {};
 			customer.bookingsOpen = {};
+			
+			console.log(customer);
 			
 			$scope.currentCustomer = customer;
 			$scope.$apply();			
@@ -223,6 +236,9 @@ application.controller('Ctrl_Users', function ($rootScope, $scope, RESTFactory, 
 	
 	
 	function EnableEditMode(){
+		customer_old = angular.copy($scope.currentCustomer);
+		
+		console.log(customer_old);
 		$scope.editDisabled = false;
 	}
 	
@@ -249,41 +265,59 @@ application.controller('Ctrl_Users', function ($rootScope, $scope, RESTFactory, 
 		
 		var email = "\"" + customer.email + "\"";
 		var phoneNr = "\"" + customer.phoneNr + "\"";
-		var verified = customer.verified;
-		var chipID = customer.chipID;
+		var verified = "\"" + customer.verified + "\"";
+		var chipID = "\"" + customer.chipID + "\"";
 		
-		console.log(verified);
-		console.log(chipID);
+		if(	customer_old.address.street !== address.street ||
+			customer_old.address.city !== address.city ||
+			customer_old.address.number !== address.houseNumber ||
+			customer_old.address.zip !== address.zipCode ||
+			customer_old.address.country !== address.country ||
+			customer_old.address.extra !== address.addressExtraLine){
 		
-		RESTFactory.Customers_Patch_Address(customerID, address).then(function(response){
-			alert("Adresse erfolgreich geändert");
-		}, function(response){
-			alert("Adresse konnte nicht geändert werden");
-		});
+			RESTFactory.Customers_Patch_Address(customerID, address).then(function(response){
+				alert("Adresse erfolgreich geändert");
+			}, function(response){
+				alert("Adresse konnte nicht geändert werden");
+			});
+		}
 		
-		RESTFactory.Customers_Patch_Email(customerID, email).then(function(response){
-			alert("E-Mail erfolgreich geändert");
-		}, function(response){
-			alert("E-Mail konnte nicht geändert werden");
-		});
 		
-		RESTFactory.Customers_Patch_PhoneNr(customerID, phoneNr).then(function(response){
-			alert("Telefon-Nummer erfolgreich geändert");
-		}, function(response){
-			alert("Telefon-Nummer konnte nicht geändert werden");
-		});
+		if(email !== "\"" + customer_old.email + "\""){
+			RESTFactory.Customers_Patch_Email(customerID, email).then(function(response){
+				alert("E-Mail erfolgreich geändert");
+			}, function(response){
+				alert("E-Mail konnte nicht geändert werden");
+			});
+		}
 		
-		RESTFactory.Customers_Patch_Verified(customerID, verified).then(function(response){
-			alert("Verifizierungsstatus erfolgreich geändert");
-		}, function(response){
-			alert("Verifizierungsstatus konnte nicht geändert werden");
-		});
 		
-		RESTFactory.Customers_Patch_ChipCard(customerID, chipID).then(function(response){
-			alert("ChipkartenID erfolgreich geändert");
-		}, function(response){
-			alert("ChipkartenID konnte nicht geändert werden");
-		});
+		if("\"" + customer_old.phoneNr + "\"" !== phoneNr){
+			RESTFactory.Customers_Patch_PhoneNr(customerID, phoneNr).then(function(response){
+				alert("Telefon-Nummer erfolgreich geändert");
+			}, function(response){
+				alert("Telefon-Nummer konnte nicht geändert werden");
+			});
+		}
+		
+		console.log(customer_old.verified + "  " +  verified);
+
+		if("\"" + customer_old.verified + "\"" !== verified){
+			RESTFactory.Customers_Patch_Verified(customerID, verified).then(function(response){
+				alert("Verifizierungsstatus erfolgreich geändert");
+			}, function(response){
+				alert("Verifizierungsstatus konnte nicht geändert werden");
+			});
+		}
+		
+		
+		if("\"" + customer_old.chipID + "\"" !== chipID){
+			RESTFactory.Customers_Patch_ChipCard(customerID, chipID).then(function(response){
+				alert("ChipkartenID erfolgreich geändert");
+			}, function(response){
+				alert("ChipkartenID konnte nicht geändert werden");
+			});
+		}
 		
 		setTimeout(new Update("ALL", undefined), 2000);
 		

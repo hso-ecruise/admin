@@ -19,13 +19,13 @@
 						<thead>
 							<tr>
 								<td>ID</td>
-								<td>Datum</td>
+								<td>Status</td>
 							</tr>
 						</thead>
 						<tbody>
 							<tr ng-repeat="(key, maintenance) in maintenances track by $index" ng-click="Load_Details(key)">
 								<td>{{ key }}</td>
-								<td>{{ maintenance.date.date }}</td>
+								<td>{{ maintenance.stateObj.text }}</td>
 							</tr>
 						</tbody>
 						
@@ -79,14 +79,13 @@
                 </div>
 
                 <div ng-switch-when="true">
-                    <md-content layout-padding>
+                    <md-content layout-padding ng-switch="currentMaintenance.stateObj.id">
 						<label> Instandhaltungs-ID: {{ currentMaintenance.maintenanceID }} </label>
 						<br/>
-						<label> Spontan: <input type="checked" value="{{currentMaintenance.spontan}}" ng-disabled="true"/> </label>
+						<label> Status: {{ currentMaintenance.stateObj.text }}</label>
 						<br/>
-						<label> Bei Kilometerstand: {{ currentMaintenance.atMileage }} </label>
-						<br/>
-						<label> Datum: {{ currentMaintenance.date.date }} </label>
+						<label ng-switch-when="1"> Kilometerstand: {{currentMaintenance.atMileage}}</label>
+						<label ng-switch-when="2"> Datum: {{currentMaintenance.date.date}}</label>
 						
 						<br/>
 						<br/>
@@ -94,40 +93,38 @@
 						
 						<h4>Fahrzeug-Instandhaltung</h4>
 						<BLOCKQUOTE ng-switch="currentMaintenance.car_maintenance_state">
-							<div ng-switch-when="true">
-								<h5> Fahrzeugsinstandhaltungs-ID: {{ currentMaintenance.car_maintenance.carMaintenanceID }} </h5>
-								<h5> Fahrzeug-ID: {{ currentMaintenance.car_maintenance.carID }} </h5>
-								<h5> Geplantes Datum: {{ currentMaintenance.car_maintenance.plannedDate.date }} </h5>
-								<h5> End Datum:  {{ currentMaintenance.car_maintenance.completedDate.date }} </h5>
+							<div ng-switch-when="true" ng-repeat="(key, item) in currentMaintenance.car_maintenance track by $index">
+								<h5> Fahrzeugsinstandhaltungs-ID: {{ item.carMaintenanceID }} </h5>
+								<h5> Fahrzeug-ID: {{ item.carID }} </h5>
+								<h5> Geplantes Datum: {{ item.plannedDate.date }} </h5>
+								<h5> End Datum:  {{ item.completedDate.date }} </h5>
+								
+								<h4>Rechnungselement</h4>
+								<div ng-switch="item.invoice_state">
+								
+									<BLOCKQUOTE ng-switch-when="true">
+										
+										<h5>Rechnungs-ID: {{ currentMaintenance.car_maintenance.invoice.invoiceID }}</h5>
+										<h5>Element-ID: {{ currentMaintenance.car_maintenance.invoiceItemID }}</h5>
+										<h5>Status: {{ currentMaintenance.car_maintenance.invoice.paidText }}</h5>
+										
+									</BLOCKQUOTE>
+									
+									<div ng-switch-when="false">
+										<BLOCKQUOTE>
+											<h5> Rechnungselement nicht vorhanden oder abrufen nicht möglich </h5>
+										</BLOCKQUOTE>
+									</div>
+									
+								</div>
 							</div>
 							<div ng-switch-when="false">
 								<h5> Fahrzeug-Instandhaltung kann nicht abgerufen werden </h5>
 							</div>
+							
 						</BLOCKQUOTE>
 						
-						<h4>Rechnungselement</h4>
-						
-						<div ng-switch="currentMaintenance.car_maintenance.invoice_state">
-						
-							<BLOCKQUOTE ng-switch-when="true">
-								
-								<h5>Rechnungs-ID: {{ currentMaintenance.car_maintenance.invoice.invoiceID }}</h5>
-								<h5>Element-ID: {{ currentMaintenance.car_maintenance.invoiceItemID }}</h5>
-								<h5>Status: {{ currentMaintenance.car_maintenance.invoice.paidText }}</h5>
-								
-								
-							</BLOCKQUOTE>
-							
-							<div ng-switch-when="false">
-								<BLOCKQUOTE>
-									<h5> Rechnungselement nicht vorhanden oder abrufen nicht möglich </h5>
-									<input type="button" ng-click="ShowItemAddPopUp(currentInvoice.invoiceID)" value="Neues Element"/>
-								</BLOCKQUOTE>
-							</div>
-							
-
-						</div>
-						
+						<input type="button" ng-click="ShowItemAddPopUp(currentMaintenance.maintenanceID)" value="Neues Element"/>
 					
                     </md-content>
                 </div>

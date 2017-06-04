@@ -13,6 +13,25 @@ application.controller('Ctrl_Maintenances', function ($rootScope, $scope, RESTFa
 	var maintenances_all = {};
 	
 	
+	var MAINTENANCE_TYPES = {
+		0: {
+			text: "Spontan",
+			be: "spontaneously",
+			id: 0
+		},
+		1: {
+			text: "Kilometerstand",
+			be: "atMileage",
+			id: 1
+		},
+		2: {
+			text: "Datum",
+			be: "atDate",
+			id: 2
+		}
+	};
+	
+	
 	function Update_ID(id){
 		new Update("ID", id);
 	}
@@ -53,10 +72,22 @@ application.controller('Ctrl_Maintenances', function ($rootScope, $scope, RESTFa
 				var ID_STR = data_use.maintenanceId;
 				
 				maintenance.maintenanceID = data_use.maintenanceId;
-				maintenance.spontan = data_use.spontaneously;
-				maintenance.atMileage = data_use.atMileage;
-				maintenance.atDate = data_use.atDate;
-				maintenance.date = Helper.Get_Zeit(data_use.atDate);
+				
+				maintenance.state = -1;
+				
+				if(data_use.spontaneously === true){
+					maintenance.spontan = data_use.spontaneously;
+					maintenance.state = 0;
+				}else if(data_use.atDate !== null){
+					maintenance.atDate = data_use.atDate;
+					maintenance.date = Helper.Get_Zeit(data_use.atDate);
+					maintenance.state = 2;
+				}else if(data_use.atMileage !== null){
+					maintenance.atMileage = data_use.atMileage;
+					maintenance.state = 1;
+				}
+				
+				maintenance.stateObj = MAINTENANCE_TYPES[maintenance.state];
 				
 				maintenances_all[ID_STR] = maintenance;
 				
@@ -87,10 +118,22 @@ application.controller('Ctrl_Maintenances', function ($rootScope, $scope, RESTFa
 			var maintenance = {};
 			
 			maintenance.maintenanceID = data_use.maintenanceId;
-			maintenance.spontan = data_use.spontaneously;
-			maintenance.atMileage = data_use.atMileage;
-			maintenance.atDate = data_use.atDate;
-			maintenance.date = Helper.Get_Zeit(data_use.atDate);
+			
+			maintenance.state = -1;
+			if(data_use.spontaneously === true){
+				maintenance.spontan = data_use.spontaneously;
+				maintenance.state = 0;
+			}else if(data_use.atDate !== null){
+				maintenance.atDate = data_use.atDate;
+				maintenance.date = Helper.Get_Zeit(data_use.atDate);
+				maintenance.state = 2;
+			}else if(data_use.atMileage !== null){
+				maintenance.atMileage = data_use.atMileage;
+				maintenance.state = 1;
+			}
+			
+			maintenance.stateObj = MAINTENANCE_TYPES[maintenance.state];
+			
 			
 			maintenance.car_maintenance_state = "false";
 			
@@ -101,62 +144,72 @@ application.controller('Ctrl_Maintenances', function ($rootScope, $scope, RESTFa
 			RESTFactory.Car_Maintances_Get_MaintenanceID(maintenance.maintenanceID).then(function(response){
 				
 				maintenance.car_maintenance_state = "true";
+				maintenance.car_maintenance = {};
 				
-				var data_use = response.data;
+				var data = response.data;
 				
-				var car_maintenance = {};
-				car_maintenance.carMaintenanceID = data_use.carMaintenanceId;
-				car_maintenance.carID = data_use.carId;
-				car_maintenance.maintenanceID = data_use.maintenanceId;
-				car_maintenance.invoiceItemID = data_use.invoiceItemId;
-				car_maintenance.plannedDate = Helper.Get_Zeit(data_use.plannedDate);
-				car_maintenance.completedDate = Helper.Get_Zeit(data_use.completedDate);
-				
-				car_maintenance.text = "Letzte Wartung";
-				
-				var now = new Date();
-				
-				if(now.GetTime() - car_maintenance.plannedDate.value > 0){
-					car_maintenance.text = "Nächste Wartung";
-				}
-				
-				car_maintenance.invoice_state = "false";
-				
-				maintenance.car_maintenance = car_maintenance;
-				
-				$scope.currentMaintenance = maintenance;
-				$scope.$apply();
-				
-				
-				
-				//GET INVOICE INFOS
-				RESTFactory.Invoices_Get_Items_ItemID(booking.invoiceItemID).then(function(response){
-				
-					car_maintenance.invoice_state = "true";
-				
-					var data = response.data;
+				data.forEach(function(data_use, index){
 					
-					var invoice = {};
+					var car_maintenance = {};
 					
-					invoice.invoiceID = data.invoiceId;
-					invoice.customerId = data.customerID;
-					invoice.totalAmount = data.totalAmount;
-					invoice.paid = data.paid;
-					invoice.paidText = "Rechnung offen";
-					if(invoice.paid === "true"){
-						invoice.paidText = "Rechnung bezahlt";
+					var ID_STR = data_use.carMaintenanceId;
+					
+					car_maintenance.carMaintenanceID = data_use.carMaintenanceId;
+					car_maintenance.carID = data_use.carId;
+					car_maintenance.maintenanceID = data_use.maintenanceId;
+					car_maintenance.invoiceItemID = data_use.invoiceItemId;
+					car_maintenance.plannedDate = Helper.Get_Zeit(data_use.plannedDate);
+					car_maintenance.completedDate = Helper.Get_Zeit(data_use.completedDate);
+					
+					car_maintenance.text = "Letzte Wartung";
+					
+					var now = new Date();
+					
+					if(now.getTime() - car_maintenance.plannedDate.value > 0){
+						car_maintenance.text = "Nächste Wartung";
 					}
 					
-					car_maintenance.invoice = invoice;
+					car_maintenance.invoice_state = "false";
 					
-					maintenance.car_maintenance = car_maintenance;
+					maintenance.car_maintenance[ID_STR] = car_maintenance;
 					
 					$scope.currentMaintenance = maintenance;
 					$scope.$apply();
 					
-				}, function(response){
+					if(car_maintenance.invoiceItemID !== null && car_maintenance.invoiceItemID !== undefined){
 					
-				
+						//GET INVOICE INFOS
+						RESTFactory.Invoices_Get_Items_ItemID(car_maintenance.invoiceItemID).then(function(response){
+						
+							car_maintenance.invoice_state = "true";
+						
+							var data = response.data;
+							
+							var invoice = {};
+							
+							invoice.invoiceID = data.invoiceId;
+							invoice.customerId = data.customerID;
+							invoice.totalAmount = data.totalAmount;
+							invoice.paid = data.paid;
+							invoice.paidText = "Rechnung offen";
+							if(invoice.paid === "true"){
+								invoice.paidText = "Rechnung bezahlt";
+							}
+							
+							car_maintenance.invoice = invoice;
+							
+							maintenance.car_maintenance[ID_STR] = car_maintenance;
+							
+							$scope.currentMaintenance = maintenance;
+							$scope.$apply();
+							
+						}, function(response){
+							
+						
+						});
+					
+					}
+					
 				});
 				
 				

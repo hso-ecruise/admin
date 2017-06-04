@@ -98,6 +98,8 @@ application.controller('Ctrl_Stations', function ($rootScope, $scope, RESTFactor
 		
 		prom.then(function(response){
 			
+			console.log(response);
+			
 			var data = [];
 			
 			if(type === "ID"){
@@ -106,9 +108,7 @@ application.controller('Ctrl_Stations', function ($rootScope, $scope, RESTFactor
 				data = response.data;
 			}
 			
-			for(var i = 0; i < data.length; i++){
-				
-				var data_use = data[i];
+			data.forEach(function(data_use, index){
 				
 				var station = {};
 				
@@ -116,7 +116,7 @@ application.controller('Ctrl_Stations', function ($rootScope, $scope, RESTFactor
 				
 				station.stationID = data_use.chargingStationId;
 				station.slots = data_use.slots;
-				station.slotsOccupied = data_use.slotsOccupuied;	//slotsOccupied
+				station.slotsOccupied = data_use.slotsOccupied;
 				station.lat = data_use.latitude;
 				station.lon = data_use.longitude;
 				
@@ -152,7 +152,7 @@ application.controller('Ctrl_Stations', function ($rootScope, $scope, RESTFactor
 					
 				});
 				
-			}
+			});
 			
 		}, function(response){
 			
@@ -177,13 +177,14 @@ application.controller('Ctrl_Stations', function ($rootScope, $scope, RESTFactor
 			
 			station.stationID = data_use.chargingStationId;
 			station.slots = data_use.slots;
-			station.slotsOccupied = data_use.slotsOccupuied;
+			station.slotsOccupied = data_use.slotsOccupied;
 			station.lat = data_use.latitude;
 			station.lon = data_use.longitude;
 			
 			$scope.currentStation = station;
 			$scope.$apply();
 			
+			map.panTo(new google.maps.LatLng(station.lat, station.lon));
 			
 			//GET CUSTOMER
 			Helper.Get_Address(station.lat, station.lon).then(function(address){

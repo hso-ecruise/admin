@@ -1,3 +1,29 @@
 <div>
   Statistics View
+	<div>
+		Suche
+		<input type="date" ng-model="searchQuery" />
+		<input type="button" ng-click="Enter_Search()" value="SUCHEN"/>
+		LISTE
+		<div ng-repeat="(key, statistic) in statistics track by $index" ng-click="Load_Details(key)">
+			
+			{{statistic.date.date}}
+			
+		</div>
+	</div>
+	
+	<div ng-switch="statistic_selected">
+		
+		<div ng-switch-when="true">
+			Statistik-Datum: {{currentStatistic.date.date}}
+			Durchschnittsladezeug: {{currentStatistic.averageCharge}}
+			Buchungden gesamt: {{currentStatistic.bookings}}
+		</div>
+		
+		<div ng-switch-when="false">
+			Bitte wählen SIe links eine Statistrik aus
+		</div>
+		
+	</div>
+	
 </div>
