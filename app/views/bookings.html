@@ -109,8 +109,8 @@
 								<h4>Start am {{ currentBooking.trip.start.date }} um {{ currentBooking.trip.start.time }}</h4>
 								<BLOCKQUOTE ng-switch="currentBooking.trip.startState">
 									<div ng-switch-when="true">
-										<h5> Straße Nr.: {{ currentBooking.trip.start.address.street }} {{ currentBooking.trip.start.address.number }} </h5>
-										<h5> Stadt PLZ: {{ currentBooking.trip.start.address.city }} {{ currentBooking.trip.start.address.zip }} </h5>
+										<h5> Straße Nr.: {{ currentBooking.trip.start.station.address.street }} {{ currentBooking.trip.start.station.address.number }} </h5>
+										<h5> Stadt PLZ: {{ currentBooking.trip.start.station.address.city }} {{ currentBooking.trip.start.station.address.zip }} </h5>
 									</div>
 									<div ng-switch-when="false">
 										<h5> Trip-Startadresse kann nicht abgerufen werden</h5>
@@ -120,8 +120,8 @@
 								<h4>Ende am {{ currentBooking.trip.end.date }} um {{ currentBooking.trip.end.time }}</h4>
 								<BLOCKQUOTE ng-switch="currentBooking.trip.endState">
 									<div ng-switch-when="true">
-										<h5> Straße Nr.: {{ currentBooking.trip.end.address.street }} {{ currentBooking.trip.end.address.number }} </h5>
-										<h5> Stadt PLZ: {{ currentBooking.trip.end.address.city }} {{ currentBooking.trip.end.address.zip }} </h5>
+										<h5> Straße Nr.: {{ currentBooking.trip.end.station.address.street }} {{ currentBooking.trip.end.station.address.number }} </h5>
+										<h5> Stadt PLZ: {{ currentBooking.trip.end.station.address.city }} {{ currentBooking.trip.end.station.address.zip }} </h5>
 									</div>
 									<div ng-switch-when="false">
 										<h5> Trip-Endadresse kann nicht abgerufen werden</h5>

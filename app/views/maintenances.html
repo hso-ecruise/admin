@@ -114,7 +114,6 @@
 									<div ng-switch-when="false">
 										<BLOCKQUOTE>
 											<h5> Rechnungselement nicht vorhanden oder abrufen nicht möglich </h5>
-											<input type="button" value="Neues Rechnungselement" ng-click="ShowInvoiceItemAddPopUp(currentMaintenance.maintenanceID, item.carMaintenanceID)"/>
 										</BLOCKQUOTE>
 									</div>
 									
@@ -127,7 +126,7 @@
 							
 						</BLOCKQUOTE>
 						
-						<input type="button" ng-click="ShowItemAddPopUp(currentMaintenance.maintenanceID)" value="Neues Element"/>
+						<input type="button" ng-click="ShowCarMaintenanceAddPopUp(currentMaintenance.maintenanceID)" value="Neues Element"/>
 					
                     </md-content>
                 </div>
@@ -143,18 +142,36 @@
 					</md-toolbar>
 					
 					<md-content layout-padding>
-						<md-input-container>
-						<!--HIER N LABLE ODER SO DAVOR-->
+					
+						<md-input-container flex-gt-sm>
+							Instandhaltungstyp:
+							<md-menu>
+								<md-button ng-disabled="editDisabled" ng-mouseenter="$mdMenu.open()">{{new_maintenance.stateObj.text}}</md-button>
+								<md-menu-content width="4" ng-mouseleave="$mdMenu.close()">
+									<md-menu-item ng-repeat="item in maintenanceStates">
+										<md-button ng-click="new_maintenance.stateObj = item">
+											{{item.text}}
+										</md-button>
+									</md-menu-item>
+								</md-menu-content>
+							</md-menu>
+						</md-input-container>
+					</md-content>
+						
+					<md-content flex layout-padding ng-switch="new_maintenance.stateObj.id">
+					<!--
+						<md-input-container ng-switch-when="0">
 							<input type="checkbox" ng-model="new_maintenance.spontan" placeholder="Spontan" ng-required />
 						</md-input-container>
-						
-						<md-input-container>
+					-->
+						<md-input-container ng-switch-when="1">
 							<input type="number" ng-model="new_maintenance.atMileage" placeholder="Bei Kilometerstand" ng-required />
 						</md-input-container>
 						
-						<md-input-container>
-							<input type="date" ng-model="new_maintenance.date" min="new_maintenance.minDate" placeholder="Datum" ng-required />
+						<md-input-container ng-switch-when="2">
+							<input type="date" ng-model="new_maintenance.date" min="new_maintenance.minDate" value="new_maintenance.date" placeholder="Datum" ng-required />
 						</md-input-container>
+					</md-content>
 
 					<md-content flex layout-padding>
 						<md-button class="md-raised md-primary button-to-right" ng-disabled="form_NewMain.$invalid" ng-click="Safe_New()"> Speichern </md-button>

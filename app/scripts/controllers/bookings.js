@@ -116,8 +116,6 @@ application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactor
 					
 					booking.customer = customer;
 					
-					console.log(booking);
-					
 					bookings_all[ID_STR] = booking;
 					$scope.bookings = bookings_all;
 					$scope.$apply();
@@ -126,13 +124,6 @@ application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactor
 					
 				});
 			});
-			/*
-			for(var i = 0; i < data.length; i++){
-				
-				
-				
-			}
-			*/
 			
 		}, function(response){
 			
@@ -274,6 +265,8 @@ application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactor
 					station.lat = data.latitude;
 					station.lon = data.longitude;
 					
+					console.log(station);
+					
 					booking.trip.start.station = station;
 					
 					booking.trip.startState = "true";
@@ -283,10 +276,14 @@ application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactor
 					
 					Helper.Get_Address(station.lat, station.lon).then(function(address){
 						
+						console.log(address);
+						
 						booking.trip.start.station.address = address;
 						
 						$scope.currentBooking = booking;
 						$scope.$apply();
+						
+						console.log($scope.currentBooking.trip.start);
 						
 					}, function(response){
 						

@@ -237,8 +237,6 @@ application.controller('Ctrl_Users', function ($rootScope, $scope, RESTFactory, 
 	
 	function EnableEditMode(){
 		customer_old = angular.copy($scope.currentCustomer);
-		
-		console.log(customer_old);
 		$scope.editDisabled = false;
 	}
 	
@@ -376,7 +374,7 @@ application.controller('Ctrl_Users', function ($rootScope, $scope, RESTFactory, 
 			}, function(response){
 				alert("Telefonnummer konnte nicht geändert werden");
 			});
-			*/
+			
 			
 			var verified = customer.verified;
 			
@@ -394,7 +392,7 @@ application.controller('Ctrl_Users', function ($rootScope, $scope, RESTFactory, 
 			}, function(response){
 				alert("ChipkartenID konnte nicht geändert werden");
 			});
-			
+			*/
 			
 		}, function(response){
 			

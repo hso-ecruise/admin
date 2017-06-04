@@ -11,6 +11,7 @@
 application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactory, Helper, $mdDialog) {
 
 	var vehicles_all = {};
+	var vehicle_old = {};
 
 	var markers = [];
 	
@@ -140,9 +141,7 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
 	}
 	
 	function Cars_AddMarker(car){
-
-		console.log("CALLED");
-	
+		
         if(car.bookingState !== 1000){
 
             var lat = car.lastLat;
@@ -310,8 +309,6 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
 	
 	function Load_Details(id){
 		
-		console.log(id);
-		
 		new DisabledEditMode();
 		
 		RESTFactory.Cars_Get_CarID(id).then(function(response){
@@ -406,6 +403,7 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
 	
 	
 	function EnableEditMode(){
+		vehicle_old = angular.copy($scope.currentVehicle);
 		$scope.editDisabled = false;
 	}
 	
@@ -424,30 +422,37 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
 		var bookingState = "\"" + vehicle.bookingStateObj.be + "\"";
 		var chargingState = "\"" + vehicle.loadingStateObj.be + "\"";
 		
-		//REST CALL TO MAKE CHANGES
-		RESTFactory.Cars_Patch_ChargingState(vehicleID, chargingState).then(function(response){
-			alert("Fahrzeug Ladezustand erfolgreich geändert");
-		}, function(response){
-			alert("Fahrzeug Ladezustand konnte nicht geändert werden");
-		});
+		if(vehicle_old.loadingStateObj === undefined || chargingState !== "\"" + vehicle_old.loadingStateObj.be + "\""){
+			RESTFactory.Cars_Patch_ChargingState(vehicleID, chargingState).then(function(response){
+				alert("Fahrzeug Ladezustand erfolgreich geändert");
+			}, function(response){
+				alert("Fahrzeug Ladezustand konnte nicht geändert werden");
+			});
+		}
 		
-		RESTFactory.Cars_Patch_BookingState(vehicleID, bookingState).then(function(response){
-			alert("Fahrzeug Reservierungszustand erfolgreich geändert");
-		}, function(response){
-			alert("Fahrzeug Reservierungszustand konnte nicht geändert werden");
-		});
+		if(vehicle_old.bookingStateObj === undefined || bookingState !== "\"" + vehicle_old.bookingStateObj.be + "\""){
+			RESTFactory.Cars_Patch_BookingState(vehicleID, bookingState).then(function(response){
+				alert("Fahrzeug Reservierungszustand erfolgreich geändert");
+			}, function(response){
+				alert("Fahrzeug Reservierungszustand konnte nicht geändert werden");
+			});
+		}
 		
-		RESTFactory.Cars_Patch_Mileage(vehicleID, vehicle.mileage).then(function(response){
-			alert("Fahrzeug Kilometerstand erfolgreich geändert");
-		}, function(response){
-			alert("Fahrzeug Kilometerstand konnte nicht geändert werden");
-		});
+		if(vehicle.mileage !== vehicle_old.mileage){
+			RESTFactory.Cars_Patch_Mileage(vehicleID, vehicle.mileage).then(function(response){
+				alert("Fahrzeug Kilometerstand erfolgreich geändert");
+			}, function(response){
+				alert("Fahrzeug Kilometerstand konnte nicht geändert werden");
+			});
+		}
 		
-		RESTFactory.Cars_Patch_ChargeLevel(vehicleID, vehicle.chargeLevel).then(function(response){
-			alert("Fahrzeug Akkustand erfolgreich geändert");
-		}, function(response){
-			alert("Fahrzeug Akkustand konnte nicht geändert werden");
-		});
+		if(vehicle.chargeLevel !== vehicle_old.chargeLevel){
+			RESTFactory.Cars_Patch_ChargeLevel(vehicleID, vehicle.chargeLevel).then(function(response){
+				alert("Fahrzeug Akkustand erfolgreich geändert");
+			}, function(response){
+				alert("Fahrzeug Akkustand konnte nicht geändert werden");
+			});
+		}
 		
 		
 		setTimeout(new Update("ALL", undefined), 2000);

@@ -159,7 +159,9 @@ application.controller('Ctrl_Maintenances', function ($rootScope, $scope, RESTFa
 					car_maintenance.maintenanceID = data_use.maintenanceId;
 					car_maintenance.invoiceItemID = data_use.invoiceItemId;
 					car_maintenance.plannedDate = Helper.Get_Zeit(data_use.plannedDate);
-					car_maintenance.completedDate = Helper.Get_Zeit(data_use.completedDate);
+					if(data_use.completedDate !== null){
+						car_maintenance.completedDate = Helper.Get_Zeit(data_use.completedDate);
+					}
 					
 					car_maintenance.text = "Letzte Wartung";
 					
@@ -236,11 +238,11 @@ application.controller('Ctrl_Maintenances', function ($rootScope, $scope, RESTFa
 		
 		RESTFactory.Maintances_Post(maintenance).then(function(response){
 			alert("Instandhaltung wurde erfolgreich hinzugefügt");
-			new Hide_AddBooking();
+			new Hide_AddMaintenance();
 			setTimeout(Update, 2000);
 		}, function(response){
 			alert("Rechnung fehlgeschlagen");
-			new Hide_AddInvoice();
+			new Hide_AddMaintenance();
 			setTimeout(Update, 2000);
 		});
 		
@@ -258,6 +260,8 @@ application.controller('Ctrl_Maintenances', function ($rootScope, $scope, RESTFa
 		$scope.view = "add";
 
 		var new_maintenance = {};
+		
+		new_maintenance.stateObj = MAINTENANCE_TYPES[0];
 		
 		new_maintenance.spontan = false;
 		new_maintenance.atMileage = 0;
@@ -305,7 +309,7 @@ application.controller('Ctrl_Maintenances', function ($rootScope, $scope, RESTFa
             '			</md-input-container>' +
 			
             '			<md-input-container>' +
-            '				<input type="date" placeholder="Geplantes Datum" min="{{item.minDate}}" class="md-input" ng-model="item.date" ng-required="true" >' +   
+            '				<input type="date" placeholder="Geplantes Datum" min="{{item.minDate}}" class="md-input" ng-model="item.plannedDate" ng-required="true" >' +   
             '			</md-input-container>' +
 			
             '		</md-content>' +
@@ -342,7 +346,7 @@ application.controller('Ctrl_Maintenances', function ($rootScope, $scope, RESTFa
 					var data = {
 						maintenanceId: item.maintenanceID,
 						carId: parseInt(item.carID),
-						reason: item.plannedDate
+						plannedDate: item.plannedDate
 					};
 					
 					console.log(data);
@@ -361,7 +365,6 @@ application.controller('Ctrl_Maintenances', function ($rootScope, $scope, RESTFa
         });
 		
 	}
-	
 	
 	$scope.Load_Details = function(input){
 		new Load_Details(input);
@@ -402,15 +405,12 @@ application.controller('Ctrl_Maintenances', function ($rootScope, $scope, RESTFa
 		new Show_CarMaintenance_Add_PopUp(id);
 	};
 	
-	$scope.ShowInvoiceItemAddPopUp = function(id){
-		new Show_AddItem_PopUp(id);
-	};
-	
-	
 	
 	
 	
 	function Init(){
+		
+		$scope.maintenanceStates = MAINTENANCE_TYPES;
 		
 		new Update();
 		

@@ -409,8 +409,6 @@ application.controller('Ctrl_Stations', function ($rootScope, $scope, RESTFactor
 				
 				var data = response;
 				
-				console.log(data);
-				
 				data.forEach(function(item, index){
 					
 					var data2 = item.data;
@@ -435,7 +433,7 @@ application.controller('Ctrl_Stations', function ($rootScope, $scope, RESTFactor
 				heatmap.setMap(map);
 				
 				var gradient = [
-					'rgba(0, 0, 255, 00000)',
+					'rgba(0, 0, 255, 0)',
 					'rgba(0, 0, 255, 1)',
 					'rgba(0, 255, 0, 1)',
 					'rgba(255, 0, 0, 1)'
@@ -444,10 +442,6 @@ application.controller('Ctrl_Stations', function ($rootScope, $scope, RESTFactor
 				heatmap.set('gradient', gradient);
 				
 				heatmap.set('radius', 100);
-				
-				
-				
-				console.log(heatmap_data);
 				
 			});
 			
