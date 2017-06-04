@@ -98,7 +98,16 @@
 								<h5> Fahrzeugsinstandhaltungs-ID: {{ item.carMaintenanceID }} </h5>
 								<h5> Fahrzeug-ID: {{ item.carID }} </h5>
 								<h5> Geplantes Datum: {{ item.plannedDate.date }} </h5>
-								<h5> End Datum:  {{ item.completedDate.date }} </h5>
+								<h5 ng-switch="item.endState">
+									End Datum:
+									<span ng-switch-when="true">
+										{{item.completedDate.date}}
+									</span>
+									<span ng-switch-when="false">
+										<input type="date" min="{{item.minEndDate}}" ng-model="item.endDate"/>
+										<input type="button" value="Speichern" ng-click="SafeEndDate(currentMaintenance.maintenanceID, item.carMaintenanceID, item.endDate)"/>
+									</span>
+								</h5>
 								
 								<h4>Rechnungselement</h4>
 								<div ng-switch="item.invoice_state">

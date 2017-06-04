@@ -148,71 +148,79 @@ application.controller('Ctrl_Maintenances', function ($rootScope, $scope, RESTFa
 				
 				var data = response.data;
 				
-				data.forEach(function(data_use, index){
-					
-					var car_maintenance = {};
-					
-					var ID_STR = data_use.carMaintenanceId;
-					
-					car_maintenance.carMaintenanceID = data_use.carMaintenanceId;
-					car_maintenance.carID = data_use.carId;
-					car_maintenance.maintenanceID = data_use.maintenanceId;
-					car_maintenance.invoiceItemID = data_use.invoiceItemId;
-					car_maintenance.plannedDate = Helper.Get_Zeit(data_use.plannedDate);
-					if(data_use.completedDate !== null){
-						car_maintenance.completedDate = Helper.Get_Zeit(data_use.completedDate);
-					}
-					
-					car_maintenance.text = "Letzte Wartung";
-					
-					var now = new Date();
-					
-					if(now.getTime() - car_maintenance.plannedDate.value > 0){
-						car_maintenance.text = "Nächste Wartung";
-					}
-					
-					car_maintenance.invoice_state = "false";
-					
-					maintenance.car_maintenance[ID_STR] = car_maintenance;
-					
-					$scope.currentMaintenance = maintenance;
-					$scope.$apply();
-					
-					if(car_maintenance.invoiceItemID !== null && car_maintenance.invoiceItemID !== undefined){
-					
-						//GET INVOICE INFOS
-						RESTFactory.Invoices_Get_Items_ItemID(car_maintenance.invoiceItemID).then(function(response){
+				if(data.length > 0){
+				
+					data.forEach(function(data_use, index){
 						
-							car_maintenance.invoice_state = "true";
+						var car_maintenance = {};
 						
-							var data = response.data;
-							
-							var invoice = {};
-							
-							invoice.invoiceID = data.invoiceId;
-							invoice.customerId = data.customerID;
-							invoice.totalAmount = data.totalAmount;
-							invoice.paid = data.paid;
-							invoice.paidText = "Rechnung offen";
-							if(invoice.paid === "true"){
-								invoice.paidText = "Rechnung bezahlt";
-							}
-							
-							car_maintenance.invoice = invoice;
-							
-							maintenance.car_maintenance[ID_STR] = car_maintenance;
-							
-							$scope.currentMaintenance = maintenance;
-							$scope.$apply();
-							
-						}, function(response){
-							
+						var ID_STR = data_use.carMaintenanceId;
 						
-						});
-					
-					}
-					
-				});
+						car_maintenance.carMaintenanceID = data_use.carMaintenanceId;
+						car_maintenance.carID = data_use.carId;
+						car_maintenance.maintenanceID = data_use.maintenanceId;
+						car_maintenance.invoiceItemID = data_use.invoiceItemId;
+						car_maintenance.plannedDate = Helper.Get_Zeit(data_use.plannedDate);
+						car_maintenance.endState = false;
+						car_maintenance.endDate = new Date();
+						car_maintenance.minEndDate = new Date();
+						if(data_use.completedDate !== null){
+							car_maintenance.endState = true;
+							car_maintenance.completedDate = Helper.Get_Zeit(data_use.completedDate);
+						}
+						
+						car_maintenance.text = "Letzte Wartung";
+						
+						var now = new Date();
+						
+						if(now.getTime() - car_maintenance.plannedDate.value > 0){
+							car_maintenance.text = "Nächste Wartung";
+						}
+						
+						car_maintenance.invoice_state = "false";
+						
+						maintenance.car_maintenance[ID_STR] = car_maintenance;
+						
+						$scope.currentMaintenance = maintenance;
+						$scope.$apply();
+						
+						if(car_maintenance.invoiceItemID !== null && car_maintenance.invoiceItemID !== undefined){
+						
+							//GET INVOICE INFOS
+							RESTFactory.Invoices_Get_Items_ItemID(car_maintenance.invoiceItemID).then(function(response){
+							
+								car_maintenance.invoice_state = "true";
+							
+								var data = response.data;
+								
+								var invoice = {};
+								
+								invoice.invoiceID = data.invoiceId;
+								invoice.customerId = data.customerID;
+								invoice.totalAmount = data.totalAmount;
+								invoice.paid = data.paid;
+								invoice.paidText = "Rechnung offen";
+								if(invoice.paid === "true"){
+									invoice.paidText = "Rechnung bezahlt";
+								}
+								
+								car_maintenance.invoice = invoice;
+								
+								maintenance.car_maintenance[ID_STR] = car_maintenance;
+								
+								$scope.currentMaintenance = maintenance;
+								$scope.$apply();
+								
+							}, function(response){
+								
+							
+							});
+						
+						}
+						
+					});
+				
+				}
 				
 				
 			}, function(response){
@@ -366,6 +374,21 @@ application.controller('Ctrl_Maintenances', function ($rootScope, $scope, RESTFa
 		
 	}
 	
+	function SafeEndDate(mainID, carMainID, endDate){
+		
+		var date = endDate;
+		
+		RESTFactory.Car_Maintances_Patch_CompletedDate(carMainID, date).then(function(response){
+			alert("End Datum erfolgreich gesetzt");
+		}, function(response){
+			alert("End Datum konnte nicht gesetzt werden");
+		});
+		
+		setTimeout(Update, 2000);
+		
+	}
+	
+	
 	$scope.Load_Details = function(input){
 		new Load_Details(input);
 	};
@@ -403,6 +426,10 @@ application.controller('Ctrl_Maintenances', function ($rootScope, $scope, RESTFa
 	
 	$scope.ShowCarMaintenanceAddPopUp = function(id){
 		new Show_CarMaintenance_Add_PopUp(id);
+	};
+	
+	$scope.SafeEndDate = function(mainID, carMainID, endDate){
+		new SafeEndDate(mainID, carMainID, endDate);
 	};
 	
 	
