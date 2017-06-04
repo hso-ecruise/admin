@@ -76,8 +76,6 @@
 		
 		date = date + ".000Z";
 		
-		console.log(date);
-		
 		RESTFactory.Statistics_Get_ByDate(date).then(function(response){
 			
 			$scope.statistic_selected = "true";
@@ -96,6 +94,17 @@
 		}, function(response){
 			
 		});
+		
+	}
+	
+	function LoadHeatMap(){
+		
+		//Get all stations
+			//Get all car charging stations for each station
+		
+		
+		
+		
 		
 	}
 	
@@ -135,7 +144,6 @@
 		}
 		
 	};
-	
 	
 	
 	function Init(){

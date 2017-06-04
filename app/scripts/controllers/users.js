@@ -338,12 +338,21 @@ application.controller('Ctrl_Users', function ($rootScope, $scope, RESTFactory, 
 		user.lastName = customer.familyName;
 		user.email = customer.email;
 		user.password = customer.password;
-		
+		user.street = customer.address.street;
+		user.city = customer.address.city;
+		user.houseNumber = customer.address.number;
+		user.zipCode = customer.address.zip;
+		user.country = customer.address.country;
+		user.addressExtraLine = customer.address.extra;
+		user.phoneNumber = customer.phoneNr;
 		
 		RESTFactory.User_Register(user).then(function(response){
 			
 			var customerID = response.data.id;
 			
+			alert("Neuer Nutzer wurde angelegt");
+			
+			/*
 			var address = {};
 			address.street = customer.address.street;
 			address.city = customer.address.city;
@@ -352,7 +361,6 @@ application.controller('Ctrl_Users', function ($rootScope, $scope, RESTFactory, 
 			address.country = customer.address.country;
 			address.addressExtraLine = customer.address.extra;
 			
-			alert("Neuer Nutzer wurde angelegt");
 			
 			RESTFactory.Customers_Patch_Address(customerID, address).then(function(response){
 				alert("Adresse erfolgreich geändert");
@@ -368,7 +376,7 @@ application.controller('Ctrl_Users', function ($rootScope, $scope, RESTFactory, 
 			}, function(response){
 				alert("Telefonnummer konnte nicht geändert werden");
 			});
-			
+			*/
 			
 			var verified = customer.verified;
 			

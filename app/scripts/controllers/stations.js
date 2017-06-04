@@ -1,12 +1,15 @@
 'use strict';
 
-application.controller('Ctrl_Stations', function ($rootScope, $scope, RESTFactory, Helper, $mdDialog) {
+application.controller('Ctrl_Stations', function ($rootScope, $scope, RESTFactory, Helper, $mdDialog, $q) {
 
 	var stations_all = {};
 	
 	var markers = [];
 	
 	var marker_Address = undefined;
+	
+	var heatmap_shown = false;
+	var heatmap;
 	
 	
 	var map = new google.maps.Map(document.getElementById('map_stations'), {
@@ -370,6 +373,101 @@ application.controller('Ctrl_Stations', function ($rootScope, $scope, RESTFactor
 		$scope.$apply();
 	}
 	
+	function Show_Heatmap(){
+		
+		for(var i = 0; i < markers.length; i++){
+			markers[i].setMap(null);
+		}
+		
+		heatmap_shown = true;
+		
+		var heatmap_data = [];
+		var promises = [];
+		var stations = {};
+		
+		RESTFactory.Charging_Stations_Get().then(function(response){
+			
+			var data = response.data;
+			
+			data.forEach(function(data_use, index){
+				
+				var station = {};
+				
+				var ID_STR = data_use.chargingStationId;
+				
+				station.stationID = data_use.chargingStationId;
+				station.lat = data_use.latitude;
+				station.lon = data_use.longitude;
+				
+				stations[ID_STR] = station;
+				
+				promises.push(RESTFactory.Car_Charging_Stations_Get_ChargingStationID(ID_STR));
+
+			});
+			
+			$q.all(promises).then(function(response){
+				
+				var data = response;
+				
+				console.log(data);
+				
+				data.forEach(function(item, index){
+					
+					var data2 = item.data;
+
+					if(data2.length > 0){
+					
+						var lat = stations[data2[0].chargingStationId].lat;
+						var lon = stations[data2[0].chargingStationId].lon;
+						var heat = {};
+						
+						heat.location = new google.maps.LatLng(lat, lon);
+						heat.weight = data2.length;
+						
+						heatmap_data.push(heat);
+					}
+				});
+				
+				heatmap = new google.maps.visualization.HeatmapLayer({
+					data: heatmap_data
+				});
+				
+				heatmap.setMap(map);
+				
+				var gradient = [
+					'rgba(0, 0, 255, 00000)',
+					'rgba(0, 0, 255, 1)',
+					'rgba(0, 255, 0, 1)',
+					'rgba(255, 0, 0, 1)'
+				]
+				
+				heatmap.set('gradient', gradient);
+				
+				heatmap.set('radius', 100);
+				
+				
+				
+				console.log(heatmap_data);
+				
+			});
+			
+		}, function(response){
+			
+		});
+		
+		
+	}
+	
+	function Hide_Heatmap(){
+		
+		heatmap_shown = false;
+		heatmap.setMap(null);
+		
+		for(var i = 0; i < markers.length; i++){
+			markers[i].setMap(map);
+		}
+		
+	}
 	
 	
 	
@@ -419,7 +517,20 @@ application.controller('Ctrl_Stations', function ($rootScope, $scope, RESTFactor
 
 	};
 	
+	$scope.ToggleHeatmap = function(){
+		if(heatmap_shown === true){
+			new Hide_Heatmap();
+		}else{
+			new Show_Heatmap();
+		}
+		
+	}
+	
 	function Init(){
+		
+		var input = document.getElementById('toggle_heatmap');
+		
+		map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
 		
 		new Update("ALL", undefined);
 		
