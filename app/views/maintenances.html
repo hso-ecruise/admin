@@ -93,6 +93,7 @@
 						
 						<h4>Fahrzeug-Instandhaltung</h4>
 						<BLOCKQUOTE ng-switch="currentMaintenance.car_maintenance_state">
+						
 							<div ng-switch-when="true" ng-repeat="(key, item) in currentMaintenance.car_maintenance track by $index">
 								<h5> Fahrzeugsinstandhaltungs-ID: {{ item.carMaintenanceID }} </h5>
 								<h5> Fahrzeug-ID: {{ item.carID }} </h5>
@@ -113,11 +114,13 @@
 									<div ng-switch-when="false">
 										<BLOCKQUOTE>
 											<h5> Rechnungselement nicht vorhanden oder abrufen nicht möglich </h5>
+											<input type="button" value="Neues Rechnungselement" ng-click="ShowInvoiceItemAddPopUp(currentMaintenance.maintenanceID, item.carMaintenanceID)"/>
 										</BLOCKQUOTE>
 									</div>
 									
 								</div>
 							</div>
+							
 							<div ng-switch-when="false">
 								<h5> Fahrzeug-Instandhaltung kann nicht abgerufen werden </h5>
 							</div>

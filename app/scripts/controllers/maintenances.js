@@ -276,7 +276,7 @@ application.controller('Ctrl_Maintenances', function ($rootScope, $scope, RESTFa
 	}
 	
 	
-	function Show_AddItem_PopUp(maintenanceID){
+	function Show_CarMaintenance_Add_PopUp(maintenanceID){
 
         $mdDialog.show({
             clickOutsideToClose: true,
@@ -398,9 +398,15 @@ application.controller('Ctrl_Maintenances', function ($rootScope, $scope, RESTFa
 	};
 	
 	
-	$scope.ShowItemAddPopUp = function(id){
+	$scope.ShowCarMaintenanceAddPopUp = function(id){
+		new Show_CarMaintenance_Add_PopUp(id);
+	};
+	
+	$scope.ShowInvoiceItemAddPopUp = function(id){
 		new Show_AddItem_PopUp(id);
 	};
+	
+	
 	
 	
 	
