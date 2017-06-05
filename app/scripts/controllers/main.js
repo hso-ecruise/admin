@@ -17,11 +17,14 @@ application.service('GetCaller', function ($http, $rootScope) {
 
     this.Get = function (url, body, token) {
 		
+		console.log("CALL: " + url);
+		
 		var myToken = $rootScope.token;
 		
 		var get = {};
 		
 		if(token === true){
+			
 			console.log("Call with: " + myToken);
 			get = $http({
 				method: "get",
@@ -40,7 +43,7 @@ application.service('GetCaller', function ($http, $rootScope) {
 		}
 		
 		return get;
-    }
+    };
 
 });
 

@@ -457,11 +457,14 @@ application.controller('Ctrl_Stations', function ($rootScope, $scope, RESTFactor
 	
 	function Hide_Heatmap(){
 		
-		heatmap_shown = false;
-		heatmap.setMap(null);
-		
 		for(var i = 0; i < markers.length; i++){
 			markers[i].setMap(map);
+		}
+		
+		heatmap_shown = false;
+		
+		if(heatmap !== undefined){
+			heatmap.setMap(null);
 		}
 		
 	}

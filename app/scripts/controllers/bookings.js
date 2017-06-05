@@ -12,7 +12,8 @@ application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactor
 	
 	var bookings_all = {};
 	
-	var marker_Address = undefined;
+	var marker_Address;
+	
 	
 	function Update_UserName(name){
 		

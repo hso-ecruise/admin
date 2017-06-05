@@ -33,7 +33,7 @@ application.controller('Ctrl_Main', function ($rootScope, $scope, Helper, $locat
 		
 		$scope.loggedIN = $rootScope.loggedIN;
 		
-    };
+    }
     
     Init();
     
@@ -64,7 +64,7 @@ application.controller('Ctrl_Main', function ($rootScope, $scope, Helper, $locat
             template:
             '<md-dialog class="login-dialog">'+
             '	<md-dialog-content>' +
-			'		<form ng-submit="Login()">' +
+			'		<form name="login_Form" ng-submit="Login()">' +
             '			<md-toolbar class="md-hue-2">' +
             '				<div class="md-toolbar-tools">' +
             '					<h2 class="md-flex">Anmelden</h2>' +
@@ -84,8 +84,8 @@ application.controller('Ctrl_Main', function ($rootScope, $scope, Helper, $locat
             '			</md-content>' +
 
             '			<md-content flex layout-padding>' +
-			'				<input type="submit" style="position: absolute; left: -9999px; width: 1px; height: 1px;" value=""/>' +
-            '				<md-button class="md-raised md-primary button-to-right" ng-click="Login()"> Login </md-button>' +
+			'				<input type="submit" style="position: absolute; left: -9999px; width: 1px; height: 1px;" ng-disabled="login_Form.$invalid" value=""/>' +
+            '				<md-button class="md-raised md-primary button-to-right" ng-disabled="login_Form.$invalid" ng-click="Login()"> Login </md-button>' +
             '			</md-content>' +
 			'		</form>' +
             '	</md-dialog-content>' +
@@ -105,9 +105,9 @@ application.controller('Ctrl_Main', function ($rootScope, $scope, Helper, $locat
 					
 					var use_pwd = "\"" + password + "\"";
 					
-					var prom_Login = RESTFactory.User_Login(email, use_pwd);
-					
-					prom_Login.then(function(response){
+					RESTFactory.User_Login(email, use_pwd).then(function(response){
+						
+						console.log("SUCCESS");
 						
 						var data = response.data;
 						
@@ -128,18 +128,6 @@ application.controller('Ctrl_Main', function ($rootScope, $scope, Helper, $locat
 					}, function(response){
 						
 						alert("Anmelden fehlgeschlagen");
-						
-						$rootScope.token = "TOKEN";
-						$rootScope.customerID = 1;
-						
-						$rootScope.loggedIN = true;
-						$scope.loggedIN = true;
-						
-						//Save data in cookies
-						Helper.Cookie_Set("loggedIN", true);
-						Helper.Cookie_Set("token", "TOKEN");
-						Helper.Cookie_Set("customerID", 1);
-						Helper.Cookie_Set("password", password);
 						
 					});
 					
