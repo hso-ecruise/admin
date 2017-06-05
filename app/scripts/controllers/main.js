@@ -17,15 +17,18 @@ application.service('GetCaller', function ($http, $rootScope) {
 
     this.Get = function (url, body, token) {
 		
+		var myToken = $rootScope.token;
+		
 		var get = {};
 		
 		if(token === true){
+			console.log("Call with: " + myToken);
 			get = $http({
 				method: "get",
 				url: url,
 				data: body,
 				headers: {
-					'access_token': $rootScope.token
+					'access_token': myToken
 				}
 			});
 		}else{
@@ -530,38 +533,38 @@ application.factory('Helper', function (RESTFactory, $cookies) {
 	    
 	    return new Promise(function(resolve, reject){
 		
-		RESTFactory.GetAddress(lat, lon).then(function(response){
-		    
-		    var ret = response.data.results[0].address_components;
-		    
-		    var address = { };
-		    
-		    for(var i = 0;i < ret.length; i++){
-			for(var j = 0; j < ret[i].types.length; j++){
-			    switch(ret[i].types[j]){
-			    case "street_number":
-				address.number = ret[i].long_name;
-				break;
-			    case "route":
-				address.street = ret[i].long_name;
-				break;
-			    case "locality":
-				address.city = ret[i].long_name;
-				break;
-			    case "postal_code":
-				address.zip = ret[i].long_name;
-				break;
-			    default:
-				break;
-			    }
-			}
-		    }
-		    
-		    resolve(address);
-		    
-		    reject("error");
-		    
-		});
+			RESTFactory.GetAddress(lat, lon).then(function(response){
+				
+				var ret = response.data.results[0].address_components;
+				
+				var address = { };
+				
+				for(var i = 0;i < ret.length; i++){
+					for(var j = 0; j < ret[i].types.length; j++){
+						switch(ret[i].types[j]){
+						case "street_number":
+						address.number = ret[i].long_name;
+						break;
+						case "route":
+						address.street = ret[i].long_name;
+						break;
+						case "locality":
+						address.city = ret[i].long_name;
+						break;
+						case "postal_code":
+						address.zip = ret[i].long_name;
+						break;
+						default:
+						break;
+						}
+					}
+				}
+				
+				resolve(address);
+				
+				reject("error");
+				
+			});
 	    });
 	    
 	},

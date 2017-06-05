@@ -103,9 +103,13 @@ application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactor
 				$scope.$apply();
 				
 				
+				function CallCustomer(){
+				
 				//GET CUSTOMER
-				RESTFactory.Customers_Get_CustomerID(bookings_all[ID_STR].customerID).then(function(response){
-					
+				console.log("Load customer: " + booking.customerID);
+				RESTFactory.Customers_Get_CustomerID(booking.customerID).then(function(response){
+					console.log("Result from: " + booking.customerID);
+				
 					var custom_data = response.data;
 					
 					var customer = {};
@@ -123,6 +127,11 @@ application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactor
 				}, function(response){
 					
 				});
+				
+				}
+				
+				setTimeout(CallCustomer, 500);
+				
 			});
 			
 		}, function(response){
@@ -195,6 +204,7 @@ application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactor
 			
 			//GET CUSTOMER INFOS
 			RESTFactory.Customers_Get_CustomerID(booking.customerID).then(function(response){
+				
 				
 				var data = response.data;
 				

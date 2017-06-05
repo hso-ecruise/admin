@@ -405,45 +405,45 @@ application.controller('Ctrl_Stations', function ($rootScope, $scope, RESTFactor
 			
 			function Finish(){
 			
-			$q.all(promises).then(function(response){
-				
-				var data = response;
-				
-				data.forEach(function(item, index){
+				$q.all(promises).then(function(response){
 					
-					var data2 = item.data;
+					var data = response;
+					
+					data.forEach(function(item, index){
+						
+						var data2 = item.data;
 
-					if(data2.length > 0){
+						if(data2.length > 0){
+						
+							var lat = stations[data2[0].chargingStationId].lat;
+							var lon = stations[data2[0].chargingStationId].lon;
+							var heat = {};
+							
+							heat.location = new google.maps.LatLng(lat, lon);
+							heat.weight = data2.length;
+							
+							heatmap_data.push(heat);
+						}
+					});
 					
-						var lat = stations[data2[0].chargingStationId].lat;
-						var lon = stations[data2[0].chargingStationId].lon;
-						var heat = {};
-						
-						heat.location = new google.maps.LatLng(lat, lon);
-						heat.weight = data2.length;
-						
-						heatmap_data.push(heat);
-					}
+					heatmap = new google.maps.visualization.HeatmapLayer({
+						data: heatmap_data
+					});
+					
+					heatmap.setMap(map);
+					
+					var gradient = [
+						'rgba(0, 0, 255, 0)',
+						'rgba(0, 0, 255, 1)',
+						'rgba(0, 255, 0, 1)',
+						'rgba(255, 0, 0, 1)'
+					]
+					
+					heatmap.set('gradient', gradient);
+					
+					heatmap.set('radius', 100);
+					
 				});
-				
-				heatmap = new google.maps.visualization.HeatmapLayer({
-					data: heatmap_data
-				});
-				
-				heatmap.setMap(map);
-				
-				var gradient = [
-					'rgba(0, 0, 255, 0)',
-					'rgba(0, 0, 255, 1)',
-					'rgba(0, 255, 0, 1)',
-					'rgba(255, 0, 0, 1)'
-				]
-				
-				heatmap.set('gradient', gradient);
-				
-				heatmap.set('radius', 100);
-				
-			});
 			}
 			
 			setTimeout(Finish, 1000);

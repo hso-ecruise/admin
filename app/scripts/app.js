@@ -50,7 +50,7 @@ var checkRouting= function ($rootScope, $location, Helper) {
 };
 
 application.config(function ($routeProvider, $locationProvider){
-    
+	
 	$routeProvider
 	.when('/', {
 	    templateUrl: 'views/start.html',
