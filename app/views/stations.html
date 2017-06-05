@@ -31,10 +31,10 @@
                 <tbody>
 				<tr ng-repeat="(key, station) in stations track by $index" ng-click="Load_Details(key)">
 						<td>
-							<h5>{{ key }}</h5>
+							{{ key }}
 						</td>
 						<td>
-							<h6>{{ station.address.street }}</h6>
+							{{ station.address.street }}
 						</td>
 					</tr>
 				</tbody>

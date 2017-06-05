@@ -41,7 +41,7 @@
                     <tr ng-click="Show_AddVehicle()">
                         <td colspan="2">
                             <div class="md-list-item-text" layout="column">
-                                <h4>Neue Ladestation hinzufügen</h4>
+                                <h4>Neues Fahrzeug hinzufügen</h4>
                             </div>
                         </td>
                     </tr>
@@ -61,32 +61,37 @@
                     </div>
                 </md-toolbar>
 
-                <div ng-switch-when="true">
+                <div ng-switch-when="true" >
 
                     <!--NICHT VERÄNDERBAR-->
                     <h4>
-                        ID: {{ currentVehicle.vehicleID }}
-                        <br/>
-                        Nummernschild:	<input type="text" ng-model="currentVehicle.licensePlate" ng-disabled="true"/>
-                        <br/>
+                        <md-input-container> 
+                            <input type="text" value="{{ currentVehicle.vehicleID }}" placeholder="ID" ng-disabled="true"/>
+                        </md-input-container>
+                        <md-input-container >
+                            <input type="text" ng-model="currentVehicle.licensePlate" placeholder="Nummernschild" ng-disabled="true"/>
+                        </md-input-container>
+                        <md-input-container >
+                            <input type="text" placeholder="Hersteller" ng-model="currentVehicle.manufacturer" ng-disabled="true"/>
+                        </md-input-container>
+                        <md-input-container >
+                            <input type="text" placeholder="Modell" ng-model="currentVehicle.model" ng-disabled="true"/>
+                        </md-input-container>
+                        <md-input-container>
 
-                        Hersteller:	<input type="text" ng-model="currentVehicle.manufacturer" ng-disabled="true"/>
-                        <br/>
-                        Modell:	<input type="text" ng-model="currentVehicle.model" ng-disabled="true"/>
-                        <br/>
-                        Baujahr:	<input type="number" ng-model="currentVehicle.constructionYear" ng-disabled="true"/>
-                        <br/>
-                        Kilowatt:		<input type="number" ng-model="currentVehicle.kilowatts" ng-disabled="true"/>
-                        <br/>
-                        <br/>
+                            <input type="number"  placeholder="Baujahr" ng-model="currentVehicle.constructionYear" ng-disabled="true"/>
+                        </md-input-container>
+                        <md-input-container>
+                            <input type="number" placeholder="Kilowatt" ng-model="currentVehicle.kilowatts" ng-disabled="true"/>
+                        </md-input-container>
                     </h4>
 
                     <!--VERÄNDERBAR AUßER-->
-                    <md-input-container flex-gt-sm>
-                        Reservierungszustand:
+                    <md-input-container>
+                        <p>Reservierungszustand</p>
                         <md-menu>
                             <md-button ng-disabled="editDisabled" ng-mouseenter="$mdMenu.open()">{{currentVehicle.bookingStateObj.text}}</md-button>
-                            <md-menu-content width="4" ng-mouseleave="$mdMenu.close()">
+                            <md-menu-content width="2" ng-mouseleave="$mdMenu.close()">
                                 <md-menu-item ng-repeat="item in bookingStates">
                                     <md-button ng-click="currentVehicle.bookingStateObj = item">
                                         {{item.text}}
@@ -95,11 +100,11 @@
                             </md-menu-content>
                         </md-menu>
                     </md-input-container>
-                    <md-input-container flex-gt-sm>
-                        Ladezustand:
+                    <md-input-container>
+                        <p> Ladezustand </p>
                         <md-menu>
                             <md-button ng-disabled="editDisabled" ng-mouseenter="$mdMenu.open()">{{currentVehicle.loadingStateObj.text}}</md-button>
-                            <md-menu-content width="4" ng-mouseleave="$mdMenu.close()">
+                            <md-menu-content width="2" ng-mouseleave="$mdMenu.close()">
                                 <md-menu-item ng-repeat="item in loadingStates">
                                     <md-button ng-click="currentVehicle.loadingStateObj = item">
                                         {{item.text}}
@@ -110,31 +115,34 @@
                     </md-input-container>
 
 
-                    <br/>
-                    Batteriestand:	<input type="number" ng-model="currentVehicle.chargeLevel" ng-disabled="editDisabled"/>
-                    <br/>
-                    Strasse		<input type="text" ng-model="currentVehicle.address.street" ng-disabled="true"/>
-                    <br/>
-                    <br/>
-                    <!--HIER KOMMT WIEDER NE KARTE HIN-->
-                    {{ currentVehicle.lastDate }}
-                    <br/>
-                    {{ currentVehicle.lastLat }} ___ {{ currentVehicle.lastLon }}
-                    <br/>				
+                    <md-input-container>
+                        <input type="number" placeholder="Batteriestand" ng-model="currentVehicle.chargeLevel" ng-disabled="editDisabled"/>
+                    </md-input-container>
+                    <md-input-container>
+                        <input type="text" placeholder="Strasse" ng-model="currentVehicle.address.street" ng-disabled="true"/>
+                    </md-input-container>
+                    <md-input-container>
+                        <input type="text" placeholder="" value="{{ currentVehicle.lastDate }}" ng-disabled="true"/>
+                    </md-input-container>
 
-                    <br/>
-                    Kilometer-Stand:	<input type="number" ng-model="currentVehicle.mileage" ng-disabled="editDisabled"/>
-                    <br/>
+                    <md-input-container>
+                        <input type="text" placeholder="LastLat" value="{{ currentVehicle.lastLat }}" ng-disabled="true"/>
+                    </md-input-container>
+                    <md-input-container>
+                        <input type="text" placeholder="LastLon" value="{{ currentVehicle.lastLon }}" ng-disabled="true"/>
+                    </md-input-container>
+                    <!--HIER KOMMT WIEDER NE KARTE HIN-->
+                    <md-input-container>
+                        <input type="number" placeholder="Kilometerstand" ng-model="currentVehicle.mileage" ng-disabled="editDisabled"/>
+                    </md-input-container>
 
                     <div ng-switch="editDisabled">
-
                         <div ng-switch-when="false">
-                            <input type="button" ng-click="Dismiss_Changes()" value="Verwerfen" />
-                            <input type="button" ng-click="Safe_Changes()" value="Speichern" />
+                            <md-button class="md-raised md-primary button-to-right" ng-click="Safe_Changes()"> Speichern </md-button>
+                            <md-button class="md-primary md-hue-1 button-to-right" ng-click="Dismiss_Changes()"> Verwerfen </md-button>
                         </div>
-
                         <div ng-switch-when="true">
-                            <input type="button" ng-click="EnableEditMode()" value="Bearbeiten" />
+                            <md-button class="md-raised md-primary button-to-right" ng-click="EnableEditMode()"> Bearbeiten </md-button>
                         </div>
                     </div>
                 </div>
