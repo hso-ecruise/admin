@@ -1,11 +1,9 @@
-<div class="stations-container" >
+<div class="stations-container">
     <div class="" layout="row" layout-wrap>
 
-		<input style="margin-top: 10px;" type="button" id='toggle_heatmap' ng-click="ToggleHeatmap()" value="Auslastung on/off"/>
-
-        <div id="map_stations" style="height: 700px; width:50%" class="content">
-        </div>
-
+		<input style="margin-top: 10px;" type="button" id='toggle_heatmap' ng-click="ToggleHeatmap()" value="Auslastung on/off" ng-cloak>
+        <div id="map_stations" style="height: 700px; width:50%" class="content"></div>
+        
         <div style="padding: 15px;"></div>
 
         <div class="content" style="width:15%">
@@ -22,7 +20,7 @@
 				<thead>
 					<tr>
 						<td>
-							<h4> ID  &nbsp;</h4>
+							<h4> ID &nbsp;</h4>
 						</td>
 
 						<td>
@@ -67,7 +65,6 @@
 				</md-toolbar>
 				
                 <div ng-switch-when="true">
-
                         <h4>
                             ID: {{ currentStation.stationID }}
                             <br/>
