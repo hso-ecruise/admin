@@ -101,8 +101,6 @@ application.controller('Ctrl_Stations', function ($rootScope, $scope, RESTFactor
 		
 		prom.then(function(response){
 			
-			console.log(response);
-			
 			var data = [];
 			
 			if(type === "ID"){
@@ -405,6 +403,8 @@ application.controller('Ctrl_Stations', function ($rootScope, $scope, RESTFactor
 
 			});
 			
+			function Finish(){
+			
 			$q.all(promises).then(function(response){
 				
 				var data = response;
@@ -444,6 +444,9 @@ application.controller('Ctrl_Stations', function ($rootScope, $scope, RESTFactor
 				heatmap.set('radius', 100);
 				
 			});
+			}
+			
+			setTimeout(Finish, 1000);
 			
 		}, function(response){
 			

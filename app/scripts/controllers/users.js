@@ -138,8 +138,6 @@ application.controller('Ctrl_Users', function ($rootScope, $scope, RESTFactory, 
 			customer.bookingsDone = {};
 			customer.bookingsOpen = {};
 			
-			console.log(customer);
-			
 			$scope.currentCustomer = customer;
 			$scope.$apply();			
 			
