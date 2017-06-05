@@ -15,7 +15,7 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
 
 	var markers = [];
 	
-	var marker_Address = undefined;
+	var marker_Address;
 	
 	
 	var map = new google.maps.Map(document.getElementById('map_vehicles'), {
@@ -70,7 +70,7 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
 			be: "FULL",
 			id: 2
 		}
-	}
+	};
 	
 	var BOOKING_STATES = {
 		0: {
