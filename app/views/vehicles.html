@@ -5,7 +5,7 @@
 
         <div style="padding: 15px;"></div>
 
-        <div class="content" style="width:15%">
+        <div class="content" style="width:15%;">
             <md-toolbar class="md-hue-2">
                 <div class="md-toolbar-tools">
                     <h2 class="md-flex">Fahrzeuge</h2>
@@ -14,7 +14,6 @@
             <md-input-container style="width:100%">
                 <input ng-model="searchQuery" my-enter="Enter_Search()" placeholder="Suchen nach ID" />
             </md-input-container>	
-
             <table>
                 <thead>
                     <tr>
@@ -61,58 +60,63 @@
                     </div>
                 </md-toolbar>
 
-                <div ng-switch-when="true" >
+                <div ng-switch-when="true" style=" padding:15px;">
 
                     <!--NICHT VERÄNDERBAR-->
-                    <h4>
-                        <md-input-container> 
-                            <input type="text" value="{{ currentVehicle.vehicleID }}" placeholder="ID" ng-disabled="true"/>
-                        </md-input-container>
-                        <md-input-container >
-                            <input type="text" ng-model="currentVehicle.licensePlate" placeholder="Nummernschild" ng-disabled="true"/>
-                        </md-input-container>
-                        <md-input-container >
-                            <input type="text" placeholder="Hersteller" ng-model="currentVehicle.manufacturer" ng-disabled="true"/>
-                        </md-input-container>
-                        <md-input-container >
-                            <input type="text" placeholder="Modell" ng-model="currentVehicle.model" ng-disabled="true"/>
-                        </md-input-container>
-                        <md-input-container>
 
-                            <input type="number"  placeholder="Baujahr" ng-model="currentVehicle.constructionYear" ng-disabled="true"/>
-                        </md-input-container>
-                        <md-input-container>
-                            <input type="number" placeholder="Kilowatt" ng-model="currentVehicle.kilowatts" ng-disabled="true"/>
-                        </md-input-container>
-                    </h4>
+                    <md-input-container> 
+                        <input type="text" value="{{ currentVehicle.vehicleID }}" placeholder="ID" ng-disabled="true"/>
+                    </md-input-container>
+                    <md-input-container >
+                        <input type="text" ng-model="currentVehicle.licensePlate" placeholder="Nummernschild" ng-disabled="true"/>
+                    </md-input-container>
+                    <md-input-container >
+                        <input type="text" placeholder="Hersteller" ng-model="currentVehicle.manufacturer" ng-disabled="true"/>
+                    </md-input-container>
+                    <md-input-container >
+                        <input type="text" placeholder="Modell" ng-model="currentVehicle.model" ng-disabled="true"/>
+                    </md-input-container>
+                    <md-input-container>
+
+                        <input type="number"  placeholder="Baujahr" ng-model="currentVehicle.constructionYear" ng-disabled="true"/>
+                    </md-input-container>
+                    <md-input-container>
+                        <input type="number" placeholder="Kilowatt" ng-model="currentVehicle.kilowatts" ng-disabled="true"/>
+                    </md-input-container>
+
 
                     <!--VERÄNDERBAR AUßER-->
-                    <md-input-container>
-                        <p>Reservierungszustand</p>
-                        <md-menu>
-                            <md-button ng-disabled="editDisabled" ng-mouseenter="$mdMenu.open()">{{currentVehicle.bookingStateObj.text}}</md-button>
-                            <md-menu-content width="2" ng-mouseleave="$mdMenu.close()">
-                                <md-menu-item ng-repeat="item in bookingStates">
-                                    <md-button ng-click="currentVehicle.bookingStateObj = item">
-                                        {{item.text}}
-                                    </md-button>
-                                </md-menu-item>
-                            </md-menu-content>
-                        </md-menu>
-                    </md-input-container>
-                    <md-input-container>
-                        <p> Ladezustand </p>
-                        <md-menu>
-                            <md-button ng-disabled="editDisabled" ng-mouseenter="$mdMenu.open()">{{currentVehicle.loadingStateObj.text}}</md-button>
-                            <md-menu-content width="2" ng-mouseleave="$mdMenu.close()">
-                                <md-menu-item ng-repeat="item in loadingStates">
-                                    <md-button ng-click="currentVehicle.loadingStateObj = item">
-                                        {{item.text}}
-                                    </md-button>
-                                </md-menu-item>
-                            </md-menu-content>
-                        </md-menu>
-                    </md-input-container>
+                    
+                    <div layout-align="start center" layout="row">
+                        <div layout="column" flex="33" flex-sm="100" flex-xs="100" layout-align="center center">
+                            <p>Reservierungszustand</p>
+                            <md-menu>
+                                <md-button ng-disabled="editDisabled" ng-mouseenter="$mdMenu.open()">{{currentVehicle.bookingStateObj.text}}</md-button>
+                                <md-menu-content width="2" ng-mouseleave="$mdMenu.close()">
+                                    <md-menu-item ng-repeat="item in bookingStates">
+                                        <md-button ng-click="currentVehicle.bookingStateObj = item">
+                                            {{item.text}}
+                                        </md-button>
+                                    </md-menu-item>
+                                </md-menu-content>
+                            </md-menu>
+                        </div>
+                        <div layout="column" flex="33" flex-sm="100" flex-xs="100" layout-align="center center">
+                            <p> Ladezustand </p>
+                            <md-menu>
+                                <md-button ng-disabled="editDisabled" ng-mouseenter="$mdMenu.open()">{{currentVehicle.loadingStateObj.text}}</md-button>
+                                <md-menu-content width="2" ng-mouseleave="$mdMenu.close()">
+                                    <md-menu-item ng-repeat="item in loadingStates">
+                                        <md-button ng-click="currentVehicle.loadingStateObj = item">
+                                            {{item.text}}
+                                        </md-button>
+                                    </md-menu-item>
+                                </md-menu-content>
+                            </md-menu>
+                        </div>
+                    </div>    
+                    
+
 
 
                     <md-input-container>
@@ -226,5 +230,4 @@
             </div>
         </div>
     </div>
-</div>
 </div>
