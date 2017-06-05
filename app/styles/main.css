@@ -36,7 +36,9 @@ md-nav-bar md-nav-ink-bar {
     margin:auto;
     margin-bottom: 10px;
 }
-
+.fullscreen{
+    height: calc(100% - 52px - 10px);
+}
 #ng_view{
     height: calc(100% - 52px - 10px);
 }
