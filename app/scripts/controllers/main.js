@@ -16,20 +16,24 @@ const API_KEY = "AIzaSyBCbY_MjWJ1cDjugF_MBHwnYDWFNJYAa4o&callback=initMap";
 application.service('GetCaller', function ($http, $rootScope) {
 
     this.Get = function (url, body, token) {
-		var get = $http({
-			method: "get",
-			url: url,
-			data: body
-		});
-		/*
-		if(body !== null){
-			get.data = body;
-		}
-		*/
+		
+		var get = {};
+		
 		if(token === true){
-			get.header = {
-				'Authorization': $rootScope.token
-			};
+			get = $http({
+				method: "get",
+				url: url,
+				data: body,
+				headers: {
+					'access_token': $rootScope.token
+				}
+			});
+		}else{
+			get = $http({
+				method: "get",
+				url: url,
+				data: body
+			});
 		}
 		
 		return get;
@@ -40,22 +44,28 @@ application.service('GetCaller', function ($http, $rootScope) {
 application.service('PostCaller', function ($http, $rootScope) {
 
     this.Post = function (url, body, token) {
-		var post = $http({
-			method: "post",
-			url: url,
-			data: body
-		});
-		/*
-		if(body !== null){
-			post.data = body;
-		}
-		*/
+		
+		var post = {};
+		
 		if(token === true){
-			post.header = {
-				'Authorization': $rootScope.token
-			};
+			post = $http({
+				method: "post",
+				url: url,
+				data: body,
+				headers: {
+					'access_token': $rootScope.token
+				}
+			});
+		}else{
+			post = $http({
+				method: "post",
+				url: url,
+				data: body
+			});			
 		}
+		
 		return post;
+		
     };
 
 });
@@ -63,22 +73,28 @@ application.service('PostCaller', function ($http, $rootScope) {
 application.service('PatchCaller', function ($http, $rootScope) {
 
     this.Patch = function (url, body, token) {
-		var patch = $http({
-			method: "patch",
-			url: url,
-			data: body
-		});
-		/*
-		if(body !== null){
-			patch.data = body;
-		}
-		*/
+		
+		var patch = {};
+		
 		if(token === true){
-			patch.header = {
-				'Authorization': $rootScope.token
-			};
+			patch = $http({
+				method: "patch",
+				url: url,
+				data: body,
+				headers: {
+					'access_token': $rootScope.token
+				}
+			});
+		}else{
+			patch = $http({
+				method: "patch",
+				url: url,
+				data: body
+			});
 		}
+		
 		return patch;
+		
     };
 
 });
