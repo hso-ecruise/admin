@@ -64,26 +64,33 @@
 
                     <!--NICHT VERÄNDERBAR-->
 
-                    <md-input-container> 
-                        <input type="text" value="{{ currentVehicle.vehicleID }}" placeholder="ID" ng-disabled="true"/>
-                    </md-input-container>
-                    <md-input-container >
-                        <input type="text" ng-model="currentVehicle.licensePlate" placeholder="Nummernschild" ng-disabled="true"/>
-                    </md-input-container>
-                    <md-input-container >
-                        <input type="text" placeholder="Hersteller" ng-model="currentVehicle.manufacturer" ng-disabled="true"/>
-                    </md-input-container>
-                    <md-input-container >
-                        <input type="text" placeholder="Modell" ng-model="currentVehicle.model" ng-disabled="true"/>
-                    </md-input-container>
-                    <md-input-container>
-
-                        <input type="number"  placeholder="Baujahr" ng-model="currentVehicle.constructionYear" ng-disabled="true"/>
-                    </md-input-container>
-                    <md-input-container>
-                        <input type="number" placeholder="Kilowatt" ng-model="currentVehicle.kilowatts" ng-disabled="true"/>
-                    </md-input-container>
-
+						
+					<md-content flex layout-padding>
+						<md-input-container> 
+							<input type="text" value="{{ currentVehicle.vehicleID }}" placeholder="ID" ng-disabled="true"/>
+						</md-input-container>
+						<md-input-container >
+							<input type="text" ng-model="currentVehicle.licensePlate" placeholder="Nummernschild" ng-disabled="true"/>
+						</md-input-container>
+					</md-content>
+                    
+					<md-content flex layout-padding>
+						<md-input-container >
+							<input type="text" placeholder="Hersteller" ng-model="currentVehicle.manufacturer" ng-disabled="true"/>
+						</md-input-container>
+						<md-input-container >
+							<input type="text" placeholder="Modell" ng-model="currentVehicle.model" ng-disabled="true"/>
+						</md-input-container>
+					</md-content>
+                    
+					<md-content flex layout-padding>
+						<md-input-container>
+							<input type="number"  placeholder="Baujahr" ng-model="currentVehicle.constructionYear" ng-disabled="true"/>
+						</md-input-container>
+						<md-input-container>
+							<input type="number" placeholder="Kilowatt" ng-model="currentVehicle.kilowatts" ng-disabled="true"/>
+						</md-input-container>
+					</md-content>
 
                     <!--VERÄNDERBAR AUßER-->
                     
@@ -116,29 +123,37 @@
                         </div>
                     </div>    
                     
-
-
-
-                    <md-input-container>
-                        <input type="number" placeholder="Batteriestand" ng-model="currentVehicle.chargeLevel" ng-disabled="editDisabled"/>
-                    </md-input-container>
-                    <md-input-container>
-                        <input type="text" placeholder="Strasse" ng-model="currentVehicle.address.street" ng-disabled="true"/>
-                    </md-input-container>
-                    <md-input-container>
-                        <input type="text" placeholder="" value="{{ currentVehicle.lastDate }}" ng-disabled="true"/>
-                    </md-input-container>
-
+                    
+					<md-content flex layout-padding>
+						<md-input-container>
+							<input type="number" placeholder="Batteriestand" ng-model="currentVehicle.chargeLevel" ng-disabled="editDisabled"/>
+						</md-input-container>
+					</md-content>
+                    
+					<md-content flex layout-padding>
+						<p>Letzte bekannte Position</p>
+						<md-input-container>
+							<input type="text" placeholder="Strasse" ng-model="currentVehicle.address.street" ng-disabled="true"/>
+						</md-input-container>
+						<md-input-container>
+							<input type="date" placeholder="" value="{{ currentVehicle.lastDate }}" ng-disabled="true"/>
+						</md-input-container>
+					</md-content>
+                    
+					<md-content flex layout-padding>
+						<md-input-container>
+							<input type="number" placeholder="Kilometerstand" ng-model="currentVehicle.mileage" ng-disabled="editDisabled"/>
+						</md-input-container>
+					</md-content>
+                    
+					<!--
                     <md-input-container>
                         <input type="text" placeholder="LastLat" value="{{ currentVehicle.lastLat }}" ng-disabled="true"/>
                     </md-input-container>
                     <md-input-container>
                         <input type="text" placeholder="LastLon" value="{{ currentVehicle.lastLon }}" ng-disabled="true"/>
                     </md-input-container>
-                    <!--HIER KOMMT WIEDER NE KARTE HIN-->
-                    <md-input-container>
-                        <input type="number" placeholder="Kilometerstand" ng-model="currentVehicle.mileage" ng-disabled="editDisabled"/>
-                    </md-input-container>
+                    -->
 
                     <div ng-switch="editDisabled">
                         <div ng-switch-when="false">
