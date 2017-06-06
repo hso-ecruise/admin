@@ -13,15 +13,15 @@ application.controller('Ctrl_Invoices', function ($rootScope, $scope, RESTFactor
 	var invoices_all = {};
 	
 	var INVOICE_TYPES = {
-		0: {
+		1: {
 			text: "Abbuchung",
 			be: "DEBIT",
-			id: 0
+			id: 1
 		},
-		1: {
+		2: {
 			text: "Gutschrift",
 			be: "CREDIT",
-			id: 1
+			id: 2
 		}
 	};
 	
@@ -323,8 +323,8 @@ application.controller('Ctrl_Invoices', function ($rootScope, $scope, RESTFactor
 				
 				new_item.invoiceID = invoiceID;
 				new_item.reason = "";
-				new_item.amount = "0,00";
-				new_item.typeObj = INVOICE_TYPES[0];
+				new_item.amount = "0.00";
+				new_item.typeObj = INVOICE_TYPES[1];
 				
                 $scope.new_item = new_item;
 				
@@ -337,6 +337,12 @@ application.controller('Ctrl_Invoices', function ($rootScope, $scope, RESTFactor
 					
 					var item = $scope.new_item;
 					
+					for(var i = 0; i < item.amount.length; i++){
+						if(item.amount[i] === ','){
+							item[i].amount = '.';
+						}
+					}
+
 					var data = {
 						invoiceId: item.invoiceID,
 						amount: parseFloat(item.amount),
