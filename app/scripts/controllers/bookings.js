@@ -391,8 +391,8 @@ application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactor
 		}
 		
 		booking.customerId = $scope.new_booking.customerID;
-		booking.bookedPositionLatitude = $scope.new_booking.lat;
-		booking.bookedPositionLongitude = $scope.new_booking.lon;
+		booking.bookingPositionLatitude = $scope.new_booking.lat;
+		booking.bookingPositionLongitude = $scope.new_booking.lon;
 		booking.bookingDate = now;
 		booking.plannedDate = plannedDate;
 		

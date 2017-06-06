@@ -528,8 +528,8 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
 		//TODO
 		new_vehicle.licensePlate = "";
 		new_vehicle.chargingState = "";
-		new_vehicle.bookingStateObj = BOOKING_STATES[0];
-		new_vehicle.loadingStateObj = LOADING_STATES[0];
+		new_vehicle.bookingStateObj = BOOKING_STATES[1];
+		new_vehicle.loadingStateObj = LOADING_STATES[1];
 		new_vehicle.bookingState = "";
 		new_vehicle.mileage = 0;
 		new_vehicle.chargeLevel = 0;
