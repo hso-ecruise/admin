@@ -47,6 +47,9 @@ application.controller('Ctrl_Stations', function ($rootScope, $scope, RESTFactor
         });
 
         marker.addListener('click', function(event){
+
+			Load_Details(this.id);
+
             var new_alert = $mdDialog.alert({
                 title: title,
                 textContent: content,
@@ -383,6 +386,7 @@ application.controller('Ctrl_Stations', function ($rootScope, $scope, RESTFactor
 		var promises = [];
 		var stations = {};
 		
+
 		RESTFactory.Charging_Stations_Get().then(function(response){
 			
 			var data = response.data;
@@ -443,10 +447,13 @@ application.controller('Ctrl_Stations', function ($rootScope, $scope, RESTFactor
 					
 					heatmap.set('radius', 100);
 					
+				}, function(response){
+					alert("Heatmap kann nicht abgerufen werden");
+					Hide_Heatmap();
 				});
 			}
 			
-			setTimeout(Finish, 1000);
+			setTimeout(Finish, 2000);
 			
 		}, function(response){
 			

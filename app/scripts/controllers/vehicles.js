@@ -55,38 +55,38 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
     };
 	
 	var LOADING_STATES = {
-		0: {
+		1: {
 			text: "Entladen",
 			be: "DISCHARGING",
-			id: 0
-		},
-		1: {
-			text: "Laden",
-			be: "CHARGING",
 			id: 1
 		},
 		2: {
+			text: "Laden",
+			be: "CHARGING",
+			id: 2
+		},
+		3: {
 			text: "Geladen",
 			be: "FULL",
-			id: 2
+			id: 3
 		}
 	};
 	
 	var BOOKING_STATES = {
-		0: {
+		1: {
 			text: "Verfügbar",
 			be: "AVAILABLE",
-			id: 0
-		},
-		1: {
-			text: "Gebucht",
-			be: "BOOKED",
 			id: 1
 		},
 		2: {
+			text: "Gebucht",
+			be: "BOOKED",
+			id: 2
+		},
+		3: {
 			text: "Geblockt",
 			be: "BLOCKED",
-			id: 2
+			id: 3
 		}
 	};
 	
@@ -112,6 +112,9 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
         });
 
         marker.addListener('click', function(event){
+
+			Load_Details(this.id);
+
             var new_alert = $mdDialog.alert({
                 title: title,
                 textContent: content,
@@ -141,21 +144,20 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
 	}
 	
 	function Cars_AddMarker(car){
+
+        var lat = car.lastLat;
+        var lon = car.lastLon;
+        var bat = car.chargeLevel;
+        var carID = car.vehicleID;
+
+        var title = "Fahrzeugdetails " + carID;
 		
-        if(car.bookingState !== 1000){
+        if(car.bookingState === 1 || car.bookingState === 2){
 
-            var lat = car.lastLat;
-            var lon = car.lastLon;
-            var bat = car.chargeLevel;
-            var carID = car.vehicleID;
-
-            var title = "Fahrzeugdetails " + carID;
-
-            if(bat < 100){
+			
+			if(car.chargingState === 2){
 				
-                var prom_charge = RESTFactory.Car_Charging_Stations_Get_CarID(carID);
-
-                prom_charge.then(function(response){
+                RESTFactory.Car_Charging_Stations_Get_CarID(carID).then(function(response){
 					
 					var info = response.data;
 					
@@ -206,7 +208,7 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
 
 
 
-            }else{
+            }else if(car.chargingState === 3){
 
                 var content = "Das Fahrzeug ist voll geladen und kann benutzt werden.";
 
@@ -214,7 +216,13 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
 
             }
 
-        }
+        }else{
+			
+			var content = "Das Fahrzeug ist geblockt. Und zu " + bat + "% geladen.";
+
+			new AddMarker(carID, title, content, "car_occupied", lat, lon);
+
+		}
 
     }
 	
@@ -333,7 +341,7 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
 			vehicle.constructionYear = data_use.yearOfConstruction;
 			vehicle.lastLat = data_use.lastKnownPositionLatitude;
 			vehicle.lastLon = data_use.lastKnownPositionLongitude;
-			vehicle.lastDate = data_use.lastKnownPositionDate;
+			vehicle.lastDate = Helper.Get_Zeit(data_use.lastKnownPositionDate);
 			vehicle.address_state = "false";
 			vehicle.maintenance_state = "false";
 			
@@ -454,8 +462,7 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
 			});
 		}
 		
-		
-		setTimeout(new Update("ALL", undefined), 2000);
+		setTimeout(Update, 2000);
 		
 		
 	}

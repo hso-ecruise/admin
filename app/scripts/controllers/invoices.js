@@ -250,6 +250,15 @@ application.controller('Ctrl_Invoices', function ($rootScope, $scope, RESTFactor
 		$scope.invoice_selected = "false";
 		$scope.$apply();
 	}
+
+	function SetPaid(id){
+		if($scope.currentInvoice.paid === true){
+			RESTFactory.Invoices_Patch_Paid(id, false);
+		}else{
+			RESTFactory.Invoices_Patch_Paid(id, true);
+		}
+		setTimeout(Update, 500);
+	}
 	
 	
 	function Show_AddItem_PopUp(invoiceID){
@@ -363,6 +372,11 @@ application.controller('Ctrl_Invoices', function ($rootScope, $scope, RESTFactor
 	
 	$scope.Dismiss_New = function(){
 		new Dismiss_New();
+	};
+
+
+	$scope.SetPaid = function(id){
+		new SetPaid(id);
 	};
 
 	

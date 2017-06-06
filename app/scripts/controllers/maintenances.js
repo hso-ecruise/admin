@@ -163,7 +163,7 @@ application.controller('Ctrl_Maintenances', function ($rootScope, $scope, RESTFa
 						car_maintenance.plannedDate = Helper.Get_Zeit(data_use.plannedDate);
 						car_maintenance.endState = false;
 						car_maintenance.endDate = new Date();
-						car_maintenance.minEndDate = new Date();
+						car_maintenance.minEndDate = Helper.Get_Zeit(data_use.plannedDate).date;
 						if(data_use.completedDate !== null){
 							car_maintenance.endState = true;
 							car_maintenance.completedDate = Helper.Get_Zeit(data_use.completedDate);

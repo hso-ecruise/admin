@@ -97,8 +97,6 @@ application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactor
 					booking.statusText = "In der Zukunft";
 				}
 				
-				console.booking;
-				
 				bookings_all[ID_STR] = booking;
 				$scope.bookings = bookings_all;
 				$scope.$apply();
@@ -106,28 +104,26 @@ application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactor
 				
 				function CallCustomer(){
 				
-				//GET CUSTOMER
-				console.log("Load customer: " + booking.customerID);
-				RESTFactory.Customers_Get_CustomerID(booking.customerID).then(function(response){
-					console.log("Result from: " + booking.customerID);
-				
-					var custom_data = response.data;
-					
-					var customer = {};
-					
-					customer.customerID = custom_data.customerId;
-					customer.name = custom_data.firstName;
-					customer.familyName = custom_data.lastName;
-					
-					booking.customer = customer;
-					
-					bookings_all[ID_STR] = booking;
-					$scope.bookings = bookings_all;
-					$scope.$apply();
-					
-				}, function(response){
-					
-				});
+					//GET CUSTOMER
+					RESTFactory.Customers_Get_CustomerID(booking.customerID).then(function(response){
+						
+						var custom_data = response.data;
+						
+						var customer = {};
+						
+						customer.customerID = custom_data.customerId;
+						customer.name = custom_data.firstName;
+						customer.familyName = custom_data.lastName;
+						
+						booking.customer = customer;
+						
+						bookings_all[ID_STR] = booking;
+						$scope.bookings = bookings_all;
+						$scope.$apply();
+						
+					}, function(response){
+						
+					});
 				
 				}
 				
@@ -170,195 +166,206 @@ application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactor
 				booking.status = "FUTURE";
 				booking.statusText = "In der Zukunft";
 			}
+
+			booking.tripState = "false";
+			booking.invoiceState = "false";
+			booking.customerState = "false";
 			
 			$scope.currentBooking = booking;
 			$scope.$apply();
 			
-			//GET INVOICE INFOS
-			RESTFactory.Invoices_Get_Items_ItemID(booking.invoiceItemID).then(function(response){
-			
-				var data = response.data;
+			if(booking.invoiceItemID !== null && booking.invoiceItemID !== 0){
+
+				//GET INVOICE INFOS
+				RESTFactory.Invoices_Get_Items_ItemID(booking.invoiceItemID).then(function(response){
 				
-				var invoice = {};
-				
-				invoice.invoiceID = data.invoiceId;
-				invoice.customerId = data.customerID;
-				invoice.totalAmount = data.totalAmount;
-				invoice.paid = data.paid;
-				invoice.paidText = "Rechnung offen";
-				if(invoice.paid === "true"){
-					invoice.paidText = "Rechnung bezahlt";
-				}
-				booking.invoice = invoice;
-				
-				booking.invoiceState = "true";	
-				$scope.currentBooking = booking;
-				$scope.$apply();
-				
-			}, function(response){
-				
-				booking.invoiceState = "false";
-				$scope.currentBooking = booking;
-				$scope.$apply();
-			
-			});
-			
-			//GET CUSTOMER INFOS
-			RESTFactory.Customers_Get_CustomerID(booking.customerID).then(function(response){
-				
-				
-				var data = response.data;
-				
-				var customer = {};
-				
-				customer.customerID = data.customerId;
-				customer.name = data.firstName;
-				customer.familyName = data.lastName;
-				
-				booking.customer = customer;
-				
-				booking.customerState = "true";
-				$scope.currentBooking = booking;
-				$scope.$apply();
-				
-			}, function(response){
-				
-				booking.customerState = "false";
-				$scope.currentBooking = booking;
-				$scope.$apply();
-				
-			});
-			
-			//GET TRIP INFOS
-			RESTFactory.Trips_Get_TripID(booking.tripID).then(function(response){
-			
-				var data = response.data;
-				
-				var trip = {};
-				
-				trip.tripID = data.tripId;
-				trip.carID = data.carId;
-				trip.customerID = data.customerId;
-				trip.startChargingStationID = data.startChargingStationId;
-				trip.endChargingStationID = data.endChargingStationId;
-				trip.distance = data.distanceTravelled;
-				
-				var start = {};
-				start.startDate = data.startDate;
-				start.time = Helper.Get_Time(data.startDate);
-				start.date = Helper.Get_Date(data.startDate);
-				
-				var end = {};
-				end.endDate = data.endDate;
-				end.time = Helper.Get_Time(data.endDate);
-				end.date = Helper.Get_Date(data.endDate);
-				
-				trip.start = start;
-				trip.end = end;
-				
-				booking.trip = trip;
-				
-				booking.tripState = "true";
-				$scope.currentBooking = booking;
-				$scope.$apply();
-				
-				
-				//GET START STATION AND ADDRESS
-				RESTFactory.Charging_Stations_Get_Charging_StationID(trip.startChargingStationID).then(function(response){
-					
 					var data = response.data;
 					
-					var station = {};
+					var invoice = {};
 					
-					station.chargingStationID = data.chargingStationId;
-					station.slots = data.slots;
-					station.slotsOccupied = data.slotsOccupied;
-					station.lat = data.latitude;
-					station.lon = data.longitude;
+					invoice.invoiceID = data.invoiceId;
+					invoice.customerId = data.customerID;
+					invoice.totalAmount = data.totalAmount;
+					invoice.paid = data.paid;
+					invoice.paidText = "Rechnung offen";
+					if(invoice.paid === "true"){
+						invoice.paidText = "Rechnung bezahlt";
+					}
+					booking.invoice = invoice;
 					
-					console.log(station);
-					
-					booking.trip.start.station = station;
-					
-					booking.trip.startState = "true";
+					booking.invoiceState = "true";	
 					$scope.currentBooking = booking;
 					$scope.$apply();
-					
-					
-					Helper.Get_Address(station.lat, station.lon).then(function(address){
-						
-						console.log(address);
-						
-						booking.trip.start.station.address = address;
-						
-						$scope.currentBooking = booking;
-						$scope.$apply();
-						
-						console.log($scope.currentBooking.trip.start);
-						
-					}, function(response){
-						
-					});
 					
 				}, function(response){
 					
-					booking.trip.startState = "false";
-					$scope.currentBooking = booking;
-					$scope.$apply();
-					
 				});
-				
-				
-				//GET END STATION AND ADDRESS
-				RESTFactory.Charging_Stations_Get_Charging_StationID(trip.endChargingStationID).then(function(response){
+
+			}
+			
+			if(booking.customerID !== null && booking.customerID !== 0){
+
+				//GET CUSTOMER INFOS
+				RESTFactory.Customers_Get_CustomerID(booking.customerID).then(function(response){
+					
 					
 					var data = response.data;
 					
-					var station = {};
+					var customer = {};
 					
-					station.chargingStationID = data.chargingStationId;
-					station.slots = data.slots;
-					station.slotsOccupied = data.slotsOccupied;
-					station.lat = data.latitude;
-					station.lon = data.longitude;
+					customer.customerID = data.customerId;
+					customer.name = data.firstName;
+					customer.familyName = data.lastName;
 					
-					booking.trip.end.station = station;
+					booking.customer = customer;
 					
-					booking.trip.endState = "true";
+					booking.customerState = "true";
 					$scope.currentBooking = booking;
 					$scope.$apply();
-				
-				
-					Helper.Get_Address(station.lat, station.lon).then(function(response){
-						
-						var address = response;
-						address.status = true;
-						
-						booking.trip.end.station.address = address;
-						
-						$scope.currentBooking = booking;
-						$scope.$apply();
-						
-					}, function(response){
-						
-					});
 					
 				}, function(response){
 					
-					booking.trip.endState = "false";
-					$scope.currentBooking = booking;
-					$scope.$apply();
+				});
+
+			}
+			
+			if(booking.tripID !== null && booking.tripID !== 0){
+
+				//GET TRIP INFOS
+				RESTFactory.Trips_Get_TripID(booking.tripID).then(function(response){
+					
+					var data = response.data;
+
+					if(booking.status === "PAST" && data.startDate === null){
+
+					}else{
+					
+						var trip = {};
+						
+						trip.tripID = data.tripId;
+						trip.carID = data.carId;
+						trip.customerID = data.customerId;
+						trip.startChargingStationID = data.startChargingStationId;
+						trip.endChargingStationID = data.endChargingStationId;
+						trip.distance = data.distanceTravelled;
+						
+						var start = {};
+						start.startDate = data.startDate;
+						start.time = Helper.Get_Time(data.startDate);
+						start.date = Helper.Get_Date(data.startDate);
+						
+						var end = {};
+						end.endDate = data.endDate;
+						end.time = Helper.Get_Time(data.endDate);
+						end.date = Helper.Get_Date(data.endDate);
+						
+						trip.start = start;
+						trip.end = end;
+
+						trip.startState = "false";
+						trip.endState = "false";
+
+
+						booking.trip = trip;
+						
+						booking.tripState = "true";
+						$scope.currentBooking = booking;
+						$scope.$apply();
+						
+						if(trip.startChargingStationID !== null && trip.startChargingStationID !== 0){
+
+							//GET START STATION AND ADDRESS
+							RESTFactory.Charging_Stations_Get_Charging_StationID(trip.startChargingStationID).then(function(response){
+								
+								var data = response.data;
+								
+								var station = {};
+								
+								station.chargingStationID = data.chargingStationId;
+								station.slots = data.slots;
+								station.slotsOccupied = data.slotsOccupied;
+								station.lat = data.latitude;
+								station.lon = data.longitude;
+								
+								console.log(station);
+								
+								booking.trip.start.station = station;
+								
+								booking.trip.startState = "true";
+								$scope.currentBooking = booking;
+								$scope.$apply();
+								
+								
+								Helper.Get_Address(station.lat, station.lon).then(function(address){
+									
+									console.log(address);
+									
+									booking.trip.start.station.address = address;
+									
+									$scope.currentBooking = booking;
+									$scope.$apply();
+									
+									console.log($scope.currentBooking.trip.start);
+									
+								}, function(response){
+									
+								});
+								
+							}, function(response){
+								
+							});
+						
+						}
+						
+						if(trip.endChargingStationID !== null && trip.endChargingStationID !== 0){
+						
+							//GET END STATION AND ADDRESS
+							RESTFactory.Charging_Stations_Get_Charging_StationID(trip.endChargingStationID).then(function(response){
+								
+								var data = response.data;
+								
+								var station = {};
+								
+								station.chargingStationID = data.chargingStationId;
+								station.slots = data.slots;
+								station.slotsOccupied = data.slotsOccupied;
+								station.lat = data.latitude;
+								station.lon = data.longitude;
+								
+								booking.trip.end.station = station;
+								
+								booking.trip.endState = "true";
+								$scope.currentBooking = booking;
+								$scope.$apply();
+							
+							
+								Helper.Get_Address(station.lat, station.lon).then(function(response){
+									
+									var address = response;
+									address.status = true;
+									
+									booking.trip.end.station.address = address;
+									
+									$scope.currentBooking = booking;
+									$scope.$apply();
+									
+								}, function(response){
+									
+								});
+								
+							}, function(response){
+								
+							});
+							
+						}
+
+					}
+
+				}, function(response){
 					
 				});
-				
-			}, function(response){
-				
-				booking.tripState = "false";
-				$scope.currentBooking = booking;
-				$scope.$apply();
-				
-			});
 			
+			}
 			
 		});
 		
