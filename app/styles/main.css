@@ -17,7 +17,6 @@ md-input-container{
     height: 300px;
     width: 100%; 
 }
-
 .login-form{
     margin: auto;
     width: 420px;
@@ -26,7 +25,6 @@ md-input-container{
 .button-to-right {
     float: right;
 }
-
 md-nav-bar md-nav-ink-bar {
     background: blue;
     accentPalette:blue;
@@ -39,10 +37,15 @@ md-nav-bar md-nav-ink-bar {
 .fullscreen{
     height: calc(100vh - 100px);
 }
+
+.scroll{
+    height: calc(100vh - 300px);
+    overflow:auto;
+}
+
 #ng_view{
     height: calc(100% - 52px - 10px);
 }
-
 #search_input{
     background-color: #fff;
     font-family: Roboto;
@@ -55,13 +58,11 @@ md-nav-bar md-nav-ink-bar {
     width: 300px;
 
 }
-
 .content{
     background: #fafafa;
     border: 0px solid #ebebeb;
     box-shadow: rgba(0,0,0,0.16) 0px 2px 2px 0px,rgba(0,0,0,0.09804) 0px 2px 2px 0px;
 }
-
 body {
     padding: 0;
     background: #eee;

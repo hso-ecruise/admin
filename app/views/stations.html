@@ -15,39 +15,42 @@
             <md-input-container style="width:100%">
                 <input ng-model="searchQuery" my-enter="Enter_Search()" placeholder="Suchen nach ID" />
             </md-input-container>	
+            <div class="scroll">
+                <md-content>
+                    <table>
+                        <thead>
+                            <tr>
+                                <td>
+                                    <h4> ID &nbsp;</h4>
+                                </td>
 
-            <table>
-                <thead>
-                    <tr>
-                        <td>
-                            <h4> ID &nbsp;</h4>
-                        </td>
-
-                        <td>
-                            <h4> Strasse </h4>
-                        </td>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr ng-repeat="(key, station) in stations track by $index" ng-click="Load_Details(key)">
-                        <td>
-                            {{ key }}
-                        </td>
-                        <td>
-                            {{ station.address.street }}
-                        </td>
-                    </tr>
-                </tbody>
-                <tfoot>
-                    <tr ng-click="Show_AddStation()">
-                        <td colspan="2">
-                            <div class="md-list-item-text" layout="column">
-                                <h4>Neue Ladestation hinzufügen</h4>
-                            </div>
-                        </td>
-                    </tr>
-                </tfoot>
-            </table>
+                                <td>
+                                    <h4> Strasse </h4>
+                                </td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="(key, station) in stations track by $index" ng-click="Load_Details(key)">
+                                <td>
+                                    {{ key }}
+                                </td>
+                                <td>
+                                    {{ station.address.street }}
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr ng-click="Show_AddStation()">
+                                <td colspan="2">
+                                    <div class="md-list-item-text" layout="column">
+                                        <h4>Neue Ladestation hinzufügen</h4>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </md-content>
+            </div>
             <!--
 <md-button class="md-raised md-primary button-to-right" ng-click="Show_AddStation()"> Hinzufügen </md-button>
 -->
@@ -64,7 +67,7 @@
                     </div>
                 </md-toolbar>
                 <div ng-switch-when="true" style="padding:15px;">
-                    
+
                     <md-content flex layout-padding>
                         <md-input-container>
                             <input type="text" placeholder="ID" value="{{ currentStation.stationID }}" ng-disabled="true" />

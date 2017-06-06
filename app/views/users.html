@@ -11,35 +11,37 @@
                     <label> Suche nach Nutzer ID oder Nachname</label>
                     <input ng-model="searchQuery" my-enter="Enter_Search()"/>
                 </md-input-container>
-                <md-content>
-                    <table>
-                        <thead>
-                            <tr>
-                                <td>
-									<h4>ID &nbsp;</h4>
-								</td>
-								<td>
-									<h4>Name</h4>
-								</td>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr ng-repeat="(key, customer) in customers track by $index" ng-click="Load_Details(key)">
-                                <td>{{key}}</td>
-                                <td>{{ customer.name }} {{ customer.familyName }}</td>
-                            </tr>
-                        </tbody>
-                        <tfoot>
-                            <tr ng-click="Show_AddCustomer()">
-                                <td colspan="2">
-                                    <div class="md-list-item-text" layout="column">
-                                        <h4>Neuen Nutzer hinzufügen</h4>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tfoot>
-                    </table>
-                </md-content>
+                <div class="scroll">
+                    <md-content>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <td>
+                                        <h4>ID &nbsp;</h4>
+                                    </td>
+                                    <td>
+                                        <h4>Name</h4>
+                                    </td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="(key, customer) in customers track by $index" ng-click="Load_Details(key)">
+                                    <td>{{key}}</td>
+                                    <td>{{ customer.name }} {{ customer.familyName }}</td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr ng-click="Show_AddCustomer()">
+                                    <td colspan="2">
+                                        <div class="md-list-item-text" layout="column">
+                                            <h4>Neuen Nutzer hinzufügen</h4>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </md-content>
+                </div>
             </md-content>
         </div>
 
@@ -63,241 +65,241 @@
                 <div ng-switch-when="true">
                     <md-tabs md-dynamic-height md-border-bottom>
                         <md-tab label="Stammdaten">
-							
-							<!--Stammdaten-->
-							<form name="user_Form">
-								<md-content flex layout-padding>
-									<md-input-container flex-gt-sm>
-										<input value="ID {{ currentCustomer.customerID }}" disabled>
-									</md-input-container>	
-									<md-input-container flex-gt-sm>
-										<input type="text" placeholder="ChipID" ng-model="currentCustomer.chipID" ng-disabled="editDisabled"/>
-									</md-input-container>
-									<br><br>
-								</md-content>
-						
-								<md-content flex layout-padding>
-									<md-checkbox ng-model="currentCustomer.activated" ng-disabled="editDisabled" class="md-primary">Aktiviert</md-checkbox>
-									<md-checkbox ng-model="currentCustomer.verified" ng-disabled="editDisabled" class="md-primary">Verifiziert</md-checkbox>
-								</md-content>
-						
-								<md-content flex layout-padding>
-									<md-input-container flex-gt-sm>
-										<input type="text" placeholder="Vorname" ng-model="currentCustomer.name" ng-disabled="true"/>
-									</md-input-container>
-									<md-input-container flex-gt-sm>
-										<input type="text" placeholder="Nachname" ng-model="currentCustomer.familyName" ng-disabled="true"/>
-									</md-input-container>
-								</md-content>
-						
-								<md-content flex layout-padding>
-									<md-input-container flex-gt-sm>
-										<input type="email" placeholder="E-Mail" ng-model="currentCustomer.email" ng-disabled="editDisabled" required="true" pattern="[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[a-z]{2,3}$" title="E-Mail muss folgend aufgebaut sein: xxx@yyy.zzz" />
-									</md-input-container>
-								</md-content>
-						
-								<md-content flex layout-padding>
-									<md-input-container flex-gt-sm>
-										<input type="text" placeholder="Telefon" ng-model="currentCustomer.phoneNr" ng-disabled="editDisabled" required="true" pattern="[\+]{0,1}[0-9]{8,}" />
-									</md-input-container>
-									<md-input-container flex-gt-sm>
-										<input type="text" placeholder="Land" maxlength="2" ng-model="currentCustomer.address.country" ng-disabled="editDisabled" required="true" pattern="[A-Z]{2,3}" title="Bitte geben Sie Ihr Länderkürzel an"  />
-									</md-input-container>
-								</md-content>
-						
-								<md-content flex layout-padding>
-									<md-input-container flex-gt-sm>
-										<input type="text" placeholder="Straße" ng-model="currentCustomer.address.street" ng-disabled="editDisabled" required="true" pattern="[A-Za-z\-\s]{5,}" title="Verwenden Sie 'ss' statt 'ß' " />
-									</md-input-container>
-									<md-input-container flex-gt-sm>
-										<input type="text" placeholder="Nr" ng-model="currentCustomer.address.number" ng-disabled="editDisabled" required="true" pattern="[0-9]{1,}.*" />
-									</md-input-container>
-								</md-content>
-						
-								<md-content flex layout-padding>
-									<md-input-container flex-gt-sm>
-										<input type="text" placeholder="Stadt" ng-model="currentCustomer.address.city" ng-disabled="editDisabled" required="true" pattern="[A-Za-z\-\s]{3,}" />
-									</md-input-container>
-									<md-input-container flex-gt-sm>
-										<input type="text" placeholder="PLZ" ng-model="currentCustomer.address.zip" pattern="[0-9]{5}" ng-disabled="editDisabled" required="true"/>
-									</md-input-container>
-								</md-content>
-						
-								<md-content flex layout-padding>
-									<md-input-container flex-gt-sm>
-										<input type="text" placeholder="Extra" ng-model="currentCustomer.address.extra" ng-disabled="editDisabled"/>
-									</md-input-container>
-								</md-content>
-						
-								<md-content flex layout-padding ng-switch="editDisabled">
-									<div ng-switch-when="false">
-										<md-button class="md-raised md-primary button-to-right" ng-click="Safe_Changes()" ng-disabled="user_Form.$invalid"> Speichern </md-button>
-										<md-button class="md-primary md-hue-1 button-to-right" ng-click="Dismiss_Changes()"> Verwerfen </md-button>
-									</div>
-									<div ng-switch-when="true">
-										<md-button class="md-primary md-hue-1 button-to-right" ng-click="EnableEditMode()"> Bearbeiten </md-button>
-									</div>
-								</md-content>
-							</form>
+
+                            <!--Stammdaten-->
+                            <form name="user_Form">
+                                <md-content flex layout-padding>
+                                    <md-input-container flex-gt-sm>
+                                        <input value="ID {{ currentCustomer.customerID }}" disabled>
+                                    </md-input-container>	
+                                    <md-input-container flex-gt-sm>
+                                        <input type="text" placeholder="ChipID" ng-model="currentCustomer.chipID" ng-disabled="editDisabled"/>
+                                    </md-input-container>
+                                    <br><br>
+                                </md-content>
+
+                                <md-content flex layout-padding>
+                                    <md-checkbox ng-model="currentCustomer.activated" ng-disabled="editDisabled" class="md-primary">Aktiviert</md-checkbox>
+                                    <md-checkbox ng-model="currentCustomer.verified" ng-disabled="editDisabled" class="md-primary">Verifiziert</md-checkbox>
+                                </md-content>
+
+                                <md-content flex layout-padding>
+                                    <md-input-container flex-gt-sm>
+                                        <input type="text" placeholder="Vorname" ng-model="currentCustomer.name" ng-disabled="true"/>
+                                    </md-input-container>
+                                    <md-input-container flex-gt-sm>
+                                        <input type="text" placeholder="Nachname" ng-model="currentCustomer.familyName" ng-disabled="true"/>
+                                    </md-input-container>
+                                </md-content>
+
+                                <md-content flex layout-padding>
+                                    <md-input-container flex-gt-sm>
+                                        <input type="email" placeholder="E-Mail" ng-model="currentCustomer.email" ng-disabled="editDisabled" required="true" pattern="[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[a-z]{2,3}$" title="E-Mail muss folgend aufgebaut sein: xxx@yyy.zzz" />
+                                    </md-input-container>
+                                </md-content>
+
+                                <md-content flex layout-padding>
+                                    <md-input-container flex-gt-sm>
+                                        <input type="text" placeholder="Telefon" ng-model="currentCustomer.phoneNr" ng-disabled="editDisabled" required="true" pattern="[\+]{0,1}[0-9]{8,}" />
+                                    </md-input-container>
+                                    <md-input-container flex-gt-sm>
+                                        <input type="text" placeholder="Land" maxlength="2" ng-model="currentCustomer.address.country" ng-disabled="editDisabled" required="true" pattern="[A-Z]{2,3}" title="Bitte geben Sie Ihr Länderkürzel an"  />
+                                    </md-input-container>
+                                </md-content>
+
+                                <md-content flex layout-padding>
+                                    <md-input-container flex-gt-sm>
+                                        <input type="text" placeholder="Straße" ng-model="currentCustomer.address.street" ng-disabled="editDisabled" required="true" pattern="[A-Za-z\-\s]{5,}" title="Verwenden Sie 'ss' statt 'ß' " />
+                                    </md-input-container>
+                                    <md-input-container flex-gt-sm>
+                                        <input type="text" placeholder="Nr" ng-model="currentCustomer.address.number" ng-disabled="editDisabled" required="true" pattern="[0-9]{1,}.*" />
+                                    </md-input-container>
+                                </md-content>
+
+                                <md-content flex layout-padding>
+                                    <md-input-container flex-gt-sm>
+                                        <input type="text" placeholder="Stadt" ng-model="currentCustomer.address.city" ng-disabled="editDisabled" required="true" pattern="[A-Za-z\-\s]{3,}" />
+                                    </md-input-container>
+                                    <md-input-container flex-gt-sm>
+                                        <input type="text" placeholder="PLZ" ng-model="currentCustomer.address.zip" pattern="[0-9]{5}" ng-disabled="editDisabled" required="true"/>
+                                    </md-input-container>
+                                </md-content>
+
+                                <md-content flex layout-padding>
+                                    <md-input-container flex-gt-sm>
+                                        <input type="text" placeholder="Extra" ng-model="currentCustomer.address.extra" ng-disabled="editDisabled"/>
+                                    </md-input-container>
+                                </md-content>
+
+                                <md-content flex layout-padding ng-switch="editDisabled">
+                                    <div ng-switch-when="false">
+                                        <md-button class="md-raised md-primary button-to-right" ng-click="Safe_Changes()" ng-disabled="user_Form.$invalid"> Speichern </md-button>
+                                        <md-button class="md-primary md-hue-1 button-to-right" ng-click="Dismiss_Changes()"> Verwerfen </md-button>
+                                    </div>
+                                    <div ng-switch-when="true">
+                                        <md-button class="md-primary md-hue-1 button-to-right" ng-click="EnableEditMode()"> Bearbeiten </md-button>
+                                    </div>
+                                </md-content>
+                            </form>
                         </md-tab>
-						
+
                         <md-tab label="Sonstiges">
                             <md-content layout-padding>
-								<md-content layout-padding>
-								
-								<h4>Ausstehende Fahrten</h4>
-								<BLOCKQUOTE ng-switch="currentBooking.customerState">
-									<table>
-										<thead>
-											<tr>
-												<td>
-													<h4>ID</h4>
-												</td>
-												<td>
-													<h4>Datum</h4>
-												</td>
-											</tr>
-										</thead>
-										<tbody>
-											<tr ng-repeat="(key, booking) in currentCustomer.bookingsOpen track by $index">
-												<td>
-													<h5> {{key}}</h5>
-												</td>
-												<td>
-													<h5>{{ booking.date.date }} um {{ booking.date.time }}</h5>
-												</td>
-											</tr>
-										</tbody>
-									</table>
-								</BLOCKQUOTE>
-                                
-								<h4>Abgeschlossene Fahrten</h4>
-								<BLOCKQUOTE>
-									<table>
-										<thead>
-											<tr>
-												<td>
-													<h4>ID</h4>
-												</td>
-												<td>
-													<h4>Datum</h4>
-												</td>
-											</tr>
-										</thead>
-										<tbody>
-											<tr ng-repeat="(key, booking) in currentCustomer.bookingsDone track by $index">
-												<td>
-													<h5> {{key}}</h5>
-												</td>
-												<td>
-													<h5>{{ booking.date.date }} um {{ booking.date.time }}</h5>
-												</td>
-											</tr>
-										</tbody>
-									</table>
-								</BLOCKQUOTE>
-								
+                                <md-content layout-padding>
 
-								<h4>Rechnungen</h4>
-								<BLOCKQUOTE>
-									<table>
-										<thead>
-											<tr>
-												<td>
-													<h4>ID</h4>
-												</td>
-												<td>
-													<h4>Status</h4>
-												</td>
-											</tr>
-										</thead>
-										<tbody>
-											<tr ng-repeat="(key, invoice) in currentCustomer.invoices track by $index">
-												<td>
-													<h5> {{key}}</h5>
-												</td>
-												<td>
-													<h5>{{ invoice.paidText }}</h5>
-												</td>
-											</tr>
-										</tbody>
-									</table>
-								</BLOCKQUOTE>
-								
-                            </md-content>
-                        </md-tab>
-                    </md-tabs>
+                                    <h4>Ausstehende Fahrten</h4>
+                                    <BLOCKQUOTE ng-switch="currentBooking.customerState">
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <td>
+                                                        <h4>ID</h4>
+                                                    </td>
+                                                    <td>
+                                                        <h4>Datum</h4>
+                                                    </td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr ng-repeat="(key, booking) in currentCustomer.bookingsOpen track by $index">
+                                                    <td>
+                                                        <h5> {{key}}</h5>
+                                                    </td>
+                                                    <td>
+                                                        <h5>{{ booking.date.date }} um {{ booking.date.time }}</h5>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </BLOCKQUOTE>
+
+                                    <h4>Abgeschlossene Fahrten</h4>
+                                    <BLOCKQUOTE>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <td>
+                                                        <h4>ID</h4>
+                                                    </td>
+                                                    <td>
+                                                        <h4>Datum</h4>
+                                                    </td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr ng-repeat="(key, booking) in currentCustomer.bookingsDone track by $index">
+                                                    <td>
+                                                        <h5> {{key}}</h5>
+                                                    </td>
+                                                    <td>
+                                                        <h5>{{ booking.date.date }} um {{ booking.date.time }}</h5>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </BLOCKQUOTE>
+
+
+                                    <h4>Rechnungen</h4>
+                                    <BLOCKQUOTE>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <td>
+                                                        <h4>ID</h4>
+                                                    </td>
+                                                    <td>
+                                                        <h4>Status</h4>
+                                                    </td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr ng-repeat="(key, invoice) in currentCustomer.invoices track by $index">
+                                                    <td>
+                                                        <h5> {{key}}</h5>
+                                                    </td>
+                                                    <td>
+                                                        <h5>{{ invoice.paidText }}</h5>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </BLOCKQUOTE>
+
+                                </md-content>
+                                </md-tab>
+                            </md-tabs>
+                        </div>
                 </div>
-            </div>
 
-            <div ng-switch-when="add">
-                <md-toolbar class="md-hue-2">
-                    <div class="md-toolbar-tools">
-                        <h2 class="md-flex">Neuen Nutzer hinzuf&uuml;gen</h2>
-                    </div>
-                </md-toolbar>
-				
-                <form name="user_Form">
-					<md-content flex layout-padding>
-						<md-input-container flex-gt-sm>
-							<input type="text" placeholder="Vorname" ng-model="new_customer.name" pattern="[A-Z]{1}[a-z]{1,}([-\s]{1}[A-Z]{1}[a-z]{1,}){0,}" ng-required="true" />
-						</md-input-container>
-						<md-input-container flex-gt-sm>
-							<input type="text" placeholder="Nachname" ng-model="new_customer.familyName" pattern="[A-Z]{1}[a-z]{1,}([-\s]{1}[A-Z]{1}[a-z]{1,}){0,}" ng-required="true" />
-						</md-input-container>
-					</md-content>
-					
-					<md-content flex layout-padding>
-						<md-input-container flex-gt-sm>
-							<input type="email" placeholder="E-Mail" ng-model="new_customer.email" pattern="[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[a-z]{2,3}$" title="E-Mail muss folgend aufgebaut sein: xxx@yyy.zzz" ng-required="true" />
-						</md-input-container>
-						<md-input-container flex-gt-sm>
-							<input type="password" placeholder="Passwort" ng-model="new_customer.password" pattern="(?=.*[a-z])(?=.*[0-9]).{8,}" title="Passwort muss mindestens eine Zahl und einen kleinen oder großen Buchstaben enthalten und mindestens 8 Zeichen lang sein" ng-required="true" />
-						</md-input-container>
-					</md-content>
-					
-					<md-content flex layout-padding>
-						<md-input-container flex-gt-sm>
-							<input type="text" placeholder="Telefon" pattern="[\+]{0,1}[0-9]{8,}" ng-model="new_customer.phoneNr" ng-required="true" />
-						</md-input-container>
-						<md-input-container flex-gt-sm>
-							<input type="text" placeholder="Land" ng-model="new_customer.address.country" pattern="[A-Z]{2,3}" title="Bitte geben Sie Ihr Länderkürzel an" ng-required="true" />
-						</md-input-container>
-					</md-content>
-					
-					<md-content flex layout-padding>
-						<md-input-container flex-gt-sm>
-							<input type="text" placeholder="Strasse" ng-model="new_customer.address.street" pattern="[A-Za-z\-\s]{5,}" title="Verwenden Sie 'ss' statt 'ß' " ng-required="true" />
-						</md-input-container>
-						<md-input-container flex-gt-sm>
-							<input type="text" placeholder="Nummer" ng-model="new_customer.address.number" pattern="[0-9]{1,}.*" ng-required="true" />
-						</md-input-container>
-					</md-content>
-					
-					<md-content flex layout-padding>
-						<md-input-container flex-gt-sm>
-							<input type="text" placeholder="Stadt" ng-model="new_customer.address.city" pattern="[A-Za-z\-\s]{3,}" ng-required="true" />
-						</md-input-container>
-						<md-input-container flex-gt-sm>
-							<input type="test" placeholder="PLZ" ng-model="new_customer.address.zip" pattern="[0-9]{5}" ng-required="true" />
-						</md-input-container>
-					</md-content>
-					
-					<md-content flex layout-padding>
-						<md-input-container flex-gt-sm>
-							<input type="text" placeholder="Zusatz" ng-model="new_customer.address.extra" ng-required="false" />
-						</md-input-container>
-					</md-content>
-					
-					<br>
-					
-					<md-content flex layout-padding>
-						<md-button class="md-raised md-primary button-to-right" ng-click="Safe_New()" ng-disabled="user_Form.$invalid"> Speichern </md-button>
-						<md-button class="md-primary md-hue-1 button-to-right" ng-click="Dismiss_New()"> Verwerfen </md-button>
-					</md-content>
-					
-				</form>
+                <div ng-switch-when="add">
+                    <md-toolbar class="md-hue-2">
+                        <div class="md-toolbar-tools">
+                            <h2 class="md-flex">Neuen Nutzer hinzuf&uuml;gen</h2>
+                        </div>
+                    </md-toolbar>
+
+                    <form name="user_Form">
+                        <md-content flex layout-padding>
+                            <md-input-container flex-gt-sm>
+                                <input type="text" placeholder="Vorname" ng-model="new_customer.name" pattern="[A-Z]{1}[a-z]{1,}([-\s]{1}[A-Z]{1}[a-z]{1,}){0,}" ng-required="true" />
+                            </md-input-container>
+                            <md-input-container flex-gt-sm>
+                                <input type="text" placeholder="Nachname" ng-model="new_customer.familyName" pattern="[A-Z]{1}[a-z]{1,}([-\s]{1}[A-Z]{1}[a-z]{1,}){0,}" ng-required="true" />
+                            </md-input-container>
+                        </md-content>
+
+                        <md-content flex layout-padding>
+                            <md-input-container flex-gt-sm>
+                                <input type="email" placeholder="E-Mail" ng-model="new_customer.email" pattern="[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[a-z]{2,3}$" title="E-Mail muss folgend aufgebaut sein: xxx@yyy.zzz" ng-required="true" />
+                            </md-input-container>
+                            <md-input-container flex-gt-sm>
+                                <input type="password" placeholder="Passwort" ng-model="new_customer.password" pattern="(?=.*[a-z])(?=.*[0-9]).{8,}" title="Passwort muss mindestens eine Zahl und einen kleinen oder großen Buchstaben enthalten und mindestens 8 Zeichen lang sein" ng-required="true" />
+                            </md-input-container>
+                        </md-content>
+
+                        <md-content flex layout-padding>
+                            <md-input-container flex-gt-sm>
+                                <input type="text" placeholder="Telefon" pattern="[\+]{0,1}[0-9]{8,}" ng-model="new_customer.phoneNr" ng-required="true" />
+                            </md-input-container>
+                            <md-input-container flex-gt-sm>
+                                <input type="text" placeholder="Land" ng-model="new_customer.address.country" pattern="[A-Z]{2,3}" title="Bitte geben Sie Ihr Länderkürzel an" ng-required="true" />
+                            </md-input-container>
+                        </md-content>
+
+                        <md-content flex layout-padding>
+                            <md-input-container flex-gt-sm>
+                                <input type="text" placeholder="Strasse" ng-model="new_customer.address.street" pattern="[A-Za-z\-\s]{5,}" title="Verwenden Sie 'ss' statt 'ß' " ng-required="true" />
+                            </md-input-container>
+                            <md-input-container flex-gt-sm>
+                                <input type="text" placeholder="Nummer" ng-model="new_customer.address.number" pattern="[0-9]{1,}.*" ng-required="true" />
+                            </md-input-container>
+                        </md-content>
+
+                        <md-content flex layout-padding>
+                            <md-input-container flex-gt-sm>
+                                <input type="text" placeholder="Stadt" ng-model="new_customer.address.city" pattern="[A-Za-z\-\s]{3,}" ng-required="true" />
+                            </md-input-container>
+                            <md-input-container flex-gt-sm>
+                                <input type="test" placeholder="PLZ" ng-model="new_customer.address.zip" pattern="[0-9]{5}" ng-required="true" />
+                            </md-input-container>
+                        </md-content>
+
+                        <md-content flex layout-padding>
+                            <md-input-container flex-gt-sm>
+                                <input type="text" placeholder="Zusatz" ng-model="new_customer.address.extra" ng-required="false" />
+                            </md-input-container>
+                        </md-content>
+
+                        <br>
+
+                        <md-content flex layout-padding>
+                            <md-button class="md-raised md-primary button-to-right" ng-click="Safe_New()" ng-disabled="user_Form.$invalid"> Speichern </md-button>
+                            <md-button class="md-primary md-hue-1 button-to-right" ng-click="Dismiss_New()"> Verwerfen </md-button>
+                        </md-content>
+
+                    </form>
+                </div>
             </div>
         </div>
     </div>
-</div>

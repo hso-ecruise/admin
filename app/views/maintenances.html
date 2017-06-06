@@ -11,54 +11,53 @@
                     <label> Suche nach Rechnungs ID</label>
                     <input ng-model="searchQuery" my-enter="Enter_Search()"/>
                 </md-input-container>
-				
 
-				<md-content>
-					
-					<table>
-						<thead>
-							<tr>
-								<td>ID</td>
-								<td>Status</td>
-							</tr>
-						</thead>
-						<tbody>
-							<tr ng-repeat="(key, maintenance) in maintenances track by $index" ng-click="Load_Details(key)">
-								<td>{{ key }}</td>
-								<td>{{ maintenance.stateObj.text }}</td>
-							</tr>
-						</tbody>
-						
-						<tfoot>
-							<tr ng-click="Show_AddMaintenance()">
-								<td colspan="2">
-									<div class="md-list-item-text" layout="column">
-										<h4>Neue Instandhaltung hinzufügen</h4>
-									</div>
-								</td>
-							</tr>
-						</tfoot>
-						
-					</table>
-					
-				</md-content>
-				<!--
-                <md-list flex>
-                    <md-list-item><h4>ID Fahrer Status</h4></md-list-item>
-                    <md-list-item class="md-1-line" ng-repeat="(key, booking) in bookings track by $index" ng-click="LoadBookingDetails2(booking)">
-                        <div class="md-list-item-text" layout="column" ng-switch on="booking.status">
-                            <h4 ng-switch-when="FUTURE">{{ key }} {{ booking.customer.name }} {{ booking.customer.familyName }} FUTURE</h4>
-                            <h4 ng-switch-when="PAST">{{ key }} {{ booking.customer.name }} {{ booking.customer.familyName }} PAST</h4>
-                        </div>
-                        <md-divider ></md-divider>
-                    </md-list-item>
-                    <md-list-item class="md-1-line" ng-click="Show_AddBooking()">
-                        <div class="md-list-item-text" layout="column">
-                            <h4>Neue Buchung hinzufügen</h4>
-                        </div>
-                    </md-list-item>
-                </md-list>
-				-->
+                <div class="scroll">
+                    <md-content>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <td>ID</td>
+                                    <td>Status</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="(key, maintenance) in maintenances track by $index" ng-click="Load_Details(key)">
+                                    <td>{{ key }}</td>
+                                    <td>{{ maintenance.stateObj.text }}</td>
+                                </tr>
+                            </tbody>
+
+                            <tfoot>
+                                <tr ng-click="Show_AddMaintenance()">
+                                    <td colspan="2">
+                                        <div class="md-list-item-text" layout="column">
+                                            <h4>Neue Instandhaltung hinzufügen</h4>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tfoot>
+
+                        </table>
+                    </md-content>
+                </div>
+                <!--
+<md-list flex>
+<md-list-item><h4>ID Fahrer Status</h4></md-list-item>
+<md-list-item class="md-1-line" ng-repeat="(key, booking) in bookings track by $index" ng-click="LoadBookingDetails2(booking)">
+<div class="md-list-item-text" layout="column" ng-switch on="booking.status">
+<h4 ng-switch-when="FUTURE">{{ key }} {{ booking.customer.name }} {{ booking.customer.familyName }} FUTURE</h4>
+<h4 ng-switch-when="PAST">{{ key }} {{ booking.customer.name }} {{ booking.customer.familyName }} PAST</h4>
+</div>
+<md-divider ></md-divider>
+</md-list-item>
+<md-list-item class="md-1-line" ng-click="Show_AddBooking()">
+<div class="md-list-item-text" layout="column">
+<h4>Neue Buchung hinzufügen</h4>
+</div>
+</md-list-item>
+</md-list>
+-->
             </md-content>
 
         </div>
@@ -71,7 +70,7 @@
                         <h2 class="md-flex">Instandhaltungsdetails</h2>
                     </div>
                 </md-toolbar>
-				
+
                 <div ng-switch-when="false">
                     <md-content layout-padding>
                         <h4>W&auml;hlen Sie eine Instandhaltung aus oder f&uuml;gen Sie eine Neue hinzu</h4>
@@ -80,113 +79,113 @@
 
                 <div ng-switch-when="true">
                     <md-content layout-padding ng-switch="currentMaintenance.stateObj.id">
-						<label> Instandhaltungs-ID: {{ currentMaintenance.maintenanceID }} </label>
-						<br/>
-						<label> Status: {{ currentMaintenance.stateObj.text }}</label>
-						<br/>
-						<label ng-switch-when="1"> Kilometerstand: {{currentMaintenance.atMileage}}</label>
-						<label ng-switch-when="2"> Datum: {{currentMaintenance.date.date}}</label>
-						
-						<br/>
-						<br/>
-						
-						
-						<h4>Fahrzeug-Instandhaltung</h4>
-						<BLOCKQUOTE ng-switch="currentMaintenance.car_maintenance_state">
-						
-							<div ng-switch-when="true" ng-repeat="(key, item) in currentMaintenance.car_maintenance track by $index">
-								<h5> Fahrzeugsinstandhaltungs-ID: {{ item.carMaintenanceID }} </h5>
-								<h5> Fahrzeug-ID: {{ item.carID }} </h5>
-								<h5> Geplantes Datum: {{ item.plannedDate.date }} </h5>
-								<h5 ng-switch="item.endState">
-									End Datum:
-									<span ng-switch-when="true">
-										{{item.completedDate.date}}
-									</span>
-									<span ng-switch-when="false">
-										<input type="date" min="{{item.minEndDate}}" ng-model="item.endDate"/>
-										<input type="button" value="Speichern" ng-click="SafeEndDate(currentMaintenance.maintenanceID, item.carMaintenanceID, item.endDate)"/>
-									</span>
-								</h5>
-								
-								<h4>Rechnungselement</h4>
-								<div ng-switch="item.invoice_state">
-								
-									<BLOCKQUOTE ng-switch-when="true">
-										
-										<h5>Rechnungs-ID: {{ currentMaintenance.car_maintenance.invoice.invoiceID }}</h5>
-										<h5>Element-ID: {{ currentMaintenance.car_maintenance.invoiceItemID }}</h5>
-										<h5>Status: {{ currentMaintenance.car_maintenance.invoice.paidText }}</h5>
-										
-									</BLOCKQUOTE>
-									
-									<div ng-switch-when="false">
-										<BLOCKQUOTE>
-											<h5> Rechnungselement nicht vorhanden oder abrufen nicht möglich </h5>
-										</BLOCKQUOTE>
-									</div>
-									
-								</div>
-							</div>
-							
-							<div ng-switch-when="false">
-								<h5> Fahrzeug-Instandhaltung kann nicht abgerufen werden </h5>
-							</div>
-							
-						</BLOCKQUOTE>
-						
-						<input type="button" ng-click="ShowCarMaintenanceAddPopUp(currentMaintenance.maintenanceID)" value="Neues Element"/>
-					
+                        <label> Instandhaltungs-ID: {{ currentMaintenance.maintenanceID }} </label>
+                        <br/>
+                        <label> Status: {{ currentMaintenance.stateObj.text }}</label>
+                        <br/>
+                        <label ng-switch-when="1"> Kilometerstand: {{currentMaintenance.atMileage}}</label>
+                        <label ng-switch-when="2"> Datum: {{currentMaintenance.date.date}}</label>
+
+                        <br/>
+                        <br/>
+
+
+                        <h4>Fahrzeug-Instandhaltung</h4>
+                        <BLOCKQUOTE ng-switch="currentMaintenance.car_maintenance_state">
+
+                            <div ng-switch-when="true" ng-repeat="(key, item) in currentMaintenance.car_maintenance track by $index">
+                                <h5> Fahrzeugsinstandhaltungs-ID: {{ item.carMaintenanceID }} </h5>
+                                <h5> Fahrzeug-ID: {{ item.carID }} </h5>
+                                <h5> Geplantes Datum: {{ item.plannedDate.date }} </h5>
+                                <h5 ng-switch="item.endState">
+                                    End Datum:
+                                    <span ng-switch-when="true">
+                                        {{item.completedDate.date}}
+                                    </span>
+                                    <span ng-switch-when="false">
+                                        <input type="date" min="{{item.minEndDate}}" ng-model="item.endDate"/>
+                                        <input type="button" value="Speichern" ng-click="SafeEndDate(currentMaintenance.maintenanceID, item.carMaintenanceID, item.endDate)"/>
+                                    </span>
+                                </h5>
+
+                                <h4>Rechnungselement</h4>
+                                <div ng-switch="item.invoice_state">
+
+                                    <BLOCKQUOTE ng-switch-when="true">
+
+                                        <h5>Rechnungs-ID: {{ currentMaintenance.car_maintenance.invoice.invoiceID }}</h5>
+                                        <h5>Element-ID: {{ currentMaintenance.car_maintenance.invoiceItemID }}</h5>
+                                        <h5>Status: {{ currentMaintenance.car_maintenance.invoice.paidText }}</h5>
+
+                                    </BLOCKQUOTE>
+
+                                    <div ng-switch-when="false">
+                                        <BLOCKQUOTE>
+                                            <h5> Rechnungselement nicht vorhanden oder abrufen nicht möglich </h5>
+                                        </BLOCKQUOTE>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div ng-switch-when="false">
+                                <h5> Fahrzeug-Instandhaltung kann nicht abgerufen werden </h5>
+                            </div>
+
+                        </BLOCKQUOTE>
+
+                        <input type="button" ng-click="ShowCarMaintenanceAddPopUp(currentMaintenance.maintenanceID)" value="Neues Element"/>
+
                     </md-content>
                 </div>
             </div>
 
             <div ng-switch-when="add">
-			
-				<form name="form_NewMain">
-					<md-toolbar class="md-hue-2">
-						<div class="md-toolbar-tools">
-							<h2 class="md-flex">Instandhaltung Hinzuf&uuml;gen</h2>
-						</div>
-					</md-toolbar>
-					
-					<md-content layout-padding>
-					
-						<md-input-container flex-gt-sm>
-							Instandhaltungstyp:
-							<md-menu>
-								<md-button ng-disabled="editDisabled" ng-mouseenter="$mdMenu.open()">{{new_maintenance.stateObj.text}}</md-button>
-								<md-menu-content width="4" ng-mouseleave="$mdMenu.close()">
-									<md-menu-item ng-repeat="item in maintenanceStates">
-										<md-button ng-click="new_maintenance.stateObj = item">
-											{{item.text}}
-										</md-button>
-									</md-menu-item>
-								</md-menu-content>
-							</md-menu>
-						</md-input-container>
-					</md-content>
-						
-					<md-content flex layout-padding ng-switch="new_maintenance.stateObj.id">
-					<!--
-						<md-input-container ng-switch-when="0">
-							<input type="checkbox" ng-model="new_maintenance.spontan" placeholder="Spontan" ng-required />
-						</md-input-container>
-					-->
-						<md-input-container ng-switch-when="1">
-							<input type="number" ng-model="new_maintenance.atMileage" placeholder="Bei Kilometerstand" ng-required />
-						</md-input-container>
-						
-						<md-input-container ng-switch-when="2">
-							<input type="date" ng-model="new_maintenance.date" min="new_maintenance.minDate" value="new_maintenance.date" placeholder="Datum" ng-required />
-						</md-input-container>
-					</md-content>
 
-					<md-content flex layout-padding>
-						<md-button class="md-raised md-primary button-to-right" ng-disabled="form_NewMain.$invalid" ng-click="Safe_New()"> Speichern </md-button>
-						<md-button class="md-primary md-hue-1 button-to-right" ng-click="Dismiss_New()"> Verwerfen </md-button>
-					</md-content>
-				</form>
+                <form name="form_NewMain">
+                    <md-toolbar class="md-hue-2">
+                        <div class="md-toolbar-tools">
+                            <h2 class="md-flex">Instandhaltung Hinzuf&uuml;gen</h2>
+                        </div>
+                    </md-toolbar>
+
+                    <md-content layout-padding>
+
+                        <md-input-container flex-gt-sm>
+                            Instandhaltungstyp:
+                            <md-menu>
+                                <md-button ng-disabled="editDisabled" ng-mouseenter="$mdMenu.open()">{{new_maintenance.stateObj.text}}</md-button>
+                                <md-menu-content width="4" ng-mouseleave="$mdMenu.close()">
+                                    <md-menu-item ng-repeat="item in maintenanceStates">
+                                        <md-button ng-click="new_maintenance.stateObj = item">
+                                            {{item.text}}
+                                        </md-button>
+                                    </md-menu-item>
+                                </md-menu-content>
+                            </md-menu>
+                        </md-input-container>
+                    </md-content>
+
+                    <md-content flex layout-padding ng-switch="new_maintenance.stateObj.id">
+                        <!--
+<md-input-container ng-switch-when="0">
+<input type="checkbox" ng-model="new_maintenance.spontan" placeholder="Spontan" ng-required />
+</md-input-container>
+-->
+                        <md-input-container ng-switch-when="1">
+                            <input type="number" ng-model="new_maintenance.atMileage" placeholder="Bei Kilometerstand" ng-required />
+                        </md-input-container>
+
+                        <md-input-container ng-switch-when="2">
+                            <input type="date" ng-model="new_maintenance.date" min="new_maintenance.minDate" value="new_maintenance.date" placeholder="Datum" ng-required />
+                        </md-input-container>
+                    </md-content>
+
+                    <md-content flex layout-padding>
+                        <md-button class="md-raised md-primary button-to-right" ng-disabled="form_NewMain.$invalid" ng-click="Safe_New()"> Speichern </md-button>
+                        <md-button class="md-primary md-hue-1 button-to-right" ng-click="Dismiss_New()"> Verwerfen </md-button>
+                    </md-content>
+                </form>
             </div>
         </div>
     </div>

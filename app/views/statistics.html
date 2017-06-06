@@ -12,15 +12,20 @@
                 </md-input-container>
             </md-content>
             <md-content flex layout-padding>
-                <md-button class="md-primary" ng-click="Enter_Search()" > Suchen</md-button>
+                <div class="md-list-item-text" ng-click="Enter_Search()" layout="column">
+                    <h4>Suchen</h4>
+                </div>
             </md-content>
-            <div ng-repeat="(key, statistic) in statistics track by $index" ng-click="Load_Details(key)">
-                {{statistic.date.date}}
+            <div class="scroll">
+                <md-content flex layout-padding>
+                    <div ng-repeat="(key, statistic) in statistics track by $index" ng-click="Load_Details(key)">
+                        {{statistic.date.date}}
+                    </div>
+                </md-content>
             </div>
-
         </div>
         <div style="padding:15px;"></div>
-        <div class="content booking-right" ng-switch="statistic_selected">
+        <div class="content booking-right" style="width:49%" ng-switch="statistic_selected">
 
             <div ng-switch-when="true">
                 <md-toolbar class="md-hue-2">
@@ -29,19 +34,28 @@
                     </div>
                 </md-toolbar>
                 <md-content flex layout-padding>
-                    Statistik-Datum: {{currentStatistic.date.date}}
-                    Durchschnittsladezeug: {{currentStatistic.averageCharge}}
-                    Buchungden gesamt: {{currentStatistic.bookings}}
+                    <md-input-container>
+                        <input type="text" placeholder="Statistik-Datum" value="{{currentStatistic.date.date}}"> 
+                    </md-input-container>
+                </md-content>
+                <md-content flex layout-padding>
+                    <md-input-container>
+                        <input type="text" placeholder="Durchschnittsladezeug" value="{{currentStatistic.averageCharge}}"> 
+                    </md-input-container>
+                </md-content>
+                <md-content flex layout-padding>
+                    <md-input-container>
+                        <input type="text" placeholder="Buchungden gesamt" value="{{currentStatistic.bookings}}"> 
+                    </md-input-container>
                 </md-content>
             </div>
-
             <div ng-switch-when="false">
                 <md-toolbar class="md-hue-2">
                     <div class="md-toolbar-tools">
                         <h2 class="md-flex">Information</h2>
                     </div>
                 </md-toolbar>
-                <md-content>
+                <md-content flex layout-padding>
                     <h4>W&auml;hlen Sie eine Statistik aus</h4>
                 </md-content>
             </div>

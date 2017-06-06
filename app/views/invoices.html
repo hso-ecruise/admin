@@ -11,38 +11,30 @@
                     <label> Suche nach Rechnungs ID</label>
                     <input ng-model="searchQuery" my-enter="Enter_Search()"/>
                 </md-input-container>
-
-                <md-content>
-                    <table>
-                        <thead>
-                            <tr>
-                                <td>
-                                    <h4>ID &nbsp;</h4>
-                                </td>
-                                <td>
-                                    <h4>Fahrer &nbsp;</h4>
-                                </td>
-                                <td>
-                                    <h4>Status</h4>
-                                </td>
-                            </tr>
-                        </thead>
-                        <tbody>
-
+                <div class="scroll">
+                    <md-content >
+                        <table >
+                            <thead>
+                                <tr>
+                                    <td>
+                                        <h4>ID &nbsp;</h4>
+                                    </td>
+                                    <td>
+                                        <h4>Fahrer &nbsp;</h4>
+                                    </td>
+                                    <td>
+                                        <h4>Status</h4>
+                                    </td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="(key, invoice) in invoices track by $index" ng-click="Load_Details(key)" flex>
+                                    <td>{{key}}</td>
+                                    <td>{{ invoice.customer.name }} {{ invoice.customer.familyName }}</td>
+                                    <td>{{ invoice.paidText }}</td>
+                                </tr>
+                            </tbody>
                             <!--
-<tr ng-repeat="(key, invoice) in invoices track by $index" ng-click="Load_Details(key)">
-<td>{{key}}</td>
-<td>{{ invoice.customer.name }} {{ invoice.customer.familyName }}</td>
-<td>{{ invoice.paidText }}</td>
-</tr>
--->
-                            <tr ng-repeat="(key, invoice) in invoices track by $index" ng-click="Load_Details(key)" flex>
-                                <td>{{key}}</td>
-                                <td>{{ invoice.customer.name }} {{ invoice.customer.familyName }}</td>
-                                <td>{{ invoice.paidText }}</td>
-                            </tr>
-                        </tbody>
-                        <!--
 <tfoot>
 <tr ng-click="Show_AddInvoice()">
 <td colspan="3">
@@ -53,8 +45,9 @@
 </tr>
 </tfoot>
 -->
-                    </table>
-                </md-content>
+                        </table>
+                    </md-content>
+                </div>
                 <!--
 <md-list flex>
 <md-list-item><h4>ID Fahrer Status</h4></md-list-item>
@@ -92,7 +85,7 @@
                 </div>
 
                 <div ng-switch-when="true">
-                    
+
                     <md-content layout-padding  ng-switch="currentInvoice.paid" >
                         <md-content flex layout-padding>
                             <md-input-container>
@@ -108,76 +101,76 @@
                             <md-input-container>
                                 <input type="text" placeholder="Status" value="{{currentInvoice.paidText}}" ng-disabled="true" />
                             </md-input-container>
-                            
+
                             <md-input-container ng-switch-when="false" >
                                 <md-button class="md-raised md-primary button-to-right" ng-click="SetPaid(currentInvoice.invoiceID)"> Bezahlt </md-button>
                             </md-input-container>
-                            
+
                             <md-input-container ng-switch-when="true" >
                                 <md-button class="md-primary md-hue-1 button-to-right" ng-click="SetPaid(currentInvoice.invoiceID)"> Nicht bezahlt </md-button>
-                        </md-input-container>
+                            </md-input-container>
 
-                    </md-content>
+                        </md-content>
 
-                    <md-content layout-padding>
+                        <md-content layout-padding>
 
 
-<!--
-                        <label> Rechnungs-ID: {{ currentInvoice.invoiceID }} </label>
-                        <label> Status: {{ currentInvoice.paidText }}</label>
-                        <label> Gesamtpreis: {{ currentInvoice.totalAmount }}</label>
+                            <!--
+<label> Rechnungs-ID: {{ currentInvoice.invoiceID }} </label>
+<label> Status: {{ currentInvoice.paidText }}</label>
+<label> Gesamtpreis: {{ currentInvoice.totalAmount }}</label>
 -->
 
-                        <h4>Fahrer</h4>
-                        <BLOCKQUOTE ng-switch="currentInvoice.customerState">
-                            <div ng-switch-when="true">
-                                <h5> ID:  {{ currentInvoice.customer.customerID }} </h5>
-                                <h5> Vorname: {{ currentInvoice.customer.name }} </h5>
-                                <h5> Nachname: {{ currentInvoice.customer.familyName }} </h5>
-                            </div>
-                            <div ng-switch-when="false">
-                                <h5> Nutzer kann nicht abgerufen werden </h5>
-                            </div>
-                        </BLOCKQUOTE>
-
-                        <h4>Rechnungselemente</h4>
-
-                        <div ng-switch="currentInvoice.itemState">
-
-                            <BLOCKQUOTE ng-switch-when="true" ng-repeat="(key, item) in currentInvoice.items track by $index">
-
-                                <h5>ID: {{ item.itemID }}</h5>
-                                <h5>Preis: {{ item.amount }}</h5>
-                                <h5>Typ: {{ item.typeObj.text }}</h5>
-                                <h5>Grund: {{ item.reason }}</h5>
-
+                            <h4>Fahrer</h4>
+                            <BLOCKQUOTE ng-switch="currentInvoice.customerState">
+                                <div ng-switch-when="true">
+                                    <h5> ID:  {{ currentInvoice.customer.customerID }} </h5>
+                                    <h5> Vorname: {{ currentInvoice.customer.name }} </h5>
+                                    <h5> Nachname: {{ currentInvoice.customer.familyName }} </h5>
+                                </div>
+                                <div ng-switch-when="false">
+                                    <h5> Nutzer kann nicht abgerufen werden </h5>
+                                </div>
                             </BLOCKQUOTE>
 
-                            <div ng-switch-when="false">
-                                <BLOCKQUOTE>
-                                    <h5> Keine Rechnungselemente vorhanden oder abrufen nicht erfolgreich </h5>
+                            <h4>Rechnungselemente</h4>
+
+                            <div ng-switch="currentInvoice.itemState">
+
+                                <BLOCKQUOTE ng-switch-when="true" ng-repeat="(key, item) in currentInvoice.items track by $index">
+
+                                    <h5>ID: {{ item.itemID }}</h5>
+                                    <h5>Preis: {{ item.amount }}</h5>
+                                    <h5>Typ: {{ item.typeObj.text }}</h5>
+                                    <h5>Grund: {{ item.reason }}</h5>
+
                                 </BLOCKQUOTE>
+
+                                <div ng-switch-when="false">
+                                    <BLOCKQUOTE>
+                                        <h5> Keine Rechnungselemente vorhanden oder abrufen nicht erfolgreich </h5>
+                                    </BLOCKQUOTE>
+                                </div>
+
                             </div>
 
+                            <md-button class="md-raised md-primary button-to-right" ng-click="ShowItemAddPopUp(currentInvoice.invoiceID)"> Neues Element </md-button>
+
+                        </md-content>
                         </div>
-
-                        <md-button class="md-raised md-primary button-to-right" ng-click="ShowItemAddPopUp(currentInvoice.invoiceID)"> Neues Element </md-button>
-
-                    </md-content>
                 </div>
-            </div>
 
-            <div ng-switch-when="add">
-                <md-toolbar class="md-hue-2">
-                    <div class="md-toolbar-tools">
-                        <h2 class="md-flex">Rechnung Hinzuf&uuml;gen</h2>
-                    </div>
-                </md-toolbar>
-                <md-content layout-padding>
-                    <md-input-container>
-                        <input type="number" ng-model="new_booking.customerID" placeholder="Customer-ID" ng-required />
-                    </md-input-container>
-                    <!--
+                <div ng-switch-when="add">
+                    <md-toolbar class="md-hue-2">
+                        <div class="md-toolbar-tools">
+                            <h2 class="md-flex">Rechnung Hinzuf&uuml;gen</h2>
+                        </div>
+                    </md-toolbar>
+                    <md-content layout-padding>
+                        <md-input-container>
+                            <input type="number" ng-model="new_booking.customerID" placeholder="Customer-ID" ng-required />
+                        </md-input-container>
+                        <!--
 </md-content>
 <md-content layout-padding>
 <md-input-container flex-gt-sm>
@@ -201,12 +194,12 @@
 </md-input-container>
 </md-content>
 -->
-                </md-content>
-                <md-content flex layout-padding>
-                    <md-button class="md-raised md-primary button-to-right" ng-click="Safe_New()"> Speichern </md-button>
-                    <md-button class="md-primary md-hue-1 button-to-right" ng-click="Dismiss_New()"> Verwerfen </md-button>
-                </md-content>
+                    </md-content>
+                    <md-content flex layout-padding>
+                        <md-button class="md-raised md-primary button-to-right" ng-click="Safe_New()"> Speichern </md-button>
+                        <md-button class="md-primary md-hue-1 button-to-right" ng-click="Dismiss_New()"> Verwerfen </md-button>
+                    </md-content>
+                </div>
             </div>
         </div>
     </div>
-</div>
