@@ -63,7 +63,7 @@
 
                     <!--NICHT VERÄNDERBAR-->
 
-						
+					<!--
 					<md-content flex layout-padding>
 						<md-input-container> 
 							<input type="text" value="{{ currentVehicle.vehicleID }}" placeholder="ID" ng-disabled="true"/>
@@ -91,7 +91,6 @@
 						</md-input-container>
 					</md-content>
 
-                    <!--VERÄNDERBAR AUßER-->
                     
                     <div layout-align="start center" layout="row">
                         <div layout="column" flex="33" flex-sm="100" flex-xs="100" layout-align="center center">
@@ -144,15 +143,88 @@
 							<input type="number" placeholder="Kilometerstand" ng-model="currentVehicle.mileage" ng-disabled="editDisabled"/>
 						</md-input-container>
 					</md-content>
-                    
-					<!--
-                    <md-input-container>
-                        <input type="text" placeholder="LastLat" value="{{ currentVehicle.lastLat }}" ng-disabled="true"/>
-                    </md-input-container>
-                    <md-input-container>
-                        <input type="text" placeholder="LastLon" value="{{ currentVehicle.lastLon }}" ng-disabled="true"/>
-                    </md-input-container>
                     -->
+
+                    <md-content flex layout-padding>
+						<md-input-container> 
+							<input type="text" value="{{ currentVehicle.vehicleID }}" placeholder="ID" ng-disabled="true"/>
+						</md-input-container>
+						<md-input-container >
+							<input type="text" ng-model="currentVehicle.licensePlate" placeholder="Nummernschild" ng-disabled="true"/>
+						</md-input-container>
+					</md-content>
+                    
+					<md-content flex layout-padding>
+						<md-input-container >
+							<input type="text" placeholder="Hersteller" ng-model="currentVehicle.manufacturer" ng-disabled="true"/>
+						</md-input-container>
+						<md-input-container >
+							<input type="text" placeholder="Modell" ng-model="currentVehicle.model" ng-disabled="true"/>
+						</md-input-container>
+					</md-content>
+                    
+					<md-content flex layout-padding>
+						<md-input-container>
+							<input type="number"  placeholder="Baujahr" ng-model="currentVehicle.constructionYear" ng-disabled="true"/>
+						</md-input-container>
+						<md-input-container>
+							<input type="number" placeholder="Kilowatt" ng-model="currentVehicle.kilowatts" ng-disabled="true"/>
+						</md-input-container>
+					</md-content>
+
+                    
+					<md-content flex layout-padding>
+						<md-input-container>
+							<input type="number" placeholder="Batteriestand" ng-model="currentVehicle.chargeLevel" ng-disabled="true"/>
+						</md-input-container>
+						<md-input-container>
+							<input type="number" placeholder="Kilometerstand" ng-model="currentVehicle.mileage" ng-disabled="true"/>
+						</md-input-container>
+					</md-content>
+
+                    <md-content flex layout-padding>
+						<p>Letzte bekannte Position</p>
+						<md-input-container>
+							<input type="text" placeholder="Strasse" ng-model="currentVehicle.address.street" ng-disabled="true"/>
+						</md-input-container>
+						<md-input-container>
+							<input type="text" placeholder="Datum" value="{{ currentVehicle.lastDate.date }}" ng-disabled="true"/>
+						</md-input-container>
+					</md-content>
+                    
+					<md-content flex layout-padding>
+					</md-content>
+
+                    <div layout-align="start center" layout="row">
+                        <div layout="column" flex="33" flex-sm="100" flex-xs="100" layout-align="center center">
+                            <p>Reservierungszustand</p>
+                            <md-menu>
+                                <md-button ng-disabled="editDisabled" ng-mouseenter="$mdMenu.open()">{{currentVehicle.bookingStateObj.text}}</md-button>
+                                <md-menu-content width="2" ng-mouseleave="$mdMenu.close()">
+                                    <md-menu-item ng-repeat="item in bookingStates">
+                                        <md-button ng-click="currentVehicle.bookingStateObj = item">
+                                            {{item.text}}
+                                        </md-button>
+                                    </md-menu-item>
+                                </md-menu-content>
+                            </md-menu>
+                        </div>
+                        <div layout="column" flex="33" flex-sm="100" flex-xs="100" layout-align="center center">
+                            <p> Ladezustand </p>
+                            <md-menu>
+                                <md-button ng-disabled="editDisabled" ng-mouseenter="$mdMenu.open()">{{currentVehicle.loadingStateObj.text}}</md-button>
+                                <md-menu-content width="2" ng-mouseleave="$mdMenu.close()">
+                                    <md-menu-item ng-repeat="item in loadingStates">
+                                        <md-button ng-click="currentVehicle.loadingStateObj = item">
+                                            {{item.text}}
+                                        </md-button>
+                                    </md-menu-item>
+                                </md-menu-content>
+                            </md-menu>
+                        </div>
+                    </div>
+					
+
 
                     <div ng-switch="editDisabled">
                         <div ng-switch-when="false">
@@ -165,7 +237,7 @@
                     </div>
                 </div>
                 <div ng-switch-when="false">
-                    <h4> Bitte wählen Sie ein Fahrzeug in der linken Liste aus.</h4>
+                    <h4> W&auml;hlen Sie ein Fahrzeug aus oder f&uuml;gen Sie ein Neues hinzu</h4>
                 </div>
             </div>
 

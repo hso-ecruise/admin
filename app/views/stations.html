@@ -64,11 +64,14 @@
                     </div>
                 </md-toolbar>
                 <div ng-switch-when="true" style="padding:15px;">
-                    <h4>
+                    
+                    <md-content flex layout-padding>
                         <md-input-container>
                             <input type="text" placeholder="ID" value="{{ currentStation.stationID }}" ng-disabled="true" />
                         </md-input-container>
+                    </md-content>
 
+                    <md-content flex layout-padding>
                         <md-input-container>
                             <input type="text" placeholder="Slots" value="{{currentStation.slots}}" ng-disabled="true" />
                         </md-input-container>
@@ -76,7 +79,9 @@
                         <md-input-container>
                             <input type="text" placeholder="Slots belegt" value="{{currentStation.slotsOccupied}}" ng-disabled="true" />
                         </md-input-container>
+                    </md-content>
 
+                    <md-content flex layout-padding>
                         <md-input-container>
                             <input type="text" placeholder="Strasse" value="{{currentStation.address.street}}" ng-disabled="true" />
                         </md-input-container>
@@ -84,7 +89,7 @@
                         <md-input-container>
                             <input type="text" placeholder="Nr" value="{{currentStation.address.number}}" ng-disabled="true" />
                         </md-input-container>
-                    </h4>
+                    </md-content>
                 </div>
                 <div ng-switch-when="false">
                     <h4>W&auml;hlen Sie eine Ladestation aus oder f&uuml;gen Sie eine Neue hinzu</h4>
