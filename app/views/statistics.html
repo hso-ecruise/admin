@@ -7,14 +7,12 @@
                 </div>
             </md-toolbar>
             <md-content flex layout-padding>
-                <md-input-container class="md-block">
+                <md-input-container>
                     <input ng-model="searchQuery" placeholder="Datum w&auml;hlen" value="" type="date" ng-model="searchQuery" />
                 </md-input-container>
-            </md-content>
-            <md-content flex layout-padding>
-                <div class="md-list-item-text" ng-click="Enter_Search()" layout="column">
-                    <h4>Suchen</h4>
-                </div>
+                <md-input-container>
+                    <md-button class="md-primary" ng-click="Enter_Search()">Suchen</button>
+                </md-input-container>
             </md-content>
             <div class="scroll">
                 <md-content flex layout-padding>
