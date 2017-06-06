@@ -1,29 +1,51 @@
-<div>
-  Statistics View
-	<div>
-		Suche
-		<input type="date" ng-model="searchQuery" />
-		<input type="button" ng-click="Enter_Search()" value="SUCHEN"/>
-		LISTE
-		<div ng-repeat="(key, statistic) in statistics track by $index" ng-click="Load_Details(key)">
-			
-			{{statistic.date.date}}
-			
-		</div>
-	</div>
-	
-	<div ng-switch="statistic_selected">
-		
-		<div ng-switch-when="true">
-			Statistik-Datum: {{currentStatistic.date.date}}
-			Durchschnittsladezeug: {{currentStatistic.averageCharge}}
-			Buchungden gesamt: {{currentStatistic.bookings}}
-		</div>
-		
-		<div ng-switch-when="false">
-			Bitte wählen SIe links eine Statistik aus
-		</div>
-		
-	</div>
-	
+<div class="mainview-container" >
+    <div class="" layout="row" layout-wrap>
+        <div ng-cloak class="content fullscreen" flex>
+            <md-toolbar class="md-hue-2">
+                <div class="md-toolbar-tools">
+                    <h2 class="md-flex">Statistics</h2>
+                </div>
+            </md-toolbar>
+            <md-content flex layout-padding>
+                <md-input-container class="md-block">
+                    <input ng-model="searchQuery" placeholder="Datum w&auml;hlen" value="" type="date" ng-model="searchQuery" />
+                </md-input-container>
+            </md-content>
+            <md-content flex layout-padding>
+                <md-button class="md-primary" ng-click="Enter_Search()" > Suchen</md-button>
+            </md-content>
+            <div ng-repeat="(key, statistic) in statistics track by $index" ng-click="Load_Details(key)">
+                {{statistic.date.date}}
+            </div>
+
+        </div>
+        <div style="padding:15px;"></div>
+        <div class="content booking-right" ng-switch="statistic_selected">
+
+            <div ng-switch-when="true">
+                <md-toolbar class="md-hue-2">
+                    <div class="md-toolbar-tools">
+                        <h2 class="md-flex">Information</h2>
+                    </div>
+                </md-toolbar>
+                <md-content flex layout-padding>
+                    Statistik-Datum: {{currentStatistic.date.date}}
+                    Durchschnittsladezeug: {{currentStatistic.averageCharge}}
+                    Buchungden gesamt: {{currentStatistic.bookings}}
+                </md-content>
+            </div>
+
+            <div ng-switch-when="false">
+                <md-toolbar class="md-hue-2">
+                    <div class="md-toolbar-tools">
+                        <h2 class="md-flex">Information</h2>
+                    </div>
+                </md-toolbar>
+                <md-content>
+                    <h4>Bitte wählen SIe links eine Statistik aus</h4>
+                </md-content>
+            </div>
+
+        </div>
+    </div>
 </div>

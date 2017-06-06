@@ -2,7 +2,7 @@
     <div class="" layout="row" layout-wrap>
 
         <input style="margin-top: 10px;" type="button" id='toggle_heatmap' ng-click="ToggleHeatmap()" value="Auslastung on/off" ng-cloak>
-        <div id="map_stations" style="height: 700px; width:50%" class="content"></div>
+        <div id="map_stations" style="width:50%" class="content fullscreen"></div>
 
         <div style="padding: 15px;"></div>
 
@@ -63,8 +63,8 @@
                         <h2 class="md-flex">Station-Informationen</h2>
                     </div>
                 </md-toolbar>
-                <div ng-switch-when="true">
-                    <h3>
+                <div ng-switch-when="true" style="padding:15px;">
+                    <h4>
                         <md-input-container>
                             <input type="text" placeholder="ID" value="{{ currentStation.stationID }}" ng-disabled="true" />
                         </md-input-container>
@@ -84,7 +84,7 @@
                         <md-input-container>
                             <input type="text" placeholder="Nr" value="{{currentStation.address.number}}" ng-disabled="true" />
                         </md-input-container>
-                    </h3>
+                    </h4>
                 </div>
                 <div ng-switch-when="false">
                     <h4>W&auml;hlen Sie eine Ladestation aus oder f&uuml;gen Sie eine Neue hinzu</h4>
@@ -94,7 +94,7 @@
             <div ng-switch-when="add" >
                 <md-toolbar class="md-hue-2">
                     <div class="md-toolbar-tools">
-                        <h2 class="md-flex">Neues Ladestation hinzuf&uuml;gen</h2>
+                        <h2 class="md-flex">Neue Ladestation hinzuf&uuml;gen</h2>
                     </div>
                 </md-toolbar>
 
