@@ -403,7 +403,39 @@ application.controller('Ctrl_Stations', function ($rootScope, $scope, RESTFactor
 				
 				stations[ID_STR] = station;
 				
-				promises.push(RESTFactory.Car_Charging_Stations_Get_ChargingStationID(ID_STR));
+				RESTFactory.Car_Charging_Stations_Get_ChargingStationID(ID_STR).then(function(response){
+					
+					var lat = station.lat;
+					var lon = station.lon;
+					var heat = {};
+					var weight = 0;
+
+					if(response !== null && response !== undefined && response.data.length > 0){
+						weight = response.data.length;
+					}
+
+					heat.location = new google.maps.LatLng(lat, lon);
+					heat.weight = weight;
+								
+					heatmap_data.push(heat);
+
+				}, function(response){
+					
+					console.log("Failed to get weight for " + ID_STR);
+					
+					var lat = station.lat;
+					var lon = station.lon;
+					var heat = {};
+					var weight = 0;
+					
+					heat.location = new google.maps.LatLng(lat, lon);
+					heat.weight = weight;
+								
+					heatmap_data.push(heat);
+
+				});
+
+				//promises.push(RESTFactory.Car_Charging_Stations_Get_ChargingStationID(ID_STR));
 
 			});
 			
@@ -415,19 +447,24 @@ application.controller('Ctrl_Stations', function ($rootScope, $scope, RESTFactor
 					
 					data.forEach(function(item, index){
 						
-						var data2 = item.data;
+						if(item.data !== undefined || item.data !== null){
 
-						if(data2.length > 0){
-						
-							var lat = stations[data2[0].chargingStationId].lat;
-							var lon = stations[data2[0].chargingStationId].lon;
-							var heat = {};
+							var data2 = item.data;
+
+							if(data2.length > 0){
 							
-							heat.location = new google.maps.LatLng(lat, lon);
-							heat.weight = data2.length;
-							
-							heatmap_data.push(heat);
+								var lat = stations[data2[0].chargingStationId].lat;
+								var lon = stations[data2[0].chargingStationId].lon;
+								var heat = {};
+								
+								heat.location = new google.maps.LatLng(lat, lon);
+								heat.weight = data2.length;
+								
+								heatmap_data.push(heat);
+							}
+
 						}
+
 					});
 					
 					heatmap = new google.maps.visualization.HeatmapLayer({
@@ -448,12 +485,50 @@ application.controller('Ctrl_Stations', function ($rootScope, $scope, RESTFactor
 					heatmap.set('radius', 100);
 					
 				}, function(response){
+					console.log(response);
 					alert("Heatmap kann nicht abgerufen werden");
 					Hide_Heatmap();
 				});
 			}
 			
-			setTimeout(Finish, 2000);
+			var refIntID = setInterval(Finish2, 500);
+
+			function Finish2(){
+				
+				if(heatmap_data.length < stations.length){
+					return;
+				}
+
+				console.log(heatmap_data);
+				
+				clearInterval(refIntID);
+
+				heatmap = new google.maps.visualization.HeatmapLayer({
+					data: heatmap_data
+				});
+
+				heatmap.setMap(map);
+					
+				var gradient = [
+					'rgba(0, 0, 255, 0)',
+					'rgba(0, 0, 255, 1)',
+					'rgba(0, 127, 255, 1)',
+					'rgba(0, 127, 127, 1)',
+					'rgba(0, 127, 0, 1)',
+					'rgba(0, 255, 0, 1)',
+					'rgba(127, 255, 0, 1)',
+					'rgba(127, 127, 0, 1)',
+					'rgba(127, 0, 0, 1)',
+					'rgba(255, 0, 0, 1)'
+				]
+					
+				heatmap.set('gradient', gradient);
+					
+				heatmap.set('radius', 50);
+
+			}
+
+			//setTimeout(Finish2, 6000);
 			
 		}, function(response){
 			
