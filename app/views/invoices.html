@@ -92,11 +92,41 @@
                 </div>
 
                 <div ng-switch-when="true">
+                    
+                    <md-content layout-padding  ng-switch="currentInvoice.paid" >
+                        <md-content flex layout-padding>
+                            <md-input-container>
+                                <input type="text" placeholder="Rechnungs-ID" value="{{currentInvoice.invoiceID}}" ng-disabled="true" />
+                            </md-input-container>
+
+                            <md-input-container>
+                                <input type="text" placeholder="Gesamtpreis" value="{{currentInvoice.totalAmount}}" ng-disabled="true" />
+                            </md-input-container>
+                        </md-content>
+
+                        <md-content flex layout-padding>
+                            <md-input-container>
+                                <input type="text" placeholder="Status" value="{{currentInvoice.paidText}}" ng-disabled="true" />
+                            </md-input-container>
+                            
+                            <md-input-container ng-switch-when="false" >
+                                <md-button class="md-raised md-primary button-to-right" ng-click="SetPaid(currentInvoice.invoiceID)"> Bezahlt </md-button>
+                            </md-input-container>
+                            
+                            <md-input-container ng-switch-when="true" >
+                                <md-button class="md-primary md-hue-1 button-to-right" ng-click="SetPaid(currentInvoice.invoiceID)"> Nicht bezahlt </md-button>
+                        </md-input-container>
+
+                    </md-content>
+
                     <md-content layout-padding>
+
+
+<!--
                         <label> Rechnungs-ID: {{ currentInvoice.invoiceID }} </label>
                         <label> Status: {{ currentInvoice.paidText }}</label>
                         <label> Gesamtpreis: {{ currentInvoice.totalAmount }}</label>
-                        <br/>
+-->
 
                         <h4>Fahrer</h4>
                         <BLOCKQUOTE ng-switch="currentInvoice.customerState">
