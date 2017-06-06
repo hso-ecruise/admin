@@ -107,8 +107,6 @@ application.controller('Ctrl_Main', function ($rootScope, $scope, Helper, $locat
 					
 					RESTFactory.User_Login(email, use_pwd).then(function(response){
 						
-						console.log("SUCCESS");
-						
 						var data = response.data;
 						
 						$rootScope.token = data.token;

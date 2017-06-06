@@ -56,190 +56,217 @@
         <div ng-switch="view" class="content" style="width:30%;">
 
             <div ng-switch-when="info" ng-switch="vehicle_selected">
-
-
+                
                 <md-toolbar class="md-hue-2">
                     <div class="md-toolbar-tools">
                         <h2 class="md-flex">Fahrzeug-Informationen</h2>
                     </div>
                 </md-toolbar>
 
-                <div ng-switch-when="true" style=" padding:15px;">
-
-                    <!--NICHT VERÄNDERBAR-->
-
-                    <!--
-<md-content flex layout-padding>
-<md-input-container> 
-<input type="text" value="{{ currentVehicle.vehicleID }}" placeholder="ID" ng-disabled="true"/>
-</md-input-container>
-<md-input-container >
-<input type="text" ng-model="currentVehicle.licensePlate" placeholder="Nummernschild" ng-disabled="true"/>
-</md-input-container>
-</md-content>
-
-<md-content flex layout-padding>
-<md-input-container >
-<input type="text" placeholder="Hersteller" ng-model="currentVehicle.manufacturer" ng-disabled="true"/>
-</md-input-container>
-<md-input-container >
-<input type="text" placeholder="Modell" ng-model="currentVehicle.model" ng-disabled="true"/>
-</md-input-container>
-</md-content>
-
-<md-content flex layout-padding>
-<md-input-container>
-<input type="number"  placeholder="Baujahr" ng-model="currentVehicle.constructionYear" ng-disabled="true"/>
-</md-input-container>
-<md-input-container>
-<input type="number" placeholder="Kilowatt" ng-model="currentVehicle.kilowatts" ng-disabled="true"/>
-</md-input-container>
-</md-content>
-
-
-<div layout-align="start center" layout="row">
-<div layout="column" flex="33" flex-sm="100" flex-xs="100" layout-align="center center">
-<p>Reservierungszustand</p>
-<md-menu>
-<md-button ng-disabled="editDisabled" ng-mouseenter="$mdMenu.open()">{{currentVehicle.bookingStateObj.text}}</md-button>
-<md-menu-content width="2" ng-mouseleave="$mdMenu.close()">
-<md-menu-item ng-repeat="item in bookingStates">
-<md-button ng-click="currentVehicle.bookingStateObj = item">
-{{item.text}}
-</md-button>
-</md-menu-item>
-</md-menu-content>
-</md-menu>
-</div>
-<div layout="column" flex="33" flex-sm="100" flex-xs="100" layout-align="center center">
-<p> Ladezustand </p>
-<md-menu>
-<md-button ng-disabled="editDisabled" ng-mouseenter="$mdMenu.open()">{{currentVehicle.loadingStateObj.text}}</md-button>
-<md-menu-content width="2" ng-mouseleave="$mdMenu.close()">
-<md-menu-item ng-repeat="item in loadingStates">
-<md-button ng-click="currentVehicle.loadingStateObj = item">
-{{item.text}}
-</md-button>
-</md-menu-item>
-</md-menu-content>
-</md-menu>
-</div>
-</div>    
-
-
-<md-content flex layout-padding>
-<md-input-container>
-<input type="number" placeholder="Batteriestand" ng-model="currentVehicle.chargeLevel" ng-disabled="editDisabled"/>
-</md-input-container>
-</md-content>
-
-<md-content flex layout-padding>
-<p>Letzte bekannte Position</p>
-<md-input-container>
-<input type="text" placeholder="Strasse" ng-model="currentVehicle.address.street" ng-disabled="true"/>
-</md-input-container>
-<md-input-container>
-<input type="date" placeholder="" value="{{ currentVehicle.lastDate }}" ng-disabled="true"/>
-</md-input-container>
-</md-content>
-
-<md-content flex layout-padding>
-<md-input-container>
-<input type="number" placeholder="Kilometerstand" ng-model="currentVehicle.mileage" ng-disabled="editDisabled"/>
-</md-input-container>
-</md-content>
--->
-
-                    <md-content flex layout-padding>
-                        <md-input-container> 
-                            <input type="text" value="{{ currentVehicle.vehicleID }}" placeholder="ID" ng-disabled="true"/>
-                        </md-input-container>
-                        <md-input-container >
-                            <input type="text" ng-model="currentVehicle.licensePlate" placeholder="Nummernschild" ng-disabled="true"/>
-                        </md-input-container>
-                    </md-content>
-
-                    <md-content flex layout-padding>
-                        <md-input-container >
-                            <input type="text" placeholder="Hersteller" ng-model="currentVehicle.manufacturer" ng-disabled="true"/>
-                        </md-input-container>
-                        <md-input-container >
-                            <input type="text" placeholder="Modell" ng-model="currentVehicle.model" ng-disabled="true"/>
-                        </md-input-container>
-                    </md-content>
-
-                    <md-content flex layout-padding>
-                        <md-input-container>
-                            <input type="number"  placeholder="Baujahr" ng-model="currentVehicle.constructionYear" ng-disabled="true"/>
-                        </md-input-container>
-                        <md-input-container>
-                            <input type="number" placeholder="Kilowatt" ng-model="currentVehicle.kilowatts" ng-disabled="true"/>
-                        </md-input-container>
-                    </md-content>
-
-                    <md-content flex layout-padding>
-                        <md-input-container>
-                            <input type="number" placeholder="Batteriestand" ng-model="currentVehicle.chargeLevel" ng-disabled="true"/>
-                        </md-input-container>
-                        <md-input-container>
-                            <input type="number" placeholder="Kilometerstand" ng-model="currentVehicle.mileage" ng-disabled="true"/>
-                        </md-input-container>
-                    </md-content>
-
-                    <md-content flex layout-padding>
-                        <p>Letzte bekannte Position</p>
-                        <md-input-container>
-                            <input type="text" placeholder="Strasse" ng-model="currentVehicle.address.street" ng-disabled="true"/>
-                        </md-input-container>
-                        <md-input-container>
-                            <input type="text" placeholder="Datum" value="{{ currentVehicle.lastDate.date }}" ng-disabled="true"/>
-                        </md-input-container>
-                    </md-content>
-
-                    <div layout-align="start center" layout="row">
-                        <div layout="column" flex="33" flex-sm="100" flex-xs="100" layout-align="center center">
-                            <p>Reservierungszustand</p>
-                            <md-menu>
-                                <md-button ng-disabled="editDisabled" ng-mouseenter="$mdMenu.open()">{{currentVehicle.bookingStateObj.text}}</md-button>
-                                <md-menu-content width="2" ng-mouseleave="$mdMenu.close()">
-                                    <md-menu-item ng-repeat="item in bookingStates">
-                                        <md-button ng-click="currentVehicle.bookingStateObj = item">
-                                            {{item.text}}
-                                        </md-button>
-                                    </md-menu-item>
-                                </md-menu-content>
-                            </md-menu>
-                        </div>
-                        <div layout="column" flex="33" flex-sm="100" flex-xs="100" layout-align="center center">
-                            <p> Ladezustand </p>
-                            <md-menu>
-                                <md-button ng-disabled="editDisabled" ng-mouseenter="$mdMenu.open()">{{currentVehicle.loadingStateObj.text}}</md-button>
-                                <md-menu-content width="2" ng-mouseleave="$mdMenu.close()">
-                                    <md-menu-item ng-repeat="item in loadingStates">
-                                        <md-button ng-click="currentVehicle.loadingStateObj = item">
-                                            {{item.text}}
-                                        </md-button>
-                                    </md-menu-item>
-                                </md-menu-content>
-                            </md-menu>
-                        </div>
-                    </div>
-
-
-
-                    <div ng-switch="editDisabled">
-                        <div ng-switch-when="false">
-                            <md-button class="md-raised md-primary button-to-right" ng-click="Safe_Changes()"> Speichern </md-button>
-                            <md-button class="md-primary md-hue-1 button-to-right" ng-click="Dismiss_Changes()"> Verwerfen </md-button>
-                        </div>
-                        <div ng-switch-when="true">
-                            <md-button class="md-raised md-primary button-to-right" ng-click="EnableEditMode()"> Bearbeiten </md-button>
-                        </div>
-                    </div>
-                </div>
                 <div ng-switch-when="false">
-                    <h4> W&auml;hlen Sie ein Fahrzeug aus oder f&uuml;gen Sie ein Neues hinzu</h4>
+                    <md-content layout-padding>
+                        <h4> W&auml;hlen Sie ein Fahrzeug aus oder f&uuml;gen Sie ein Neues hinzu</h4>
+                    </md-content>
                 </div>
+
+                <div ng-switch-when="true" style=" padding:15px;">
+                    <md-tabs md-dynamic-height md-border-bottom>
+                        <md-tab label="Stammdaten">
+
+                            <md-content>
+                                <md-content flex layout-padding>
+                                    <md-input-container> 
+                                        <input type="text" value="{{ currentVehicle.vehicleID }}" placeholder="ID" ng-disabled="true"/>
+                                    </md-input-container>
+                                    <md-input-container >
+                                        <input type="text" ng-model="currentVehicle.licensePlate" placeholder="Nummernschild" ng-disabled="true"/>
+                                    </md-input-container>
+                                </md-content>
+
+                                <md-content flex layout-padding>
+                                    <md-input-container >
+                                        <input type="text" placeholder="Hersteller" ng-model="currentVehicle.manufacturer" ng-disabled="true"/>
+                                    </md-input-container>
+                                    <md-input-container >
+                                        <input type="text" placeholder="Modell" ng-model="currentVehicle.model" ng-disabled="true"/>
+                                    </md-input-container>
+                                </md-content>
+
+                                <md-content flex layout-padding>
+                                    <md-input-container>
+                                        <input type="number"  placeholder="Baujahr" ng-model="currentVehicle.constructionYear" ng-disabled="true"/>
+                                    </md-input-container>
+                                    <md-input-container>
+                                        <input type="number" placeholder="Kilowatt" ng-model="currentVehicle.kilowatts" ng-disabled="true"/>
+                                    </md-input-container>
+                                </md-content>
+
+                                <md-content flex layout-padding ng-switch="currentVehicle.chargeLevel">
+                                    <md-input-container>
+                                        <input type="number" placeholder="Batteriestand" ng-model="currentVehicle.chargeLevel" ng-disabled="true"/>
+                                    </md-input-container>
+
+                                    <md-input-container ng-switch-when="100">
+                                        <input type="text" placeholder="Geladen" value="voll geladen" ng-disabled="true"/>
+                                    </md-input-container>
+                                    
+                                    <md-input-container ng-switch-default>
+                                        <input type="text" placeholder="Voll geladen um" ng-model="currentVehicle.chargeDone" ng-disabled="true"/>
+                                    </md-input-container>
+                                </md-content>
+
+                                <md-content flex layout-padding>
+                                    <md-input-container>
+                                        <input type="number" placeholder="Kilometerstand" ng-model="currentVehicle.mileage" ng-disabled="true"/>
+                                    </md-input-container>
+                                </md-content>
+
+                                <md-content flex layout-padding>
+                                    <p>Letzte bekannte Position</p>
+                                    <md-input-container>
+                                        <input type="text" placeholder="Strasse" ng-model="currentVehicle.address.street" ng-disabled="true"/>
+                                    </md-input-container>
+                                    <md-input-container>
+                                        <input type="text" placeholder="Datum" value="{{ currentVehicle.lastDate.date }} um {{currentVehicle.lastDate.time}}" ng-disabled="true"/>
+                                    </md-input-container>
+                                </md-content>
+
+                                <div layout-align="start center" layout="row">
+                                    <div layout="column" flex="33" flex-sm="100" flex-xs="100" layout-align="center center">
+                                        <p>Reservierungszustand</p>
+                                        <md-menu>
+                                            <md-button ng-disabled="editDisabled" ng-mouseenter="$mdMenu.open()">{{currentVehicle.bookingStateObj.text}}</md-button>
+                                            <md-menu-content width="2" ng-mouseleave="$mdMenu.close()">
+                                                <md-menu-item ng-repeat="item in bookingStates">
+                                                    <md-button ng-click="currentVehicle.bookingStateObj = item">
+                                                        {{item.text}}
+                                                    </md-button>
+                                                </md-menu-item>
+                                            </md-menu-content>
+                                        </md-menu>
+                                    </div>
+                                    <div layout="column" flex="33" flex-sm="100" flex-xs="100" layout-align="center center">
+                                        <p> Ladezustand </p>
+                                        <md-menu>
+                                            <md-button ng-disabled="editDisabled" ng-mouseenter="$mdMenu.open()">{{currentVehicle.loadingStateObj.text}}</md-button>
+                                            <md-menu-content width="2" ng-mouseleave="$mdMenu.close()">
+                                                <md-menu-item ng-repeat="item in loadingStates">
+                                                    <md-button ng-click="currentVehicle.loadingStateObj = item">
+                                                        {{item.text}}
+                                                    </md-button>
+                                                </md-menu-item>
+                                            </md-menu-content>
+                                        </md-menu>
+                                    </div>
+                                </div>
+
+
+
+                                <div ng-switch="editDisabled">
+                                    <div ng-switch-when="false">
+                                        <md-button class="md-raised md-primary button-to-right" ng-click="Safe_Changes()"> Speichern </md-button>
+                                        <md-button class="md-primary md-hue-1 button-to-right" ng-click="Dismiss_Changes()"> Verwerfen </md-button>
+                                    </div>
+                                    <div ng-switch-when="true">
+                                        <md-button class="md-raised md-primary button-to-right" ng-click="EnableEditMode()"> Bearbeiten </md-button>
+                                    </div>
+                                </div>
+                            </md-content>
+                        </md-tab>
+
+                        <md-tab label="Bisherige Fahrten">
+                            <md-content layout-padding>
+                                
+                                <blockquote ng-repeat="(key, trip) in currentVehicle.trips track by $index">
+                                    
+                                    <label><b>Allgemeines</b></label>
+                                    <p></p>
+                                    <h5>Trip-ID: {{trip.tripID}} von Fahrer-ID: {{trip.customerID}}</h5>
+                                    <h5>Distanz: {{trip.distanceTravelled}} km</h5>
+                                    <p></p>
+                                    <label><b>Start</b></label>
+                                    <p></p>
+                                    <h5>Am {{trip.startDate.date}} um {{trip.startDate.time}} an Ladesäule: {{trip.startChargingStationID}}</h5>
+                                    <p></p>
+                                    <label><b>Ende</b></label>
+                                    <p></p>
+                                    <span ng-switch="trip.endState">
+                                        <h5 ng-switch-when="true">Am {{trip.endDate.date}} um {{trip.endDate.time}} an Ladesäule: {{trip.endChargingStationID}}</h5>
+                                        <h5 ng-switch-when="false">Trip noch nicht beendet</h5>
+                                    </span>
+                                </blockquote>
+
+                            </md-content>
+                        </md-tab>
+
+                        <md-tab label="Instandhaltung">
+                            <md-content ng-switch="currentVehicle.maintenanceState">
+                            
+                                <md-tabs md-dynamic-height md-border-bottom ng-switch-when="true">
+                                    <md-tab label="Vergangene">
+
+                                        <md-content layout-padding>
+                                            <blockquote ng-repeat="(key, maintenance) in currentVehicle.maintenancesDone track by $index">
+                                                
+                                                <label><b>Allgemeines</b></label>
+                                                <p ng-switch="maintenance.invoiceState">
+                                                    <h5>Instandhaltungs-ID: {{maintenance.maintenanceID}}</h5>
+                                                    <h5>Fahrzeug-Instandhaltungs-ID: {{maintenance.carMaintenanceID}}</h5>
+                                                    <h5>Rechnungs-ID: {{maintenance.invoice.invoiceID}}</h5>
+                                                    <h5 ng-switch-when="true">Rechnungsitem-ID: {{maintenance.invoiceItemID}}</h5>
+                                                </p>
+                                                
+                                                <label><b>Zeitlicher Rahmen</b></label>
+                                                <p></p>
+                                                <h5>Von</h5>
+                                                <h5>{{maintenance.plannedDate.date}}</h5>
+                                                <h5>bis</h5>
+                                                <h5>{{maintenance.completedDate.date}}</h5>
+                                            </blockquote>
+
+                                        </md-content>
+
+                                    </md-tab>
+
+                                    <md-tab label="Ausstehende">
+
+                                        <md-content layout-padding>
+                                            <blockquote ng-repeat="(key, maintenance) in currentVehicle.maintenancesOpen track by $index">
+                                                
+                                                <label><b>Allgemeines</b></label>
+                                                <p ng-switch="maintenance.invoiceState">
+                                                    <h5>Instandhaltungs-ID: {{maintenance.maintenanceID}}</h5>
+                                                    <h5>Fahrzeug-Instandhaltungs-ID: {{maintenance.carMaintenanceID}}</h5>
+                                                    <h5>Rechnungs-ID: {{maintenance.invoice.invoiceID}}</h5>
+                                                    <h5 ng-switch-when="true">Rechnungsitem-ID: {{maintenance.invoiceItemID}}</h5>
+                                                </p>
+                                                
+                                                <label><b>Zeitlicher Rahmen</b></label>
+                                                <p></p>
+                                                <h5>Von</h5>
+                                                <h5>{{maintenance.plannedDate.date}}</h5>
+                                                <h5>bis</h5>
+                                                <h5>{{maintenance.completedDate.date}}</h5>
+                                                <h5>Instandhaltung noch nicht beendet</h5>
+                                            </blockquote>
+
+                                        </md-content>
+
+                                    </md-tab>                                
+                                </md-tabs>
+                
+                                <div ng-switch-when="false">
+                                    <p>
+                                        <h5>Keine Instandhaltungen für dieses Fahrzeug verfügbar</h5>
+                                    </p>
+                                </div>
+                            </md-content>
+                        </md-tab>
+
+                    </md-tabs>
+                    
+                </div>
+                
             </div>
 
             <div ng-switch-when="add">

@@ -335,6 +335,11 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
 			
 			vehicle.mileage = data_use.mileage;
 			vehicle.chargeLevel = data_use.chargeLevel;
+
+			var endTime = new Date();
+        	endTime.setTime(endTime.getTime() + ((100 - vehicle.chargeLevel) * 60 * 1000));
+			vehicle.chargeDone = Helper.Get_Zeit(endTime).time;
+
 			vehicle.kilowatts = data_use.kilowatts;
 			vehicle.manufacturer = data_use.manufacturer;
 			vehicle.model = data_use.model;
@@ -343,7 +348,8 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
 			vehicle.lastLon = data_use.lastKnownPositionLongitude;
 			vehicle.lastDate = Helper.Get_Zeit(data_use.lastKnownPositionDate);
 			vehicle.address_state = "false";
-			vehicle.maintenance_state = "false";
+			vehicle.maintenanceState = "false";
+			vehicle.trip_state = "false";
 			
 			$scope.currentVehicle = vehicle;
 			$scope.$apply();
@@ -351,6 +357,7 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
 			
 			map.panTo(new google.maps.LatLng(vehicle.lastLat, vehicle.lastLon));
 			
+			//Get last address
 			Helper.Get_Address(vehicle.lastLat, vehicle.lastLon).then(function(address){
 				
 				vehicle.address_state = "true";
@@ -364,38 +371,130 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
 				
 			});
 			
-			
+			//Get all 
 			RESTFactory.Car_Maintances_Get_CarID(vehicle.vehicleID).then(function(response){
-				
-				vehicle.maintenance_state = "true";
 				
 				var data = response.data;
 				
-				var data_use = data;
-				
-				var maintenance = {};
-				maintenance.carMaintenanceID = data_use.carMaintenanceId;
-				maintenance.carID = data_use.carId;
-				maintenance.maintenanceID = data_use.maintenanceId;
-				maintenance.invoiceItemID = data_use.invoiceItemId;
-				maintenance.plannedDate = Helper.Get_Zeit(data_use.plannedDate);
-				maintenance.completedDate = Helper.Get_Zeit(data_use.completedDate);
-				
-				maintenance.text = "Letzte Wartung";
-				
-				var now = new Date();
-				
-				if(now.getTime() - maintenance.plannedDate.value > 0){
-					maintenance.text = "Nächste Wartung";
+				var maintenancesOpen = {};
+				var maintenancesDone = {};
+
+				if(data.length !== null && data.length > 0){
+
+					data.forEach(function(data_use, index){
+
+						console.log(data_use);
+
+						var maintenance = {};
+						var ID_STR = data_use.carMaintenanceId;
+						maintenance.carMaintenanceID = data_use.carMaintenanceId;
+						maintenance.carID = data_use.carId;
+						maintenance.maintenanceID = data_use.maintenanceId;
+						maintenance.invoiceItemID = data_use.invoiceItemId;
+						maintenance.plannedDate = Helper.Get_Zeit(data_use.plannedDate);
+						maintenance.invoiceState = "false";
+						maintenance.completedState = "false";
+						if(data_use.completedDate === null){
+							maintenancesOpen[ID_STR] = maintenance;
+						}else{
+							maintenance.completedState = "true";
+							maintenance.completedDate = Helper.Get_Zeit(data_use.completedDate);
+							maintenancesDone[ID_STR] = maintenance;
+						}
+
+						vehicle.maintenanceState = "true";
+						vehicle.maintenancesDone = maintenancesDone;
+						vehicle.maintenancesOpen = maintenancesOpen;
+						
+console.log(vehicle);
+
+						$scope.currentVehicle = vehicle;
+						$scope.$apply();
+
+						if(data_use.invoiceItemId !== null){
+
+							RESTFactory.Invoices_Get_Items_ItemID(maintenance.invoiceItemID).then(function(response){
+
+								var data = response.data;
+
+								var data_use = data;
+
+								var invoice = {};
+					
+								invoice.invoiceID = data_use.invoiceId;
+								invoice.totalAmount = data_use.totalAmount;
+								invoice.customerID = data_use.customerId;
+								invoice.paid = data_use.paid;
+								invoice.paidText = "Nicht bezahlt";
+								if(invoice.paid === true){ invoice.paidText = "Bezahlt"; }
+
+								maintenance.invoice = invoice;
+								maintenance.invoiceState = "true";
+
+								maintenancesDone[ID_STR] = maintenance;
+								vehicle.maintenanceDone = maintenancesDone;
+							
+								$scope.currentVehicle = vehicle;
+								$scope.$apply();
+
+							}, function(){
+
+							});
+
+						}
+					
+					});
+
 				}
+
 				
-				vehicle.maintenance = maintenance;
-				
-				$scope.currentVehicle = vehicle;
-				$scope.$apply();
 				
 			}, function(response){
 				
+			});
+
+			RESTFactory.Trips_Get_CarID(vehicle.vehicleID).then(function(response){
+
+				var data = response.data;
+
+				var trips = {};
+
+				if(data !== null && data !== undefined && data.length > 0){
+
+					data.forEach(function(data_use, index){
+
+						var trip = {};
+
+						trip.tripID = data_use.tripId;
+						trip.carID = data_use.carId;
+						trip.customerID = data_use.customerId;
+						trip.startDate = Helper.Get_Zeit(data_use.startDate);
+						trip.startChargingStationID = data_use.startChargingStationId;
+						
+						trip.endState = "false";
+						trip.distanceTravelled = 0;
+						
+						if(data_use.endDate !== null){
+							trip.endState = "true";
+							trip.endDate = Helper.Get_Zeit(data_use.endDate);
+							trip.distanceTravelled = data_use.distanceTravelled;
+							trip.endChargingStationID = data_use.endChargingStationId;
+						}
+						
+
+						trips[trip.tripID] = trip;
+
+					});
+
+					vehicle.trip_state = "true";
+					vehicle.trips = trips;
+					$scope.currentVehicle = vehicle;
+					$scope.$apply();
+
+				}
+
+			}, function(){
+
 			});
 			
 			
@@ -433,7 +532,7 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
 		if(vehicle_old.loadingStateObj === undefined || chargingState !== "\"" + vehicle_old.loadingStateObj.be + "\""){
 			RESTFactory.Cars_Patch_ChargingState(vehicleID, chargingState).then(function(response){
 				alert("Fahrzeug Ladezustand erfolgreich geändert");
-			}, function(response){
+			}, function(){
 				alert("Fahrzeug Ladezustand konnte nicht geändert werden");
 			});
 		}
@@ -441,7 +540,7 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
 		if(vehicle_old.bookingStateObj === undefined || bookingState !== "\"" + vehicle_old.bookingStateObj.be + "\""){
 			RESTFactory.Cars_Patch_BookingState(vehicleID, bookingState).then(function(response){
 				alert("Fahrzeug Reservierungszustand erfolgreich geändert");
-			}, function(response){
+			}, function(){
 				alert("Fahrzeug Reservierungszustand konnte nicht geändert werden");
 			});
 		}
@@ -449,7 +548,7 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
 		if(vehicle.mileage !== vehicle_old.mileage){
 			RESTFactory.Cars_Patch_Mileage(vehicleID, vehicle.mileage).then(function(response){
 				alert("Fahrzeug Kilometerstand erfolgreich geändert");
-			}, function(response){
+			}, function(){
 				alert("Fahrzeug Kilometerstand konnte nicht geändert werden");
 			});
 		}
@@ -457,7 +556,7 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
 		if(vehicle.chargeLevel !== vehicle_old.chargeLevel){
 			RESTFactory.Cars_Patch_ChargeLevel(vehicleID, vehicle.chargeLevel).then(function(response){
 				alert("Fahrzeug Akkustand erfolgreich geändert");
-			}, function(response){
+			}, function(){
 				alert("Fahrzeug Akkustand konnte nicht geändert werden");
 			});
 		}
@@ -499,11 +598,11 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
 		
 		console.log(vehicle);
 		
-		RESTFactory.Cars_Post(vehicle).then(function(response){
+		RESTFactory.Cars_Post(vehicle).then(function(){
 			alert("Fahrzeug erfolgreich hinzugefügt");
 			new Hide_AddVehicle();
 			setTimeout(Update, 1000);
-		}, function(response){
+		}, function(){
 			alert("Fahrzeug konnte nicht hinzugefügt werden");
 			new Hide_AddVehicle();
 			setTimeout(Update, 1000);

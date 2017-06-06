@@ -164,6 +164,8 @@ application.controller('Ctrl_Maintenances', function ($rootScope, $scope, RESTFa
 						car_maintenance.endState = false;
 						car_maintenance.endDate = new Date();
 						car_maintenance.minEndDate = Helper.Get_Zeit(data_use.plannedDate).date;
+						car_maintenance.maxEndDate = Helper.Get_Zeit(new Date()).date;
+						
 						if(data_use.completedDate !== null){
 							car_maintenance.endState = true;
 							car_maintenance.completedDate = Helper.Get_Zeit(data_use.completedDate);
@@ -253,13 +255,14 @@ application.controller('Ctrl_Maintenances', function ($rootScope, $scope, RESTFa
 			maintenance.atMileage = null;
 			maintenance.atDate = $scope.new_maintenance.date;
 		}
+
 		
 		RESTFactory.Maintances_Post(maintenance).then(function(response){
 			alert("Instandhaltung wurde erfolgreich hinzugefügt");
 			new Hide_AddMaintenance();
 			setTimeout(Update, 2000);
 		}, function(response){
-			alert("Rechnung fehlgeschlagen");
+			alert("Instandhaltung hinzufügen fehlgeschlagen");
 			new Hide_AddMaintenance();
 			setTimeout(Update, 2000);
 		});
@@ -281,7 +284,7 @@ application.controller('Ctrl_Maintenances', function ($rootScope, $scope, RESTFa
 		
 		new_maintenance.stateObj = MAINTENANCE_TYPES[0];
 		
-		new_maintenance.spontan = false;
+		new_maintenance.spontan = true;
 		new_maintenance.atMileage = 0;
 		new_maintenance.date = new Date();
 		new_maintenance.minDate = new Date();
@@ -369,7 +372,6 @@ application.controller('Ctrl_Maintenances', function ($rootScope, $scope, RESTFa
 					
 					console.log(data);
 					
-					
 					RESTFactory.Car_Maintances_Post(maintenanceID, data).then(function(response){
 						alert("Element erfolgreich hinzugefügt");
 					}, function(response){
@@ -433,10 +435,15 @@ application.controller('Ctrl_Maintenances', function ($rootScope, $scope, RESTFa
 
 	};
 	
-	
+/*	
 	$scope.ShowCarMaintenanceAddPopUp = function(id){
 		new Show_CarMaintenance_Add_PopUp(id);
 	};
+*/
+	$scope.ShowCarMaintenanceAddPopUp = function(id){
+		new Show_CarMaintenance_Add_PopUp(id);
+	};
+
 	
 	$scope.SafeEndDate = function(mainID, carMainID, endDate){
 		new SafeEndDate(mainID, carMainID, endDate);

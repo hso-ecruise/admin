@@ -46,23 +46,7 @@
                         </table>
                     </md-content>
                 </div>
-                <!--
-<md-list flex>
-<md-list-item><h4>ID Fahrer Status</h4></md-list-item>
-<md-list-item class="md-1-line" ng-repeat="(key, booking) in bookings track by $index" ng-click="LoadBookingDetails2(booking)">
-<div class="md-list-item-text" layout="column" ng-switch on="booking.status">
-<h4 ng-switch-when="FUTURE">{{ key }} {{ booking.customer.name }} {{ booking.customer.familyName }} FUTURE</h4>
-<h4 ng-switch-when="PAST">{{ key }} {{ booking.customer.name }} {{ booking.customer.familyName }} PAST</h4>
-</div>
-<md-divider ></md-divider>
-</md-list-item>
-<md-list-item class="md-1-line" ng-click="Show_AddBooking()">
-<div class="md-list-item-text" layout="column">
-<h4>Neue Buchung hinzufügen</h4>
-</div>
-</md-list-item>
-</md-list>
--->
+
             </md-content>
 
         </div>
@@ -86,6 +70,7 @@
                     <md-content layout-padding>
                         <label> Buchungs-ID: {{ currentBooking.bookingID }} </label>
                         <label> Status: {{ currentBooking.statusText }}</label>
+                        <label> Geplantes Datum: {{ currentBooking.date.date }} um {{currentBooking.date.time}}</label>
                         <br/>
 
                         <h4>Fahrer</h4>

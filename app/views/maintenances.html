@@ -17,7 +17,7 @@
                         <table>
                             <thead>
                                 <tr>
-                                    <td>ID</td>
+                                    <td>ID &nbsp;</td>
                                     <td>Status</td>
                                 </tr>
                             </thead>
@@ -41,23 +41,6 @@
                         </table>
                     </md-content>
                 </div>
-                <!--
-<md-list flex>
-<md-list-item><h4>ID Fahrer Status</h4></md-list-item>
-<md-list-item class="md-1-line" ng-repeat="(key, booking) in bookings track by $index" ng-click="LoadBookingDetails2(booking)">
-<div class="md-list-item-text" layout="column" ng-switch on="booking.status">
-<h4 ng-switch-when="FUTURE">{{ key }} {{ booking.customer.name }} {{ booking.customer.familyName }} FUTURE</h4>
-<h4 ng-switch-when="PAST">{{ key }} {{ booking.customer.name }} {{ booking.customer.familyName }} PAST</h4>
-</div>
-<md-divider ></md-divider>
-</md-list-item>
-<md-list-item class="md-1-line" ng-click="Show_AddBooking()">
-<div class="md-list-item-text" layout="column">
-<h4>Neue Buchung hinzufügen</h4>
-</div>
-</md-list-item>
-</md-list>
--->
             </md-content>
 
         </div>
@@ -82,11 +65,8 @@
                         <label> Instandhaltungs-ID: {{ currentMaintenance.maintenanceID }} </label>
                         <br/>
                         <label> Status: {{ currentMaintenance.stateObj.text }}</label>
-                        <br/>
                         <label ng-switch-when="1"> Kilometerstand: {{currentMaintenance.atMileage}}</label>
                         <label ng-switch-when="2"> Datum: {{currentMaintenance.date.date}}</label>
-
-                        <br/>
                         <br/>
 
 
@@ -103,8 +83,10 @@
                                         {{item.completedDate.date}}
                                     </span>
                                     <span ng-switch-when="false">
-                                        <input type="date" min="{{item.minEndDate}}" ng-model="item.endDate"/>
-                                        <input type="button" value="Speichern" ng-click="SafeEndDate(currentMaintenance.maintenanceID, item.carMaintenanceID, item.endDate)"/>
+                                        <form name="form_ChangeEnd">
+                                            <input type="date" min="{{item.minEndDate}}" max="{{item.maxEndDate}}" ng-model="item.endDate"/>
+                                            <md-button class="md-raised md-primary" disabled="form_ChangeEnd.$invalid" ng-click="SafeEndDate(currentMaintenance.maintenanceID, item.carMaintenanceID, item.endDate)"> Speichern </md-button>
+                                        </form>
                                     </span>
                                 </h5>
 
@@ -122,6 +104,7 @@
                                     <div ng-switch-when="false">
                                         <BLOCKQUOTE>
                                             <h5> Rechnungselement nicht vorhanden oder abrufen nicht möglich </h5>
+                                            <md-button class="md-raised md-primary" ng-click="ShowCarMaintenanceAddPopUp(currentMaintenance.maintenanceID)"> Rechnungselement zuweisen </md-button>
                                         </BLOCKQUOTE>
                                     </div>
 
@@ -134,8 +117,10 @@
 
                         </BLOCKQUOTE>
 
-                        <input type="button" ng-click="ShowCarMaintenanceAddPopUp(currentMaintenance.maintenanceID)" value="Neues Element"/>
+                        <br/>
 
+                        <md-button class="md-raised md-primary button-to-right" ng-click="ShowCarMaintenanceAddPopUp(currentMaintenance.maintenanceID)" ng-disabled="user_Form.$invalid"> Neues Element </md-button>
+                        
                     </md-content>
                 </div>
             </div>

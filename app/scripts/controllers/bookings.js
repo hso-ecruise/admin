@@ -155,10 +155,12 @@ application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactor
 			booking.customerID = data.customerId;
 			booking.tripID = data.tripId;
 			booking.invoiceItemID = data.invoiceItemId;
-			
+
 			var plannedDate = new Date(data.plannedDate);
 			var now = new Date();
 			
+			booking.date = Helper.Get_Zeit(plannedDate);
+
 			if(plannedDate.getTime() - now.getTime() < 0){
 				booking.status = "PAST";
 				booking.statusText = "In der Vergangeheit";
