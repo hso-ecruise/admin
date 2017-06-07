@@ -71,51 +71,61 @@
 
 
                         <h4>Fahrzeug-Instandhaltung</h4>
-                        <BLOCKQUOTE ng-switch="currentMaintenance.car_maintenance_state">
+                        <div ng-switch="currentMaintenance.car_maintenance_state">
 
-                            <div ng-switch-when="true" ng-repeat="(key, item) in currentMaintenance.car_maintenance track by $index">
-                                <h5> Fahrzeugsinstandhaltungs-ID: {{ item.carMaintenanceID }} </h5>
-                                <h5> Fahrzeug-ID: {{ item.carID }} </h5>
-                                <h5> Geplantes Datum: {{ item.plannedDate.date }} </h5>
-                                <h5 ng-switch="item.endState">
-                                    End Datum:
-                                    <span ng-switch-when="true">
-                                        {{item.completedDate.date}}
-                                    </span>
-                                    <span ng-switch-when="false">
-                                        <form name="form_ChangeEnd">
-                                            <input type="date" min="{{item.minEndDate}}" max="{{item.maxEndDate}}" ng-model="item.endDate"/>
-                                            <md-button class="md-raised md-primary" disabled="form_ChangeEnd.$invalid" ng-click="SafeEndDate(currentMaintenance.maintenanceID, item.carMaintenanceID, item.endDate)"> Speichern </md-button>
-                                        </form>
-                                    </span>
-                                </h5>
+                            <div ng-switch-when="true" ng-repeat="(key, item) in currentMaintenance.car_maintenance track by $index" ng-switch="item.endState">
+                                <div ng-switch-when="true">
+                                    <h5> Fahrzeugsinstandhaltungs-ID: {{ item.carMaintenanceID }} </h5>
+                                    <h5> Fahrzeug-ID: {{ item.carID }} </h5>
+                                    <h5> Geplantes Datum: {{ item.plannedDate.date }} </h5>
+                                    <h5>End Datum: {{item.completedDate.date}}</h5>
+                                    
+                                    <div ng-switch="item.invoice_state">
+                                        <h4>Rechnungselement</h4>
+                                        <BLOCKQUOTE ng-switch-when="true">
+                                            <h5>Rechnungs-ID: {{ currentMaintenance.car_maintenance.invoice.invoiceID }}</h5>
+                                            <h5>Element-ID: {{ currentMaintenance.car_maintenance.invoiceItemID }}</h5>
+                                            <h5>Status: {{ currentMaintenance.car_maintenance.invoice.paidText }}</h5>
+                                        </BLOCKQUOTE>
 
-                                <h4>Rechnungselement</h4>
-                                <div ng-switch="item.invoice_state">
-
-                                    <BLOCKQUOTE ng-switch-when="true">
-
-                                        <h5>Rechnungs-ID: {{ currentMaintenance.car_maintenance.invoice.invoiceID }}</h5>
-                                        <h5>Element-ID: {{ currentMaintenance.car_maintenance.invoiceItemID }}</h5>
-                                        <h5>Status: {{ currentMaintenance.car_maintenance.invoice.paidText }}</h5>
-
-                                    </BLOCKQUOTE>
-
-                                    <div ng-switch-when="false">
-                                        <BLOCKQUOTE>
+                                        <BLOCKQUOTE ng-switch-when="false">
                                             <h5> Rechnungselement nicht vorhanden oder abrufen nicht möglich </h5>
-                                            <md-button class="md-raised md-primary" ng-click="ShowCarMaintenanceAddPopUp(currentMaintenance.maintenanceID)"> Rechnungselement zuweisen </md-button>
                                         </BLOCKQUOTE>
                                     </div>
+                                </div>
+
+                                <div ng-switch-when="false">
+                                    <h5> Fahrzeugsinstandhaltungs-ID: {{ item.carMaintenanceID }} </h5>
+                                    <h5> Fahrzeug-ID: {{ item.carID }} </h5>
+                                    <h5> Geplantes Datum: {{ item.plannedDate.date }} </h5>
+                                    
+                                    <md-content flex layout-padding>
+                                        <h4>Ende</h4>
+                                        <form name="form_ChangeEnd">
+                                            <md-input-container>
+                                                <input placeholder="End Datum" type="date" min="{{item.minEndDate}}" max="{{item.maxEndDate}}" ng-model="item.endDate"/>
+                                            </md-input-container>
+                                            <md-input-container>
+                                                <input placeholder="RechnungsElementID" type="number" min="1" ng-model="item.invoiceItemID" ng-required="true"/>
+                                            </md-input-container>
+
+                                            <md-button class="md-raised md-primary" ng-click="SafeEndDate(currentMaintenance.maintenanceID, item.carMaintenanceID, item.endDate, item.invoiceItemID)"> Speichern </md-button>
+                                        
+                                        </form>
+                                    </md-content>
 
                                 </div>
+
+                                <hr>
+
                             </div>
 
                             <div ng-switch-when="false">
                                 <h5> Fahrzeug-Instandhaltung kann nicht abgerufen werden </h5>
                             </div>
 
-                        </BLOCKQUOTE>
+
+                        </div>
 
                         <br/>
 

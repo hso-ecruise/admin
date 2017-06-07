@@ -417,7 +417,7 @@ application.controller('Ctrl_Maintenances', function ($rootScope, $scope, RESTFa
 					var data = {
 						maintenanceId: item.maintenanceID,
 						carId: parseInt(item.carID),
-						plannedDate: item.plannedDate
+						plannedDate: item.plannedDate.toUTCString()
 					};
 					
 					console.log(data);
@@ -444,11 +444,13 @@ application.controller('Ctrl_Maintenances', function ($rootScope, $scope, RESTFa
 	 * @param {} endDate
 	 * @return 
 	 */
-	function SafeEndDate(mainID, carMainID, endDate){
+	function SafeEndDate(mainID, carMainID, endDate, invoiceItemID){
 		
-		var date = endDate;
-		
-		RESTFactory.Car_Maintances_Patch_CompletedDate(carMainID, date).then(function(response){
+		var data = {};
+		data.completedDate =endDate;
+		data.invoiceItemId = invoiceItemID;
+
+		RESTFactory.Car_Maintances_Patch_CompletedDate(carMainID, data).then(function(response){
 			alert("End Datum erfolgreich gesetzt");
 			new Update("ALL", undefined);
 		}, function(response){
