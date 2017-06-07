@@ -5,26 +5,26 @@
  * @name adminApp.controller:VechiclesCtrl
  * @description
  * # VehiclesCtrl
- * give some description here
+ * Controller der Seite Fahrzeuge
  */
- 
+
 application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactory, Helper, $mdDialog) {
 
-	var vehicles_all = {};
-	var vehicle_old = {};
+    var vehicles_all = {};
+    var vehicle_old = {};
 
-	var markers = [];
-	
-	var marker_Address;
-	
-	
-	var map = new google.maps.Map(document.getElementById('map_vehicles'), {
+    var markers = [];
+
+    var marker_Address;
+
+
+    var map = new google.maps.Map(document.getElementById('map_vehicles'), {
         zoom: 16,
         center: new google.maps.LatLng(49.5, 8.434),
         mapTypeId: 'roadmap'
     });
-	
-	var icons = {
+
+    var icons = {
         car_available: {
             icon: "images/icons/car_available.png"
         },
@@ -53,47 +53,47 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
             icon: "images/icons/car_standing_user.png"
         }
     };
-	
-	var LOADING_STATES = {
-		1: {
-			text: "Entladen",
-			be: "DISCHARGING",
-			id: 1
-		},
-		2: {
-			text: "Laden",
-			be: "CHARGING",
-			id: 2
-		},
-		3: {
-			text: "Geladen",
-			be: "FULL",
-			id: 3
-		}
-	};
-	
-	var BOOKING_STATES = {
-		1: {
-			text: "Verfügbar",
-			be: "AVAILABLE",
-			id: 1
-		},
-		2: {
-			text: "Gebucht",
-			be: "BOOKED",
-			id: 2
-		},
-		3: {
-			text: "Geblockt",
-			be: "BLOCKED",
-			id: 3
-		}
-	};
-	
-	
-	
-	/**
-	 * Description
+
+    var LOADING_STATES = {
+        1: {
+            text: "Entladen",
+            be: "DISCHARGING",
+            id: 1
+        },
+        2: {
+            text: "Laden",
+            be: "CHARGING",
+            id: 2
+        },
+        3: {
+            text: "Geladen",
+            be: "FULL",
+            id: 3
+        }
+    };
+
+    var BOOKING_STATES = {
+        1: {
+            text: "Verfügbar",
+            be: "AVAILABLE",
+            id: 1
+        },
+        2: {
+            text: "Gebucht",
+            be: "BOOKED",
+            id: 2
+        },
+        3: {
+            text: "Geblockt",
+            be: "BLOCKED",
+            id: 3
+        }
+    };
+
+
+
+    /**
+	 * Funktion um neuen Marker auf der Karte hinzuzufügen
 	 * @method AddMarker
 	 * @param {} id
 	 * @param {} title
@@ -103,8 +103,8 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
 	 * @param {} lon
 	 * @return 
 	 */
-	function AddMarker(id, title, content, image_string, lat, lon){
-	
+    function AddMarker(id, title, content, image_string, lat, lon){
+
         var img = {
             url: 'images/icons/car_available.png',
             scaledSize: new google.maps.Size(60, 87),
@@ -118,18 +118,18 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
             position: new google.maps.LatLng(lat, lon),
             map: map,
             icon: img,
-			optimized: false,
-			id: id
+            optimized: false,
+            id: id
         });
 
         marker.addListener('click', function(event){
 
-			Load_Details(this.id);
+            Load_Details(this.id);
 
             var new_alert = $mdDialog.alert({
                 title: title,
                 textContent: content,
-				clickOutsideToClose: true,
+                clickOutsideToClose: true,
                 ok: 'OK'
             });
 
@@ -139,33 +139,33 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
                 new_alert = undefined;
             });
         });
-		
-		markers.push(marker);
+
+        markers.push(marker);
 
     }
-	
-	/**
-	 * Description
+
+    /**
+	 * Funktion um einen Marker zu löschen
 	 * @method Delete_Markers
 	 * @return 
 	 */
-	function Delete_Markers(){
-		
-		for(var i = 0; i < markers.length; i++){
-			markers[i].setMap(null);
-		}
-		
-		markers = [];
-		
-	}
-	
-	/**
-	 * Description
+    function Delete_Markers(){
+
+        for(var i = 0; i < markers.length; i++){
+            markers[i].setMap(null);
+        }
+
+        markers = [];
+
+    }
+
+    /**
+	 * Funktion um einen Automarker hinzufügen zu können
 	 * @method Cars_AddMarker
 	 * @param {} car
 	 * @return 
 	 */
-	function Cars_AddMarker(car){
+    function Cars_AddMarker(car){
 
         var lat = car.lastLat;
         var lon = car.lastLon;
@@ -173,772 +173,768 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
         var carID = car.vehicleID;
 
         var title = "Fahrzeugdetails " + carID;
-		
-		switch(car.bookingStateObj.be){
 
-			case "AVAILABLE":
+        switch(car.bookingStateObj.be){
 
-				if(car.chargeLevel < 100){
+            case "AVAILABLE":
 
-					RESTFactory.Cars_Get_ChargeLevelPerMinute().then(function(response){
-						
-						var loadingPerSecond = response.data;
-					
-						var endTime = new Date();
-						endTime.setTime(endTime.getTime() + (100 - bat) * 1000 * 60 * loadingPerSecond);
+                if(car.chargeLevel < 100){
 
-						var content = "Das Fahrzeug lädt. Ladezustand " + parseInt(bat) + " (" + car.loadingStateObj.text + "). Voraussichtliches Ende gegen " + Helper.Get_Zeit(endTime).time + ", bei einer Aufladung von " + loadingPerSecond + "% pro Minute.";
-						if(bat < 25){
-							new AddMarker(carID, title, content, "car_loading_00", lat, lon);
-						}else if (bat < 50){
-							new AddMarker(carID, title, content, "car_loading_25", lat, lon);
-						}else if (bat < 75){
-							new AddMarker(carID, title, content, "car_loading_50", lat, lon);
-						}else if (bat < 100){
-							new AddMarker(carID, title, content, "car_loading_75", lat, lon);
-						}
+                    RESTFactory.Cars_Get_ChargeLevelPerMinute().then(function(response){
 
-					}, function(response){
-						
-						var endTime = new Date();
-						endTime.setTime(endTime.getTime() + (100 - bat) * 1000 * 60);
+                        var loadingPerSecond = response.data;
 
-						var content = "Das Fahrzeug lädt. Ladezustand " + parseInt(bat) + " (" + car.loadingStateObj.text + "). Voraussichtliches Ende gegen " + Helper.Get_Zeit(endTime).time + ", bei einer Aufladung von 1% pro Minute.";
-						if(bat < 25){
-							new AddMarker(carID, title, content, "car_loading_00", lat, lon);
-						}else if (bat < 50){
-							new AddMarker(carID, title, content, "car_loading_25", lat, lon);
-						}else if (bat < 75){
-							new AddMarker(carID, title, content, "car_loading_50", lat, lon);
-						}else if (bat < 100){
-							new AddMarker(carID, title, content, "car_loading_75", lat, lon);
-						}
+                        var endTime = new Date();
+                        endTime.setTime(endTime.getTime() + (100 - bat) * 1000 * 60 * loadingPerSecond);
 
-					});
+                        var content = "Das Fahrzeug lädt. Ladezustand " + parseInt(bat) + " (" + car.loadingStateObj.text + "). Voraussichtliches Ende gegen " + Helper.Get_Zeit(endTime).time + ", bei einer Aufladung von " + loadingPerSecond + "% pro Minute.";
+                        if(bat < 25){
+                            new AddMarker(carID, title, content, "car_loading_00", lat, lon);
+                        }else if (bat < 50){
+                            new AddMarker(carID, title, content, "car_loading_25", lat, lon);
+                        }else if (bat < 75){
+                            new AddMarker(carID, title, content, "car_loading_50", lat, lon);
+                        }else if (bat < 100){
+                            new AddMarker(carID, title, content, "car_loading_75", lat, lon);
+                        }
 
-				}else{
-					var content = "Das Fahrzeug ist voll geladen und kann benutzt werden.";
-                	new AddMarker(carID, title, content, "car_available", lat, lon);
-				}
+                    }, function(response){
 
-				break;
+                        var endTime = new Date();
+                        endTime.setTime(endTime.getTime() + (100 - bat) * 1000 * 60);
 
-			case "BOOKED":
+                        var content = "Das Fahrzeug lädt. Ladezustand " + parseInt(bat) + " (" + car.loadingStateObj.text + "). Voraussichtliches Ende gegen " + Helper.Get_Zeit(endTime).time + ", bei einer Aufladung von 1% pro Minute.";
+                        if(bat < 25){
+                            new AddMarker(carID, title, content, "car_loading_00", lat, lon);
+                        }else if (bat < 50){
+                            new AddMarker(carID, title, content, "car_loading_25", lat, lon);
+                        }else if (bat < 75){
+                            new AddMarker(carID, title, content, "car_loading_50", lat, lon);
+                        }else if (bat < 100){
+                            new AddMarker(carID, title, content, "car_loading_75", lat, lon);
+                        }
 
-				var now = Helper.Get_Zeit(new Date());
+                    });
 
-				if(now.value - car.lastDate.value > 1000 * 60 * 60 * 24){
-					var content = "Das Fahrzeug ist gebucht, wurde aber seit mehr als 24 Stunden nicht mehr bewegt";
-					new AddMarker(carID, title, content, "car_standing_admin", lat, lon);
-				}else{
-					var content = "Das Fahrzeug ist gebucht, dies ist der letzte bekannte Standort vom " + car.lastDate.date + " um " + car.lastDate.time;
-					new AddMarker(carID, title, content, "car_occupied", lat, lon);
-				}
+                }else{
+                    var content = "Das Fahrzeug ist voll geladen und kann benutzt werden.";
+                    new AddMarker(carID, title, content, "car_available", lat, lon);
+                }
 
-				break;
+                break;
 
-			case "BLOCKED":
+            case "BOOKED":
 
-				var content = "Das Fahrzeug wurde blockiert";
-				new AddMarker(carID, title, content, "car_occupied", lat, lon);
+                var now = Helper.Get_Zeit(new Date());
 
-				break;
+                if(now.value - car.lastDate.value > 1000 * 60 * 60 * 24){
+                    var content = "Das Fahrzeug ist gebucht, wurde aber seit mehr als 24 Stunden nicht mehr bewegt";
+                    new AddMarker(carID, title, content, "car_standing_admin", lat, lon);
+                }else{
+                    var content = "Das Fahrzeug ist gebucht, dies ist der letzte bekannte Standort vom " + car.lastDate.date + " um " + car.lastDate.time;
+                    new AddMarker(carID, title, content, "car_occupied", lat, lon);
+                }
 
-		}
+                break;
+
+            case "BLOCKED":
+
+                var content = "Das Fahrzeug wurde blockiert";
+                new AddMarker(carID, title, content, "car_occupied", lat, lon);
+
+                break;
+
+                                     }
 
     }
-	
-	/**
-	 * Description
+
+    /**
+	 * Hilfsfunktion für die Update mit ID
 	 * @method Update_ID
 	 * @param {} id
 	 * @return 
 	 */
-	function Update_ID(id){
-		new Update("ID", id, null);
-	}
-	
-	/**
-	 * Description
+    function Update_ID(id){
+        new Update("ID", id, null);
+    }
+
+    /**
+	 * Updatefunktion um Daten aus der Rest-Schnittstelle zu laden und sie anzuzeigen
 	 * @method Update
 	 * @param {} type
 	 * @param {} value
 	 * @param {} filter
 	 * @return 
 	 */
-	function Update(type, value, filter){
-		
-		vehicles_all = {};
-		$scope.vehicles = vehicles_all;
+    function Update(type, value, filter){
 
-		$scope.vehicle_selected = "false";
-		
-		$scope.editDisabled = "true";
-		
-		$scope.view = "info";
-		
-		new Delete_Markers();
-		
-		var prom = {};
-		
-		if(type === "ID"){
-			prom = RESTFactory.Cars_Get_CarID(value);
-		}else{
-			prom = RESTFactory.Cars_Get();
-		}
-		
-		prom.then(function(response){
-			
-			var data = [];
-			
-			if(type === "ID"){
-				data.push(response.data);
-			}else{
-				data = response.data;
-			}
-			
-			data.forEach(function(data_use, index){
-				
-				var vehicle = {};
-				
-				var ID_STR = data_use.carId;
-				
-				vehicle.vehicleID = data_use.carId;
-				vehicle.licensePlate = data_use.licensePlate;
-				vehicle.chargingState = data_use.chargingState;
-				vehicle.bookingState = data_use.bookingState;
-				vehicle.bookingStateObj = BOOKING_STATES[data_use.bookingState];
-				vehicle.loadingStateObj = LOADING_STATES[data_use.chargingState];
-				vehicle.mileage = data_use.mileage;
-				vehicle.chargeLevel = data_use.chargeLevel;
-				vehicle.kilowatts = data_use.kilowatts;
-				vehicle.manufacturer = data_use.manufacturer;
-				vehicle.model = data_use.model;
-				vehicle.constructionYear = data_use.yearOfConstruction;
-				vehicle.lastLat = data_use.lastKnownPositionLatitude;
-				vehicle.lastLon = data_use.lastKnownPositionLongitude;
-				vehicle.lastDate = Helper.Get_Zeit_Server(data_use.lastKnownPositionDate);
-				vehicle.address_state = "false";
-				
-				if(filter === null || filter === undefined ||
-					filter.toLowerCase() === vehicle.bookingStateObj.be.toLowerCase() || filter.toLowerCase() === vehicle.loadingStateObj.be.toLowerCase() ||
-					filter.toLowerCase() === vehicle.bookingStateObj.text.toLowerCase() || filter.toLowerCase() === vehicle.loadingStateObj.text.toLowerCase()){
+        vehicles_all = {};
+        $scope.vehicles = vehicles_all;
+
+        $scope.vehicle_selected = "false";
+
+        $scope.editDisabled = "true";
+
+        $scope.view = "info";
+
+        new Delete_Markers();
+
+        var prom = {};
+
+        if(type === "ID"){
+            prom = RESTFactory.Cars_Get_CarID(value);
+        }else{
+            prom = RESTFactory.Cars_Get();
+        }
+
+        prom.then(function(response){
+
+            var data = [];
+
+            if(type === "ID"){
+                data.push(response.data);
+            }else{
+                data = response.data;
+            }
+
+            data.forEach(function(data_use, index){
+
+                var vehicle = {};
+
+                var ID_STR = data_use.carId;
+
+                vehicle.vehicleID = data_use.carId;
+                vehicle.licensePlate = data_use.licensePlate;
+                vehicle.chargingState = data_use.chargingState;
+                vehicle.bookingState = data_use.bookingState;
+                vehicle.bookingStateObj = BOOKING_STATES[data_use.bookingState];
+                vehicle.loadingStateObj = LOADING_STATES[data_use.chargingState];
+                vehicle.mileage = data_use.mileage;
+                vehicle.chargeLevel = data_use.chargeLevel;
+                vehicle.kilowatts = data_use.kilowatts;
+                vehicle.manufacturer = data_use.manufacturer;
+                vehicle.model = data_use.model;
+                vehicle.constructionYear = data_use.yearOfConstruction;
+                vehicle.lastLat = data_use.lastKnownPositionLatitude;
+                vehicle.lastLon = data_use.lastKnownPositionLongitude;
+                vehicle.lastDate = Helper.Get_Zeit_Server(data_use.lastKnownPositionDate);
+                vehicle.address_state = "false";
+
+                if(filter === null || filter === undefined ||
+                   filter.toLowerCase() === vehicle.bookingStateObj.be.toLowerCase() || filter.toLowerCase() === vehicle.loadingStateObj.be.toLowerCase() ||
+                   filter.toLowerCase() === vehicle.bookingStateObj.text.toLowerCase() || filter.toLowerCase() === vehicle.loadingStateObj.text.toLowerCase()){
 
 
-					new Cars_AddMarker(vehicle);
-					
-					vehicles_all[ID_STR] = vehicle;
-					$scope.vehicles = vehicles_all;
-					$scope.$apply();
-					
-					Helper.Get_Address(vehicle.lastLat, vehicle.lastLon).then(function(address){
-					
-						vehicle.address_state = "true";
-						vehicle.address = address;
-						
-						vehicles_all[ID_STR] = vehicle;
-						$scope.vehicles = vehicles_all;
-						$scope.$apply();
-						
-					}, function(response){
-					
-					});
-					
-				}
-				
-			});
-			
-		}, function(response){
-			
-		});
-		
-		
-		
-	}
-	
-	
-	/**
-	 * Description
+                    new Cars_AddMarker(vehicle);
+
+                    vehicles_all[ID_STR] = vehicle;
+                    $scope.vehicles = vehicles_all;
+                    $scope.$apply();
+
+                    Helper.Get_Address(vehicle.lastLat, vehicle.lastLon).then(function(address){
+
+                        vehicle.address_state = "true";
+                        vehicle.address = address;
+
+                        vehicles_all[ID_STR] = vehicle;
+                        $scope.vehicles = vehicles_all;
+                        $scope.$apply();
+
+                    }, function(response){
+
+                    });
+
+                }
+
+            });
+
+        }, function(response){
+
+        });
+
+
+
+    }
+
+
+    /**
+	 * Funktion um Details aus der Rest-Schnittstelle zu laden und sie anzuzeigen
 	 * @method Load_Details
 	 * @param {} id
 	 * @return 
 	 */
-	function Load_Details(id){
-		
-		new DisabledEditMode();
-		
-		RESTFactory.Cars_Get_CarID(id).then(function(response){
-			
-			$scope.vehicle_selected = "true";
-			
-			var data_use = response.data;
-			
-			var vehicle = {};
-			
-			vehicle.vehicleID = data_use.carId;
-			vehicle.licensePlate = data_use.licensePlate;
-			
-			vehicle.bookingStateObj = BOOKING_STATES[data_use.bookingState];
-			vehicle.loadingStateObj = LOADING_STATES[data_use.chargingState];
-			
-			vehicle.mileage = data_use.mileage;
-			vehicle.chargeLevel = data_use.chargeLevel;
+    function Load_Details(id){
 
-			var endTime = new Date();
-        	endTime.setTime(endTime.getTime() + ((100 - vehicle.chargeLevel) * 60 * 1000));
-			vehicle.chargeDone = Helper.Get_Zeit(endTime).time;
+        new DisabledEditMode();
 
-			vehicle.kilowatts = data_use.kilowatts;
-			vehicle.manufacturer = data_use.manufacturer;
-			vehicle.model = data_use.model;
-			vehicle.constructionYear = data_use.yearOfConstruction;
-			vehicle.lastLat = data_use.lastKnownPositionLatitude;
-			vehicle.lastLon = data_use.lastKnownPositionLongitude;
-			vehicle.lastDate = Helper.Get_Zeit_Server(data_use.lastKnownPositionDate);
-			vehicle.address_state = "false";
-			vehicle.maintenanceState = "false";
-			vehicle.trip_state = "false";
-			
-			$scope.currentVehicle = vehicle;
-			$scope.$apply();
-			
-			
-			map.panTo(new google.maps.LatLng(vehicle.lastLat, vehicle.lastLon));
-			
-			//Get last address
-			Helper.Get_Address(vehicle.lastLat, vehicle.lastLon).then(function(address){
-				
-				vehicle.address_state = "true";
-				
-				vehicle.address = address;
-				
-				$scope.currentVehicle = vehicle;
-				$scope.$apply();
-				
-			}, function(response){
-				
-			});
-			
-			//Get all 
-			RESTFactory.Car_Maintances_Get_CarID(vehicle.vehicleID).then(function(response){
-				
-				var data = response.data;
-				
-				var maintenancesOpen = {};
-				var maintenancesDone = {};
+        RESTFactory.Cars_Get_CarID(id).then(function(response){
 
-				if(data.length !== null && data.length > 0){
+            $scope.vehicle_selected = "true";
 
-					data.forEach(function(data_use, index){
+            var data_use = response.data;
 
-						var maintenance = {};
-						var ID_STR = data_use.carMaintenanceId;
-						maintenance.carMaintenanceID = data_use.carMaintenanceId;
-						maintenance.carID = data_use.carId;
-						maintenance.maintenanceID = data_use.maintenanceId;
-						maintenance.invoiceItemID = data_use.invoiceItemId;
-						maintenance.plannedDate = Helper.Get_Zeit_Server(data_use.plannedDate);
-						maintenance.invoiceState = "false";
-						maintenance.completedState = "false";
-						if(data_use.completedDate === null){
-							maintenancesOpen[ID_STR] = maintenance;
-						}else{
-							maintenance.completedState = "true";
-							maintenance.completedDate = Helper.Get_Zeit_Server(data_use.completedDate);
-							maintenancesDone[ID_STR] = maintenance;
-						}
+            var vehicle = {};
 
-						vehicle.maintenanceState = "true";
-						vehicle.maintenancesDone = maintenancesDone;
-						vehicle.maintenancesOpen = maintenancesOpen;
-						
-						$scope.currentVehicle = vehicle;
-						$scope.$apply();
+            vehicle.vehicleID = data_use.carId;
+            vehicle.licensePlate = data_use.licensePlate;
 
-						if(data_use.invoiceItemId !== null){
+            vehicle.bookingStateObj = BOOKING_STATES[data_use.bookingState];
+            vehicle.loadingStateObj = LOADING_STATES[data_use.chargingState];
 
-							RESTFactory.Invoices_Get_Items_ItemID(maintenance.invoiceItemID).then(function(response){
+            vehicle.mileage = data_use.mileage;
+            vehicle.chargeLevel = data_use.chargeLevel;
 
-								var data = response.data;
+            var endTime = new Date();
+            endTime.setTime(endTime.getTime() + ((100 - vehicle.chargeLevel) * 60 * 1000));
+            vehicle.chargeDone = Helper.Get_Zeit(endTime).time;
 
-								var data_use = data;
+            vehicle.kilowatts = data_use.kilowatts;
+            vehicle.manufacturer = data_use.manufacturer;
+            vehicle.model = data_use.model;
+            vehicle.constructionYear = data_use.yearOfConstruction;
+            vehicle.lastLat = data_use.lastKnownPositionLatitude;
+            vehicle.lastLon = data_use.lastKnownPositionLongitude;
+            vehicle.lastDate = Helper.Get_Zeit_Server(data_use.lastKnownPositionDate);
+            vehicle.address_state = "false";
+            vehicle.maintenanceState = "false";
+            vehicle.trip_state = "false";
 
-								var invoice = {};
-					
-								invoice.invoiceID = data_use.invoiceId;
-								invoice.totalAmount = data_use.totalAmount;
-								invoice.customerID = data_use.customerId;
-								invoice.paid = data_use.paid;
-								invoice.paidText = "Nicht bezahlt";
-								if(invoice.paid === true){ invoice.paidText = "Bezahlt"; }
+            $scope.currentVehicle = vehicle;
+            $scope.$apply();
 
-								maintenance.invoice = invoice;
-								maintenance.invoiceState = "true";
 
-								maintenancesDone[ID_STR] = maintenance;
-								vehicle.maintenanceDone = maintenancesDone;
-							
-								$scope.currentVehicle = vehicle;
-								$scope.$apply();
+            map.panTo(new google.maps.LatLng(vehicle.lastLat, vehicle.lastLon));
 
-							}, function(){
+            //Get last address
+            Helper.Get_Address(vehicle.lastLat, vehicle.lastLon).then(function(address){
 
-							});
+                vehicle.address_state = "true";
 
-						}
-					
-					});
+                vehicle.address = address;
 
-				}
+                $scope.currentVehicle = vehicle;
+                $scope.$apply();
 
-				
-				
-			}, function(response){
-				
-			});
+            }, function(response){
 
-			RESTFactory.Trips_Get_CarID(vehicle.vehicleID).then(function(response){
+            });
 
-				var data = response.data;
+            //Get all 
+            RESTFactory.Car_Maintances_Get_CarID(vehicle.vehicleID).then(function(response){
 
-				var trips = {};
+                var data = response.data;
 
-				if(data !== null && data !== undefined && data.length > 0){
+                var maintenancesOpen = {};
+                var maintenancesDone = {};
 
-					data.forEach(function(data_use, index){
+                if(data.length !== null && data.length > 0){
 
-						var trip = {};
+                    data.forEach(function(data_use, index){
 
-						trip.tripID = data_use.tripId;
-						trip.carID = data_use.carId;
-						trip.customerID = data_use.customerId;
-						trip.startDate = Helper.Get_Zeit_Server(data_use.startDate);
-						trip.endDate = Helper.Get_Zeit_Server(data_use.endDate);
-						trip.startChargingStationID = data_use.startChargingStationId;
-						
-						trip.endState = "false";
-						trip.distanceTravelled = 0;
-						
-						if(trip.endDate.state === "true"){
-							trip.endState = "true";
-							trip.distanceTravelled = data_use.distanceTravelled;
-							trip.endChargingStationID = data_use.endChargingStationId;
-						}
-						
-						trips[trip.tripID] = trip;
+                        var maintenance = {};
+                        var ID_STR = data_use.carMaintenanceId;
+                        maintenance.carMaintenanceID = data_use.carMaintenanceId;
+                        maintenance.carID = data_use.carId;
+                        maintenance.maintenanceID = data_use.maintenanceId;
+                        maintenance.invoiceItemID = data_use.invoiceItemId;
+                        maintenance.plannedDate = Helper.Get_Zeit_Server(data_use.plannedDate);
+                        maintenance.invoiceState = "false";
+                        maintenance.completedState = "false";
+                        if(data_use.completedDate === null){
+                            maintenancesOpen[ID_STR] = maintenance;
+                        }else{
+                            maintenance.completedState = "true";
+                            maintenance.completedDate = Helper.Get_Zeit_Server(data_use.completedDate);
+                            maintenancesDone[ID_STR] = maintenance;
+                        }
 
-					});
+                        vehicle.maintenanceState = "true";
+                        vehicle.maintenancesDone = maintenancesDone;
+                        vehicle.maintenancesOpen = maintenancesOpen;
 
-					vehicle.trip_state = "true";
-					vehicle.trips = trips;
-					$scope.currentVehicle = vehicle;
-					$scope.$apply();
+                        $scope.currentVehicle = vehicle;
+                        $scope.$apply();
 
-				}
+                        if(data_use.invoiceItemId !== null){
 
-			}, function(){
+                            RESTFactory.Invoices_Get_Items_ItemID(maintenance.invoiceItemID).then(function(response){
 
-			});
-			
-			
-			
-		}, function(response){
-			$scope.vehicle_selected = "false";
-			$scope.$apply();			
-			
-		});
-		
-	}
-	
-	
-	
-	/**
-	 * Description
+                                var data = response.data;
+
+                                var data_use = data;
+
+                                var invoice = {};
+
+                                invoice.invoiceID = data_use.invoiceId;
+                                invoice.totalAmount = data_use.totalAmount;
+                                invoice.customerID = data_use.customerId;
+                                invoice.paid = data_use.paid;
+                                invoice.paidText = "Nicht bezahlt";
+                                if(invoice.paid === true){ invoice.paidText = "Bezahlt"; }
+
+                                maintenance.invoice = invoice;
+                                maintenance.invoiceState = "true";
+
+                                maintenancesDone[ID_STR] = maintenance;
+                                vehicle.maintenanceDone = maintenancesDone;
+
+                                $scope.currentVehicle = vehicle;
+                                $scope.$apply();
+
+                            }, function(){
+
+                            });
+
+                        }
+
+                    });
+
+                }
+
+
+
+            }, function(response){
+
+            });
+
+            RESTFactory.Trips_Get_CarID(vehicle.vehicleID).then(function(response){
+
+                var data = response.data;
+
+                var trips = {};
+
+                if(data !== null && data !== undefined && data.length > 0){
+
+                    data.forEach(function(data_use, index){
+
+                        var trip = {};
+
+                        trip.tripID = data_use.tripId;
+                        trip.carID = data_use.carId;
+                        trip.customerID = data_use.customerId;
+                        trip.startDate = Helper.Get_Zeit_Server(data_use.startDate);
+                        trip.endDate = Helper.Get_Zeit_Server(data_use.endDate);
+                        trip.startChargingStationID = data_use.startChargingStationId;
+
+                        trip.endState = "false";
+                        trip.distanceTravelled = 0;
+
+                        if(trip.endDate.state === "true"){
+                            trip.endState = "true";
+                            trip.distanceTravelled = data_use.distanceTravelled;
+                            trip.endChargingStationID = data_use.endChargingStationId;
+                        }
+
+                        trips[trip.tripID] = trip;
+
+                    });
+
+                    vehicle.trip_state = "true";
+                    vehicle.trips = trips;
+                    $scope.currentVehicle = vehicle;
+                    $scope.$apply();
+
+                }
+
+            }, function(){
+
+            });
+
+
+
+        }, function(response){
+            $scope.vehicle_selected = "false";
+            $scope.$apply();			
+
+        });
+
+    }
+
+
+
+    /**
+	 * Funktion um in Modus zu wechseln in dem Daten geändert werden könen
 	 * @method EnableEditMode
 	 * @return 
 	 */
-	function EnableEditMode(){
-		vehicle_old = angular.copy($scope.currentVehicle);
-		$scope.editDisabled = false;
-	}
-	
-	/**
-	 * Description
+    function EnableEditMode(){
+        vehicle_old = angular.copy($scope.currentVehicle);
+        $scope.editDisabled = false;
+    }
+
+    /**
+	 * Funktion um aus dem Modus zu wechseln in dem Daten geändert werden können
 	 * @method DisabledEditMode
 	 * @return 
 	 */
-	function DisabledEditMode(){
-		$scope.editDisabled = true;
-	}
-	
-	
-	
-	/**
-	 * Description
+    function DisabledEditMode(){
+        $scope.editDisabled = true;
+    }
+
+
+    /**
+	 * Funktion um geänderte Daten zu speichern und an die Rest-Schnittstelle zu speichers
 	 * @method Safe_Changes
 	 * @return 
 	 */
-	function Safe_Changes(){
-		
-		var vehicle = $scope.currentVehicle;
-		
-		var vehicleID = vehicle.vehicleID;
-		
-		var bookingState = "\"" + vehicle.bookingStateObj.be + "\"";
-		var chargingState = "\"" + vehicle.loadingStateObj.be + "\"";
-		
-		if(vehicle_old.loadingStateObj === undefined || chargingState !== "\"" + vehicle_old.loadingStateObj.be + "\""){
-			RESTFactory.Cars_Patch_ChargingState(vehicleID, chargingState).then(function(response){
-				alert("Fahrzeug Ladezustand erfolgreich geändert");
-			}, function(){
-				alert("Fahrzeug Ladezustand konnte nicht geändert werden");
-			});
-		}
-		
-		if(vehicle_old.bookingStateObj === undefined || bookingState !== "\"" + vehicle_old.bookingStateObj.be + "\""){
-			RESTFactory.Cars_Patch_BookingState(vehicleID, bookingState).then(function(response){
-				alert("Fahrzeug Reservierungszustand erfolgreich geändert");
-			}, function(){
-				alert("Fahrzeug Reservierungszustand konnte nicht geändert werden");
-			});
-		}
-		
-		if(vehicle.mileage !== vehicle_old.mileage){
-			RESTFactory.Cars_Patch_Mileage(vehicleID, vehicle.mileage).then(function(response){
-				alert("Fahrzeug Kilometerstand erfolgreich geändert");
-			}, function(){
-				alert("Fahrzeug Kilometerstand konnte nicht geändert werden");
-			});
-		}
-		
-		if(vehicle.chargeLevel !== vehicle_old.chargeLevel){
-			RESTFactory.Cars_Patch_ChargeLevel(vehicleID, vehicle.chargeLevel).then(function(response){
-				alert("Fahrzeug Akkustand erfolgreich geändert");
-			}, function(){
-				alert("Fahrzeug Akkustand konnte nicht geändert werden");
-			});
-		}
-		
-		setTimeout(Update, 2000);
-		
-		
-	}
-	
-	/**
-	 * Description
+    function Safe_Changes(){
+
+        var vehicle = $scope.currentVehicle;
+
+        var vehicleID = vehicle.vehicleID;
+
+        var bookingState = "\"" + vehicle.bookingStateObj.be + "\"";
+        var chargingState = "\"" + vehicle.loadingStateObj.be + "\"";
+
+        if(vehicle_old.loadingStateObj === undefined || chargingState !== "\"" + vehicle_old.loadingStateObj.be + "\""){
+            RESTFactory.Cars_Patch_ChargingState(vehicleID, chargingState).then(function(response){
+                alert("Fahrzeug Ladezustand erfolgreich geändert");
+            }, function(){
+                alert("Fahrzeug Ladezustand konnte nicht geändert werden");
+            });
+        }
+
+        if(vehicle_old.bookingStateObj === undefined || bookingState !== "\"" + vehicle_old.bookingStateObj.be + "\""){
+            RESTFactory.Cars_Patch_BookingState(vehicleID, bookingState).then(function(response){
+                alert("Fahrzeug Reservierungszustand erfolgreich geändert");
+            }, function(){
+                alert("Fahrzeug Reservierungszustand konnte nicht geändert werden");
+            });
+        }
+
+        if(vehicle.mileage !== vehicle_old.mileage){
+            RESTFactory.Cars_Patch_Mileage(vehicleID, vehicle.mileage).then(function(response){
+                alert("Fahrzeug Kilometerstand erfolgreich geändert");
+            }, function(){
+                alert("Fahrzeug Kilometerstand konnte nicht geändert werden");
+            });
+        }
+
+        if(vehicle.chargeLevel !== vehicle_old.chargeLevel){
+            RESTFactory.Cars_Patch_ChargeLevel(vehicleID, vehicle.chargeLevel).then(function(response){
+                alert("Fahrzeug Akkustand erfolgreich geändert");
+            }, function(){
+                alert("Fahrzeug Akkustand konnte nicht geändert werden");
+            });
+        }
+
+        setTimeout(Update, 2000);
+    }
+
+    /**
+	 * Funktion um Änderungen der Detail zu löschen
 	 * @method Dismiss_Changes
 	 * @return 
 	 */
-	function Dismiss_Changes(){
-		new Load_Details($scope.currentVehicle.vehicleID);
-	}
-	
-	
-	
-	/**
-	 * Description
+    function Dismiss_Changes(){
+        new Load_Details($scope.currentVehicle.vehicleID);
+    }
+
+
+
+    /**
+	 * Funktion um Änderungen zu speichern und diese an die Rest-Schnittstelle zu schicken
 	 * @method Safe_New
 	 * @return 
 	 */
-	function Safe_New(){
-		
-		if($scope.new_vehicle.hasPosition === false){
-			alert("Bitte Position auf der Karte markieren");
-			return;
-		}
-		
-		var vehicle = {};
-		
-		vehicle.licensePlate = $scope.new_vehicle.licensePlate;
-		
-		vehicle.bookingState = $scope.new_vehicle.bookingStateObj.be;
-		vehicle.chargingState = $scope.new_vehicle.loadingStateObj.be;
-		
-		vehicle.mileage = $scope.new_vehicle.mileage;
-		vehicle.chargeLevel = $scope.new_vehicle.chargeLevel;
-		vehicle.kilowatts = $scope.new_vehicle.kilowatts;
-		vehicle.manufacturer = $scope.new_vehicle.manufacturer;
-		vehicle.model = $scope.new_vehicle.model;
-		vehicle.yearOfConstruction = $scope.new_vehicle.yearOfConstruction;
-		vehicle.lastKnownPositionLatitude = $scope.new_vehicle.lat;
-		vehicle.lastKnownPositionLongitude = $scope.new_vehicle.lon;
-		vehicle.lastKnownPositionDate = (new Date()).toUTCString();
-		
-		console.log(vehicle);
-		
-		RESTFactory.Cars_Post(vehicle).then(function(){
-			alert("Fahrzeug erfolgreich hinzugefügt");
-			new Hide_AddVehicle();
-			new Update("ALL", undefined, null);
-		}, function(){
-			alert("Fahrzeug konnte nicht hinzugefügt werden");
-			new Hide_AddVehicle();
-			new Update("ALL", undefined, null);
-		});
-		
-	}
-	
-	/**
-	 * Description
+    function Safe_New(){
+
+        if($scope.new_vehicle.hasPosition === false){
+            alert("Bitte Position auf der Karte markieren");
+            return;
+        }
+
+        var vehicle = {};
+
+        vehicle.licensePlate = $scope.new_vehicle.licensePlate;
+
+        vehicle.bookingState = $scope.new_vehicle.bookingStateObj.be;
+        vehicle.chargingState = $scope.new_vehicle.loadingStateObj.be;
+
+        vehicle.mileage = $scope.new_vehicle.mileage;
+        vehicle.chargeLevel = $scope.new_vehicle.chargeLevel;
+        vehicle.kilowatts = $scope.new_vehicle.kilowatts;
+        vehicle.manufacturer = $scope.new_vehicle.manufacturer;
+        vehicle.model = $scope.new_vehicle.model;
+        vehicle.yearOfConstruction = $scope.new_vehicle.yearOfConstruction;
+        vehicle.lastKnownPositionLatitude = $scope.new_vehicle.lat;
+        vehicle.lastKnownPositionLongitude = $scope.new_vehicle.lon;
+        vehicle.lastKnownPositionDate = (new Date()).toUTCString();
+
+        console.log(vehicle);
+
+        RESTFactory.Cars_Post(vehicle).then(function(){
+            alert("Fahrzeug erfolgreich hinzugefügt");
+            new Hide_AddVehicle();
+            new Update("ALL", undefined, null);
+        }, function(){
+            alert("Fahrzeug konnte nicht hinzugefügt werden");
+            new Hide_AddVehicle();
+            new Update("ALL", undefined, null);
+        });
+
+    }
+
+    /**
+	 * Funktion um Änderungen bei Hinzufügen neues Autos zu löschen
 	 * @method Dismiss_New
 	 * @return 
 	 */
-	function Dismiss_New(){
-		
-		new Hide_AddVehicle();
-		
-	}
-	
-	
-	
-	/**
-	 * Description
+    function Dismiss_New(){
+
+        new Hide_AddVehicle();
+
+    }
+
+
+
+    /**
+	 * Funktion um neues Auto hinzufügen anzuzeigen
 	 * @method Show_AddVehicle
 	 * @return 
 	 */
-	function Show_AddVehicle(){
-		
-		$scope.view = "add";
-		
-		var new_vehicle = {};
-		
-		//TODO
-		new_vehicle.licensePlate = "";
-		new_vehicle.chargingState = "";
-		new_vehicle.bookingStateObj = BOOKING_STATES[1];
-		new_vehicle.loadingStateObj = LOADING_STATES[1];
-		new_vehicle.bookingState = "";
-		new_vehicle.mileage = 0;
-		new_vehicle.chargeLevel = 0;
-		new_vehicle.kilowatts = 0;
-		new_vehicle.manufacturer = "";
-		new_vehicle.model = "";
-		new_vehicle.yearOfConstruction = 0;
-		new_vehicle.address_state = "false";
-		new_vehicle.hasPosition = false;
-		new_vehicle.lat = -190;
-		
-		$scope.new_vehicle = new_vehicle;
-		
-		/**
-		 * Description
+    function Show_AddVehicle(){
+
+        $scope.view = "add";
+
+        var new_vehicle = {};
+
+        //TODO
+        new_vehicle.licensePlate = "";
+        new_vehicle.chargingState = "";
+        new_vehicle.bookingStateObj = BOOKING_STATES[1];
+        new_vehicle.loadingStateObj = LOADING_STATES[1];
+        new_vehicle.bookingState = "";
+        new_vehicle.mileage = 0;
+        new_vehicle.chargeLevel = 0;
+        new_vehicle.kilowatts = 0;
+        new_vehicle.manufacturer = "";
+        new_vehicle.model = "";
+        new_vehicle.yearOfConstruction = 0;
+        new_vehicle.address_state = "false";
+        new_vehicle.hasPosition = false;
+        new_vehicle.lat = -190;
+
+        $scope.new_vehicle = new_vehicle;
+
+        /**
+		 * Initfunktion um die Karte mit ihren Elementen auf die Seite zu laden
 		 * @method Init_Map
 		 * @return 
 		 */
-		function Init_Map(){
-			
-			var input = document.getElementById('search_input');
-			var searchBox = new google.maps.places.SearchBox(input);
-			
-			var map2 = new google.maps.Map(document.getElementById('map_vehicle_new'), {
-				zoom: 16,
-				center: new google.maps.LatLng(49.5, 8.434),
-				mapTypeId: 'roadmap'
-			});
-			
-			map2.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
-			
-			map2.addListener('bounds_changed', function() {
-				searchBox.setBounds(map2.getBounds());
-			});
-			
-			searchBox.addListener('places_changed', function() {
-				
-				var places = searchBox.getPlaces();
+        function Init_Map(){
 
-				if (places.length === 0) {
-					return;
-				}
-				
-				var place = places[0].geometry.location;
-				
-				var lat = place.lat();
-				var lon = place.lng();
-				
-				new PositionSelected(map2, lat, lon);
-				
-			});
-				
-				
-			map2.addListener("click", function(event){
-				var lat = event.latLng.lat();
-				var lon = event.latLng.lng();
-				
-				new PositionSelected(map2, lat, lon);
-			});
-			
-		}
-		
-		setTimeout(Init_Map, 2000);
-		
-	}
-	
-	/**
-	 * Description
+            var input = document.getElementById('search_input');
+            var searchBox = new google.maps.places.SearchBox(input);
+
+            var map2 = new google.maps.Map(document.getElementById('map_vehicle_new'), {
+                zoom: 16,
+                center: new google.maps.LatLng(49.5, 8.434),
+                mapTypeId: 'roadmap'
+            });
+
+            map2.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+
+            map2.addListener('bounds_changed', function() {
+                searchBox.setBounds(map2.getBounds());
+            });
+
+            searchBox.addListener('places_changed', function() {
+
+                var places = searchBox.getPlaces();
+
+                if (places.length === 0) {
+                    return;
+                }
+
+                var place = places[0].geometry.location;
+
+                var lat = place.lat();
+                var lon = place.lng();
+
+                new PositionSelected(map2, lat, lon);
+
+            });
+
+
+            map2.addListener("click", function(event){
+                var lat = event.latLng.lat();
+                var lon = event.latLng.lng();
+
+                new PositionSelected(map2, lat, lon);
+            });
+
+        }
+
+        setTimeout(Init_Map, 2000);
+
+    }
+
+    /**
+	 * Funktion um eine Position auf der Karte auswählen zu können
 	 * @method PositionSelected
 	 * @param {} map2
 	 * @param {} lat
 	 * @param {} lon
 	 * @return 
 	 */
-	function PositionSelected(map2, lat, lon){
-		
-		map2.panTo(new google.maps.LatLng(lat, lon));
-		
-		$scope.new_vehicle.lat = lat;
-		$scope.new_vehicle.lon = lon;
-		$scope.new_vehicle.hasPosition = true;
-		
-		Helper.Get_Address(lat, lon).then(function(address){
-			$scope.new_vehicle.address_state = "true";
-			$scope.new_vehicle.address = address;
-			$scope.$apply();
-			
-			if(marker_Address !== undefined){
-				marker_Address.setMap(null);
-			}
-			
-			marker_Address = new google.maps.Marker({
-				position: new google.maps.LatLng(lat, lon),
-				map: map2,
-				title: "Aktuelle Position"
-			});
-			
-		}, function(response){
-			$scope.new_vehicle.address_state = "false";
-		});
+    function PositionSelected(map2, lat, lon){
 
-	}
-	
-	/**
-	 * Description
+        map2.panTo(new google.maps.LatLng(lat, lon));
+
+        $scope.new_vehicle.lat = lat;
+        $scope.new_vehicle.lon = lon;
+        $scope.new_vehicle.hasPosition = true;
+
+        Helper.Get_Address(lat, lon).then(function(address){
+            $scope.new_vehicle.address_state = "true";
+            $scope.new_vehicle.address = address;
+            $scope.$apply();
+
+            if(marker_Address !== undefined){
+                marker_Address.setMap(null);
+            }
+
+            marker_Address = new google.maps.Marker({
+                position: new google.maps.LatLng(lat, lon),
+                map: map2,
+                title: "Aktuelle Position"
+            });
+
+        }, function(response){
+            $scope.new_vehicle.address_state = "false";
+        });
+
+    }
+
+    /**
+	 * Funktion um neues Auto hinzufügen verstecken zu können
 	 * @method Hide_AddVehicle
 	 * @return 
 	 */
-	function Hide_AddVehicle(){
-		$scope.new_vehicle = {};
-		$scope.view = "info";
-		$scope.vehicle_selected = "false";
-		$scope.$apply();
-	}
-	
-	
-	
-	/**
-	 * Description
+    function Hide_AddVehicle(){
+        $scope.new_vehicle = {};
+        $scope.view = "info";
+        $scope.vehicle_selected = "false";
+        $scope.$apply();
+    }
+
+
+    /**
+	 * Funktion um in Modus in dem Daten geändert werden könen zu wechseln
 	 * @method EnableEditMode
 	 * @return 
 	 */
-	$scope.EnableEditMode = function(){
-		new EnableEditMode();
-	};
-	
-	/**
-	 * Description
+    $scope.EnableEditMode = function(){
+        new EnableEditMode();
+    };
+
+    /**
+	 * Funktion um Details anzeigen zu können
 	 * @method Load_Details
 	 * @param {} id
 	 * @return 
 	 */
-	$scope.Load_Details = function(id){
-		new Load_Details(id);
-	};
-	
-	
-	/**
-	 * Description
+    $scope.Load_Details = function(id){
+        new Load_Details(id);
+    };
+
+
+    /**
+	 * Funktion um Details speichern zu können
 	 * @method Safe_Changes
 	 * @return 
 	 */
-	$scope.Safe_Changes = function(){
-		new Safe_Changes();
-	};
-	
-	/**
-	 * Description
+    $scope.Safe_Changes = function(){
+        new Safe_Changes();
+    };
+
+    /**
+	 * Funktion um geänderte Details speichern abbrechen zu können
 	 * @method Dismiss_Changes
 	 * @return 
 	 */
-	$scope.Dismiss_Changes = function(){
-		new Dismiss_Changes();
-	};
-	
-	
-	/**
-	 * Description
+    $scope.Dismiss_Changes = function(){
+        new Dismiss_Changes();
+    };
+
+
+    /**
+	 * Funktion um speichern neuer Daten zu können
 	 * @method Safe_New
 	 * @return 
 	 */
-	$scope.Safe_New = function(){
-		new Safe_New();
-	};
-	
-	/**
-	 * Description
+    $scope.Safe_New = function(){
+        new Safe_New();
+    };
+
+    /**
+	 * Funktion um speichern neuer Daten abbrechen zu können
 	 * @method Dismiss_New
 	 * @return 
 	 */
-	$scope.Dismiss_New = function(){
-		new Dismiss_New();
-	};
-	
-	
-	/**
-	 * Description
+    $scope.Dismiss_New = function(){
+        new Dismiss_New();
+    };
+
+
+    /**
+	 * Funktion um neues Auto hinzufügen anzeigen zu können
 	 * @method Show_AddVehicle
 	 * @return 
 	 */
-	$scope.Show_AddVehicle = function(){
-		new Show_AddVehicle();
-	};
-	
-	/**
-	 * Description
+    $scope.Show_AddVehicle = function(){
+        new Show_AddVehicle();
+    };
+
+    /**
+	 * Funktion um neues Auto hinzufügen verbergen zu können
 	 * @method Hide_AddVehicle
 	 * @return 
 	 */
-	$scope.Hide_AddVehicle = function(){
-		new Hide_AddVehicle();
-	};
-	
-	/**
-	 * Description
+    $scope.Hide_AddVehicle = function(){
+        new Hide_AddVehicle();
+    };
+
+    /**
+	 * Funktion um nach eingegebenen Wörter im Suchfeld suchen zu können
 	 * @method Enter_Search
 	 * @return 
 	 */
-	$scope.Enter_Search = function(){
-		
-		var search = $scope.searchQuery;
-		
-		if(search === undefined || search.length === 0){
-			new Update("ALL", undefined, null);
-		}else{
-			if(isNaN(search)){
+    $scope.Enter_Search = function(){
 
-				new Update("ALL", undefined, search);
+        var search = $scope.searchQuery;
 
-			}else{
-				new Update_ID(search);	
-			}
-		}
+        if(search === undefined || search.length === 0){
+            new Update("ALL", undefined, null);
+        }else{
+            if(isNaN(search)){
 
-	};
-	
-	
-	
-	/**
-	 * Description
+                new Update("ALL", undefined, search);
+
+            }else{
+                new Update_ID(search);	
+            }
+        }
+
+    };
+
+
+
+    /**
+	 * Initfunktion der Seite Vehicles
 	 * @method Init
 	 * @return 
 	 */
-	function Init(){
-		
-		$scope.bookingStates = BOOKING_STATES;
-		$scope.loadingStates = LOADING_STATES;
-		
-		new Update("ALL", undefined, null);
-		
-	}
+    function Init(){
 
-	new Init();
+        $scope.bookingStates = BOOKING_STATES;
+        $scope.loadingStates = LOADING_STATES;
+
+        new Update("ALL", undefined, null);
+
+    }
+
+    new Init();
 
 });
