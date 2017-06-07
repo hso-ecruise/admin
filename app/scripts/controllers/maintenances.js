@@ -33,7 +33,7 @@ application.controller('Ctrl_Maintenances', function ($rootScope, $scope, RESTFa
 	
 	
 	/**
-	 * Description
+	 * Hilfsfunktion um mit ID zu aktualisieren
 	 * @method Update_ID
 	 * @param {} id
 	 * @return 
@@ -43,7 +43,7 @@ application.controller('Ctrl_Maintenances', function ($rootScope, $scope, RESTFa
 	}
 	
 	/**
-	 * Description
+	 * Funktion um Daten aus der Rest-Schnittstelle zu holen
 	 * @method Update
 	 * @param {} type
 	 * @param {} value
@@ -78,15 +78,10 @@ application.controller('Ctrl_Maintenances', function ($rootScope, $scope, RESTFa
 			
 			
 			for(var i = 0; i < data.length; i++){
-				
 				var data_use = data[i];
-				
 				var maintenance = {};
-				
 				var ID_STR = data_use.maintenanceId;
-				
 				maintenance.maintenanceID = data_use.maintenanceId;
-				
 				maintenance.state = -1;
 				
 				if(data_use.spontaneously === true){
@@ -106,11 +101,8 @@ application.controller('Ctrl_Maintenances', function ($rootScope, $scope, RESTFa
 				maintenances_all[ID_STR] = maintenance;
 				
 			}
-			
 			$scope.maintenances = maintenances_all;
 			$scope.$apply();
-			
-			
 		}, function(response){
 			
 		});
@@ -119,7 +111,7 @@ application.controller('Ctrl_Maintenances', function ($rootScope, $scope, RESTFa
 	}
 	
 	/**
-	 * Description
+	 * Funktion um Details aus der Rest-Schnittstelle zu holen
 	 * @method Load_Details
 	 * @param {} id
 	 * @return 
@@ -256,7 +248,7 @@ application.controller('Ctrl_Maintenances', function ($rootScope, $scope, RESTFa
 	
 	
 	/**
-	 * Description
+	 * Funktion um geänderte Daten zu speichern und diese an die Rest-Schnittstelle zu übergeben
 	 * @method Safe_New
 	 * @return 
 	 */
@@ -292,7 +284,7 @@ application.controller('Ctrl_Maintenances', function ($rootScope, $scope, RESTFa
 	}
 	
 	/**
-	 * Description
+	 * Funktion um abbrechen zu können
 	 * @method Dismiss_New
 	 * @return 
 	 */
@@ -304,7 +296,7 @@ application.controller('Ctrl_Maintenances', function ($rootScope, $scope, RESTFa
 	
 	
 	/**
-	 * Description
+	 * Funktion um Neue Instandsetzung hinzufügen anzuzeigen
 	 * @method Show_AddMaintenance
 	 * @return 
 	 */
@@ -326,7 +318,7 @@ application.controller('Ctrl_Maintenances', function ($rootScope, $scope, RESTFa
 	}
 	
 	/**
-	 * Description
+	 * Funktion um Neue Instandsetzung hinzufügen zu verstecken
 	 * @method Hide_AddMaintenance
 	 * @return 
 	 */
@@ -339,7 +331,7 @@ application.controller('Ctrl_Maintenances', function ($rootScope, $scope, RESTFa
 	
 	
 	/**
-	 * Description
+	 * Funktion um Neues Element einer Instandsetzung hinzuzufügen
 	 * @method Show_CarMaintenance_Add_PopUp
 	 * @param {} maintenanceID
 	 * @return 
@@ -388,8 +380,8 @@ application.controller('Ctrl_Maintenances', function ($rootScope, $scope, RESTFa
             '</md-dialog>',
 
             /**
-             * Description
-             * @method controller
+             * Controller für Neues Element einer Instandsetzung hinzufügen
+             * @method DialogController
              * @param {} $scope
              * @param {} $mdDialog
              * @return 
@@ -397,17 +389,15 @@ application.controller('Ctrl_Maintenances', function ($rootScope, $scope, RESTFa
             controller: function DialogController($scope, $mdDialog){
 
 				var item = {};
-				
 				item.maintenanceID = maintenanceID;
 				item.carID = 0;
 				item.plannedDate = new Date();
 				item.minDate = new Date();
-				
                 $scope.item = item;
 				
 
                 /**
-                 * Description
+                 * Funktion Dialog zu schliessen
                  * @method closeDialog
                  * @return 
                  */
@@ -416,7 +406,7 @@ application.controller('Ctrl_Maintenances', function ($rootScope, $scope, RESTFa
                 };
 
                 /**
-                 * Description
+                 * Funktion um in Dialog eingegebenen Daten zu speichern
                  * @method Save
                  * @return 
                  */
@@ -447,7 +437,7 @@ application.controller('Ctrl_Maintenances', function ($rootScope, $scope, RESTFa
 	}
 	
 	/**
-	 * Description
+	 * Funktion die Überprüfung des Datum dient
 	 * @method SafeEndDate
 	 * @param {} mainID
 	 * @param {} carMainID
