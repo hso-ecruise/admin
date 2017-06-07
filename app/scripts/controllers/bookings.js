@@ -88,15 +88,21 @@ application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactor
 				booking.invoiceItemID = in_booking.invoiceItemId;
 				
 				
-				var plannedDate = new Date(in_booking.plannedDate);
-				var now = new Date();
-				
-				if(plannedDate.getTime() - now.getTime() < 0){
-					booking.status = "PAST";
-					booking.statusText = "In der Vergangeheit";
+				var plannedDate = Helper.Get_Zeit_Server(in_booking.plannedDate);
+				booking.plannedDate = plannedDate;
+
+				if(plannedDate.state === "false"){
+					booking.status = "FAILED";
+					booking.statusText = "Datum ungültig";
 				}else{
-					booking.status = "FUTURE";
-					booking.statusText = "In der Zukunft";
+					var now = new Date();
+					if(plannedDate.value - now.getTime() < 0){
+						booking.status = "PAST";
+						booking.statusText = "In der Vergangeheit";
+					}else{
+						booking.status = "FUTURE";
+						booking.statusText = "In der Zukunft";
+					}
 				}
 				
 				bookings_all[ID_STR] = booking;
@@ -155,17 +161,21 @@ application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactor
 			booking.tripID = data.tripId;
 			booking.invoiceItemID = data.invoiceItemId;
 
-			var plannedDate = new Date(data.plannedDate);
-			var now = new Date();
-			
-			booking.date = Helper.Get_Zeit(plannedDate);
+			var plannedDate = Helper.Get_Zeit_Server(data.plannedDate);
+			booking.plannedDate = plannedDate;
 
-			if(plannedDate.getTime() - now.getTime() < 0){
-				booking.status = "PAST";
-				booking.statusText = "In der Vergangeheit";
+			if(plannedDate.state === "false"){
+				booking.status = "FAILED";
+				booking.statusText = "Datum ungültig";
 			}else{
-				booking.status = "FUTURE";
-				booking.statusText = "In der Zukunft";
+				var now = new Date();
+				if(plannedDate.value - now.getTime() < 0){
+					booking.status = "PAST";
+					booking.statusText = "In der Vergangeheit";
+				}else{
+					booking.status = "FUTURE";
+					booking.statusText = "In der Zukunft";
+				}
 			}
 
 			booking.tripState = "false";
@@ -250,16 +260,9 @@ application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactor
 						trip.endChargingStationID = data.endChargingStationId;
 						trip.distance = data.distanceTravelled;
 						
-						var start = {};
-						start.startDate = data.startDate;
-						start.time = Helper.Get_Time(data.startDate);
-						start.date = Helper.Get_Date(data.startDate);
-						
-						var end = {};
-						end.endDate = data.endDate;
-						end.time = Helper.Get_Time(data.endDate);
-						end.date = Helper.Get_Date(data.endDate);
-						
+						var start = Helper.Get_Zeit_Server(data.startDate);
+						var end = Helper.Get_Zeit_Server(data.endDate);
+
 						trip.start = start;
 						trip.end = end;
 
@@ -288,8 +291,6 @@ application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactor
 								station.lat = data.latitude;
 								station.lon = data.longitude;
 								
-								console.log(station);
-								
 								booking.trip.start.station = station;
 								
 								booking.trip.startState = "true";
@@ -299,14 +300,10 @@ application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactor
 								
 								Helper.Get_Address(station.lat, station.lon).then(function(address){
 									
-									console.log(address);
-									
 									booking.trip.start.station.address = address;
 									
 									$scope.currentBooking = booking;
 									$scope.$apply();
-									
-									console.log($scope.currentBooking.trip.start);
 									
 								}, function(response){
 									
@@ -382,7 +379,6 @@ application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactor
 		var time = new Date($scope.new_booking.time);
 		
 		var plannedDate = new Date(date.getFullYear(), date.getMonth(), date.getDate(), time.getHours(), time.getMinutes(), 0, 0);
-		
 		var now = new Date();
 		
 		//TRITT EIGENTLICH NIE AUF
@@ -390,21 +386,22 @@ application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactor
 			alert("Die Startzeit liegt in der Vergangenheit. Bitte überprüfen Sie Ihre Eingaben.");
 			return;
 		}
+
 		
 		booking.customerId = $scope.new_booking.customerID;
 		booking.bookingPositionLatitude = $scope.new_booking.lat;
 		booking.bookingPositionLongitude = $scope.new_booking.lon;
 		booking.bookingDate = now;
-		booking.plannedDate = plannedDate;
+		booking.plannedDate = plannedDate.toUTCString();
 		
 		RESTFactory.Bookings_Post(booking).then(function(response){
 			alert("Buchung wurde erfolgreich ausgeführt");
 			new Hide_AddBooking();
-			setTimeout(Update, 1000);
+			new Update("ALL", undefined);
 		}, function(response){
 			alert("Buchung fehlgeschlagen");
 			new Hide_AddBooking();
-			setTimeout(Update, 1000);
+			new Update("ALL", undefined);
 		});
 		
 	}
@@ -442,6 +439,7 @@ application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactor
 		
 		new_booking.date = dateInput;
 		new_booking.minDate = minDate;
+		new_booking.lat = -190;
 		
 		new_booking.address_state = "false";
 		
@@ -491,7 +489,7 @@ application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactor
 			});
 		}
 		
-		setTimeout(Init_Map, 2000);
+		setTimeout(Init_Map, 1000);
 
 	}
 	

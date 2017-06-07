@@ -350,6 +350,9 @@
                         <md-input-container flex-gt-sm>
                             <input type="text" placeholder="Nummer" ng-model="new_vehicle.address.number" disabled />
                         </md-input-container>
+                        <md-input-container style="display: none;">
+                            <input type="number" ng-model="new_vehicle.lat" min="-180" ng-required />
+                        </md-input-container>
                     </md-content>
 
                     <input type="text" id='search_input' value="" placeholder="Suchen"/>

@@ -106,34 +106,39 @@
                     </div>
                 </md-toolbar>
 
-                <md-content layout-padding>
-                    <md-input-container flex-gt-sm>
-                        <input type="number" placeholder="Slots insgesamt" min="1" ng-model="new_station.slots" ng-required />
-                    </md-input-container>
-                    <md-input-container flex-gt-sm>
-                        <input type="number" placeholder="Slots belegt" min="0" max="{{new_station.slots}}" ng-model="new_station.slotsOccupied" ng-required />
-                    </md-input-container>
-                </md-content>
+                <form name="form_New">
+                    <md-content layout-padding>
+                        <md-input-container flex-gt-sm>
+                            <input type="number" placeholder="Slots insgesamt" min="1" ng-model="new_station.slots" ng-required />
+                        </md-input-container>
+                        <md-input-container flex-gt-sm>
+                            <input type="number" placeholder="Slots belegt" min="0" max="{{new_station.slots}}" ng-model="new_station.slotsOccupied" ng-required />
+                        </md-input-container>
+                    </md-content>
 
-                <md-content layout-padding>
-                    <md-input-container flex-gt-sm ng-switch="new_station.address_state">
-                        <input ng-switch-when="true" type="text" placeholder="Strasse" ng-model="new_station.address.street" disabled />
-                        <input ng-switch-when="false" type="text" placeholder="Strasse" value="Bitte Addresse auswählen" disabled />
-                    </md-input-container>
-                    <md-input-container flex-gt-sm>
-                        <input type="text" placeholder="Nummer" ng-model="new_station.address.number" disabled />
-                    </md-input-container>
-                </md-content>
+                    <md-content layout-padding>
+                        <md-input-container flex-gt-sm ng-switch="new_station.address_state">
+                            <input ng-switch-when="true" type="text" placeholder="Strasse" ng-model="new_station.address.street" disabled />
+                            <input ng-switch-when="false" type="text" placeholder="Strasse" value="Bitte Addresse auswählen" disabled />
+                        </md-input-container>
+                        <md-input-container flex-gt-sm>
+                            <input type="text" placeholder="Nummer" ng-model="new_station.address.number" disabled />
+                        </md-input-container>
+                        <md-input-container style="display: none;">
+                            <input type="number" ng-model="new_station.lat" min="-180" ng-required />
+                        </md-input-container>
+                    </md-content>
 
-                <md-content layout-padding>
-                    <input type="text" id='search_input' value="" placeholder="Suchen"/>
-                    <div id="map_station_new" style="height: 400px;"></div>
-                </md-content>
+                    <md-content layout-padding>
+                        <input type="text" id='search_input' value="" placeholder="Suchen"/>
+                        <div id="map_station_new" style="height: 400px;"></div>
+                    </md-content>
 
-                <md-content layout-padding>
-                    <md-button class="md-raised md-primary button-to-right" ng-click="Safe_New()"> Speichern </md-button>
-                    <md-button class="md-primary md-hue-1 button-to-right" ng-click="Dismiss_New()"> Verwerfen </md-button>
-                </md-content>
+                    <md-content layout-padding>
+                        <md-button class="md-raised md-primary button-to-right" ng-disabled="form_New.$invalid" ng-click="Safe_New()"> Speichern </md-button>
+                        <md-button class="md-primary md-hue-1 button-to-right" ng-click="Dismiss_New()"> Verwerfen </md-button>
+                    </md-content>
+                </form>
             </div>
         </div>
     </div>

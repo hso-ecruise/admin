@@ -70,22 +70,21 @@
                     <md-content layout-padding>
                         <label> Buchungs-ID: {{ currentBooking.bookingID }} </label>
                         <label> Status: {{ currentBooking.statusText }}</label>
-                        <label> Geplantes Datum: {{ currentBooking.date.date }} um {{currentBooking.date.time}}</label>
+                        <label> Geplantes Datum: {{ currentBooking.plannedDate.date }} um {{currentBooking.plannedDate.time}}</label>
                         <br/>
 
-                        <h4>Fahrer</h4>
+                        <h4>Fahrer: {{currentBooking.customerID}}</h4>
                         <BLOCKQUOTE ng-switch="currentBooking.customerState">
                             <div ng-switch-when="true">
                                 <h5> Vorname: {{ currentBooking.customer.name }} </h5>
                                 <h5> Nachname: {{ currentBooking.customer.familyName }} </h5>
-                                <h5> ID:  {{ currentBooking.customer.customerID }} </h5>
                             </div>
                             <div ng-switch-when="false">
                                 <h5> Nutzer kann nicht abgerufen werden </h5>
                             </div>
                         </BLOCKQUOTE>
 
-                        <h4>Trip</h4>
+                        <h4>Trip: {{currentBooking.tripID}}</h4>
 
                         <BLOCKQUOTE ng-switch="currentBooking.tripState">
 
@@ -163,15 +162,14 @@
 
                     <md-content layout-padding>
                         <md-input-container flex-gt-sm ng-switch="new_booking.address_state">
-                            <p ng-switch-when="true">
-                                <input type="text" ng-model="new_booking.address.street" placeholder="Strasse" disabled/>
-                            </p>
-                            <p ng-switch-when="false">
-                                <input type="text" placeholder="Strasse" value="Keine Adresse gefunden" disabled/>
-                            </p>
+                            <input type="text" ng-switch-when="true" ng-model="new_booking.address.street" placeholder="Strasse" disabled/>
+                            <input type="text" ng-switch-when="false" placeholder="Strasse" value="Keine Adresse gefunden" disabled/>
                         </md-input-container>
                         <md-input-container flex-gt-sm>
                             <input type="text" ng-model="new_booking.address.number" placeholder="Nr" disabled/>
+                        </md-input-container>
+                        <md-input-container style="display: none;">
+                            <input type="number" ng-model="new_booking.lat" min="-180" ng-required />
                         </md-input-container>
                     </md-content>
 

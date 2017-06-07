@@ -280,8 +280,8 @@ application.controller('Ctrl_Stations', function ($rootScope, $scope, RESTFactor
 		
 		new_station.slots = 0;
 		new_station.slotsOccupied = 0;
-		new_station.lat = 0;
-		new_station.lon = 0;
+		new_station.lat = -190;
+		new_station.lon = -190;
 		new_station.address_state = "false";
 		new_station.hasPosition = false;
 

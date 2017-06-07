@@ -81,7 +81,7 @@ application.controller('Ctrl_Maintenances', function ($rootScope, $scope, RESTFa
 					maintenance.state = 0;
 				}else if(data_use.atDate !== null){
 					maintenance.atDate = data_use.atDate;
-					maintenance.date = Helper.Get_Zeit(data_use.atDate);
+					maintenance.date = Helper.Get_Zeit_Server(data_use.atDate);
 					maintenance.state = 2;
 				}else if(data_use.atMileage !== null){
 					maintenance.atMileage = data_use.atMileage;
@@ -123,7 +123,7 @@ application.controller('Ctrl_Maintenances', function ($rootScope, $scope, RESTFa
 				maintenance.state = 0;
 			}else if(data_use.atDate !== null){
 				maintenance.atDate = data_use.atDate;
-				maintenance.date = Helper.Get_Zeit(data_use.atDate);
+				maintenance.date = Helper.Get_Zeit_Server(data_use.atDate);
 				maintenance.state = 2;
 			}else if(data_use.atMileage !== null){
 				maintenance.atMileage = data_use.atMileage;
@@ -158,15 +158,15 @@ application.controller('Ctrl_Maintenances', function ($rootScope, $scope, RESTFa
 						car_maintenance.carID = data_use.carId;
 						car_maintenance.maintenanceID = data_use.maintenanceId;
 						car_maintenance.invoiceItemID = data_use.invoiceItemId;
-						car_maintenance.plannedDate = Helper.Get_Zeit(data_use.plannedDate);
+						car_maintenance.plannedDate = Helper.Get_Zeit_Server(data_use.plannedDate);
 						car_maintenance.endState = false;
 						car_maintenance.endDate = new Date();
-						car_maintenance.minEndDate = Helper.Get_Zeit(data_use.plannedDate).date;
+						car_maintenance.minEndDate = Helper.Get_Zeit_Server(data_use.plannedDate).date;
 						car_maintenance.maxEndDate = Helper.Get_Zeit(new Date()).date;
 						
 						if(data_use.completedDate !== null){
 							car_maintenance.endState = true;
-							car_maintenance.completedDate = Helper.Get_Zeit(data_use.completedDate);
+							car_maintenance.completedDate = Helper.Get_Zeit_Server(data_use.completedDate);
 						}
 						
 						car_maintenance.text = "Letzte Wartung";
@@ -258,11 +258,11 @@ application.controller('Ctrl_Maintenances', function ($rootScope, $scope, RESTFa
 		RESTFactory.Maintances_Post(maintenance).then(function(response){
 			alert("Instandhaltung wurde erfolgreich hinzugefügt");
 			new Hide_AddMaintenance();
-			setTimeout(Update, 2000);
+			new Update("ALL", undefined);
 		}, function(response){
 			alert("Instandhaltung hinzufügen fehlgeschlagen");
 			new Hide_AddMaintenance();
-			setTimeout(Update, 2000);
+			new Update("ALL", undefined);
 		});
 		
 	}
@@ -390,11 +390,11 @@ application.controller('Ctrl_Maintenances', function ($rootScope, $scope, RESTFa
 		
 		RESTFactory.Car_Maintances_Patch_CompletedDate(carMainID, date).then(function(response){
 			alert("End Datum erfolgreich gesetzt");
+			new Update("ALL", undefined);
 		}, function(response){
 			alert("End Datum konnte nicht gesetzt werden");
+			new Update("ALL", undefined);
 		});
-		
-		setTimeout(Update, 2000);
 		
 	}
 	

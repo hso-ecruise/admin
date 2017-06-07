@@ -657,6 +657,40 @@ application.factory('Helper', function (RESTFactory, $cookies) {
 		
 		return date;
 		
+	},
+
+	Get_Zeit_Server: function(value){
+		
+		var date = {};
+		if(value === null){
+			date.state = "false";
+			return date;
+		}
+		
+		value += "Z";
+
+		var now = new Date(value);
+
+		date.state = true;
+		date.date = now.getDate() + "." + (now.getMonth() + 1) + "." + now.getFullYear();
+		date.time = now.getHours() + ":" + now.getMinutes();
+		if(now.getMinutes() < 10){
+			date.time = now.getHours() + ":0" + now.getMinutes();
+		}
+		date.value = now.getTime();
+		date.string = now;
+		
+		date.date_ele = {};
+		date.date_ele.day = now.getDate();
+		date.date_ele.month = now.getMonth();
+		date.date_ele.year = now.getFullYear();
+		
+		date.time_ele = {};
+		date.time_ele.minutes = now.getMinutes();
+		date.time_ele.hours = now.getHours();
+		
+		return date;
+		
 	}
 	
     };

@@ -157,20 +157,11 @@ application.controller('Ctrl_Users', function ($rootScope, $scope, RESTFactory, 
 					booking.tripID = data_use.tripId;
 					booking.customerID = data_use.customerId;
 					booking.invoiceItemID = data_use.invoiceItemId;
-					booking.plannedDate = data_use.plannedDate;
-					
-					var date = {};
-					date.date = Helper.Get_Date(booking.plannedDate);
-					date.time = Helper.Get_Time(booking.plannedDate);
-					
-					booking.date = date;
-					
-					var then = new Date(booking.plannedDate);
+					booking.plannedDate = Helper.Get_Zeit_Server(data_use.plannedDate);
 					
 					var now = new Date();
-					now.setHours(now.getHours() + 2);
 					
-					if(then.getTime() - now.getTime() < 0){
+					if(booking.plannedDate.value - now.getTime() < 0){
 						bookingsDone[booking.bookingID] = booking;
 					}else{
 						bookingsOpen[booking.bookingID] = booking;

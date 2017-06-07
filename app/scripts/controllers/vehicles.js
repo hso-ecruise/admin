@@ -224,92 +224,6 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
 
 		}
 
-/*
-        if(car.bookingState === 1 || car.bookingState === 2){
-
-			
-			if(car.chargingState === 2){
-				
-				var now = Helper.Get_Zeit(new Date());
-
-				if(now.value - car.lastDate.value > 1000 * 60 * 60 * 24){
-
-					var content = "Das Fahrzeug ist gebucht, wurde aber seit mehr als 24 Stunden nicht mehr bewegt";
-
-					new AddMarker(carID, title, content, "car_standing_admin", lat, lon);
-
-				}else{
-				
-
-					RESTFactory.Car_Charging_Stations_Get_CarID(carID).then(function(response){
-						
-						var info = response.data;
-						
-						//MULTIPLE STATIONS OR ONLY ONE
-						for(var tz = 0; tz < info.length; tz++){
-							
-							var station = info[tz];
-							
-							if(station.carId === carID){
-							
-								if(info.length > 0){
-
-									var time = Helper.Get_Time(info[tz].chargeEnd);
-									var content = "Das Fahrzeug lädt. Ladezustand " + parseInt(bat) + "%. Voraussichtliches Ende: gegen " + time;
-
-									if(bat < 25){
-										new AddMarker(carID, title, content, "car_loading_00", lat, lon);
-									}else if (bat < 50){
-										new AddMarker(carID, title, content, "car_loading_25", lat, lon);
-									}else if (bat < 75){
-										new AddMarker(carID, title, content, "car_loading_50", lat, lon);
-									}else if (bat < 100){
-										new AddMarker(carID, title, content, "car_loading_75", lat, lon);
-									}
-
-								}
-								
-								break;
-								
-							}
-						}
-						
-					}, function(response){
-						
-						var content = "Das Fahrzeug lädt. Ladezustand " + parseInt(bat) + "%. Voraussichtliches Ende: kann nicht abgerufen werden";
-						
-						if(bat < 25){
-							new AddMarker(carID, title, content, "car_loading_00", lat, lon);
-						}else if (bat < 50){
-							new AddMarker(carID, title, content, "car_loading_25", lat, lon);
-						}else if (bat < 75){
-							new AddMarker(carID, title, content, "car_loading_50", lat, lon);
-						}else if (bat < 100){
-							new AddMarker(carID, title, content, "car_loading_75", lat, lon);
-						}
-						
-					});
-
-				}
-
-
-
-            }else if(car.chargingState === 3){
-
-                var content = "Das Fahrzeug ist voll geladen und kann benutzt werden.";
-
-                new AddMarker(carID, title, content, "car_available", lat, lon);
-
-            }
-
-        }else{
-			
-			var content = "Das Fahrzeug ist geblockt. Und zu " + bat + "% geladen.";
-
-			new AddMarker(carID, title, content, "car_occupied", lat, lon);
-
-		}
-*/
     }
 	
 	function Update_ID(id){
@@ -367,7 +281,7 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
 				vehicle.constructionYear = data_use.yearOfConstruction;
 				vehicle.lastLat = data_use.lastKnownPositionLatitude;
 				vehicle.lastLon = data_use.lastKnownPositionLongitude;
-				vehicle.lastDate = Helper.Get_Zeit(data_use.lastKnownPositionDate);
+				vehicle.lastDate = Helper.Get_Zeit_Server(data_use.lastKnownPositionDate);
 				vehicle.address_state = "false";
 				
 				if(filter === null || filter === undefined ||
@@ -438,7 +352,7 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
 			vehicle.constructionYear = data_use.yearOfConstruction;
 			vehicle.lastLat = data_use.lastKnownPositionLatitude;
 			vehicle.lastLon = data_use.lastKnownPositionLongitude;
-			vehicle.lastDate = Helper.Get_Zeit(data_use.lastKnownPositionDate);
+			vehicle.lastDate = Helper.Get_Zeit_Server(data_use.lastKnownPositionDate);
 			vehicle.address_state = "false";
 			vehicle.maintenanceState = "false";
 			vehicle.trip_state = "false";
@@ -481,14 +395,14 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
 						maintenance.carID = data_use.carId;
 						maintenance.maintenanceID = data_use.maintenanceId;
 						maintenance.invoiceItemID = data_use.invoiceItemId;
-						maintenance.plannedDate = Helper.Get_Zeit(data_use.plannedDate);
+						maintenance.plannedDate = Helper.Get_Zeit_Server(data_use.plannedDate);
 						maintenance.invoiceState = "false";
 						maintenance.completedState = "false";
 						if(data_use.completedDate === null){
 							maintenancesOpen[ID_STR] = maintenance;
 						}else{
 							maintenance.completedState = "true";
-							maintenance.completedDate = Helper.Get_Zeit(data_use.completedDate);
+							maintenance.completedDate = Helper.Get_Zeit_Server(data_use.completedDate);
 							maintenancesDone[ID_STR] = maintenance;
 						}
 
@@ -556,20 +470,19 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
 						trip.tripID = data_use.tripId;
 						trip.carID = data_use.carId;
 						trip.customerID = data_use.customerId;
-						trip.startDate = Helper.Get_Zeit(data_use.startDate);
+						trip.startDate = Helper.Get_Zeit_Server(data_use.startDate);
+						trip.endDate = Helper.Get_Zeit_Server(data_use.endDate);
 						trip.startChargingStationID = data_use.startChargingStationId;
 						
 						trip.endState = "false";
 						trip.distanceTravelled = 0;
 						
-						if(data_use.endDate !== null){
+						if(trip.endDate.state === "true"){
 							trip.endState = "true";
-							trip.endDate = Helper.Get_Zeit(data_use.endDate);
 							trip.distanceTravelled = data_use.distanceTravelled;
 							trip.endChargingStationID = data_use.endChargingStationId;
 						}
 						
-
 						trips[trip.tripID] = trip;
 
 					});
@@ -682,7 +595,7 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
 		vehicle.yearOfConstruction = $scope.new_vehicle.yearOfConstruction;
 		vehicle.lastKnownPositionLatitude = $scope.new_vehicle.lat;
 		vehicle.lastKnownPositionLongitude = $scope.new_vehicle.lon;
-		vehicle.lastKnownPositionDate = new Date();
+		vehicle.lastKnownPositionDate = (new Date()).toUTCString();
 		
 		console.log(vehicle);
 		
@@ -726,6 +639,7 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
 		new_vehicle.yearOfConstruction = 0;
 		new_vehicle.address_state = "false";
 		new_vehicle.hasPosition = false;
+		new_vehicle.lat = -190;
 		
 		$scope.new_vehicle = new_vehicle;
 		
