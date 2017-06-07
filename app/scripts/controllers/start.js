@@ -12,7 +12,8 @@ application.controller('Ctrl_Main', function ($rootScope, $scope, Helper, $locat
     var inited = false;
     
     /**
-     * Description
+     * Init-funktion der Seite Start
+     * die Überprüft ob user eingeloggt ist
      * @method Init
      * @return 
      */
@@ -43,7 +44,7 @@ application.controller('Ctrl_Main', function ($rootScope, $scope, Helper, $locat
     Init();
     
     /**
-     * Description
+     * Funktion die den Cookie bei Logout löscht
      * @method Logout
      * @return 
      */
@@ -66,7 +67,7 @@ application.controller('Ctrl_Main', function ($rootScope, $scope, Helper, $locat
     };
 	
 	/**
-	 * Description
+	 * Funktion um Login-Dialog anzuzeigen
 	 * @method showLogin
 	 * @return 
 	 */
@@ -107,8 +108,9 @@ application.controller('Ctrl_Main', function ($rootScope, $scope, Helper, $locat
             '</md-dialog>',
 
             /**
-             * Description
-             * @method controller
+             * Funktion die eingegebenen in Login-Dialog Daten an die Rest-Schnittstelle schickt, sie überprüft
+             * und falls login erfolgreich ist diese in Cookie speichert
+             * @method controller DialogController
              * @param {} $scope
              * @param {} $rootScope
              * @param {} $location
