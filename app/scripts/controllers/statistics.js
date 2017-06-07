@@ -14,7 +14,7 @@
 	
 	
 	/**
-	 * Description
+	 * Hilfsfunktion für Update mit Name
 	 * @method Update_Date
 	 * @param {} name
 	 * @return 
@@ -25,7 +25,7 @@
 	
 	
 	/**
-	 * Description
+	 * Funktion um Daten für die Statistik zu holen und anzuzeigen
 	 * @method Update
 	 * @param {} type
 	 * @param {} value
@@ -85,7 +85,7 @@
 	}
 	
 	/**
-	 * Description
+	 * Funktion um Details der Statistik zu holen und anzuzeigen
 	 * @method Load_Details
 	 * @param {} date
 	 * @return 
@@ -116,7 +116,7 @@
 	}
 	
 	/**
-	 * Description
+	 * Funktion um die Heatmap zu laden
 	 * @method LoadHeatMap
 	 * @return 
 	 */
@@ -124,17 +124,14 @@
 		
 		//Get all stations
 			//Get all car charging stations for each station
-		
-		
-		
-		
+
 		
 	}
 	
 	
 	
 	/**
-	 * Description
+	 * Funktion um Details zu laden
 	 * @method Load_Details
 	 * @param {} id
 	 * @return 
@@ -145,7 +142,7 @@
 	
 	
 	/**
-	 * Description
+	 * Funktion um nach eingegebenen in Suchfeld Wörtern zu suchen
 	 * @method Enter_Search
 	 * @return 
 	 */
@@ -181,7 +178,7 @@
 	
 	
 	/**
-	 * Description
+	 * Initfunktion für die Seite Statistik
 	 * @method Init
 	 * @return 
 	 */
