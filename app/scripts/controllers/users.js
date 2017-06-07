@@ -13,7 +13,7 @@ application.controller('Ctrl_Users', function ($rootScope, $scope, RESTFactory, 
 	var customer_old = {};
 	
 	/**
-	 * Description
+	 * Hilfsfunktion für Update mit Name
 	 * @method Update_Name
 	 * @param {} name
 	 * @return 
@@ -23,7 +23,7 @@ application.controller('Ctrl_Users', function ($rootScope, $scope, RESTFactory, 
 	}
 	
 	/**
-	 * Description
+	 * Hilfsfunktion für Update mit ID
 	 * @method Update_ID
 	 * @param {} id
 	 * @return 
@@ -33,7 +33,7 @@ application.controller('Ctrl_Users', function ($rootScope, $scope, RESTFactory, 
 	}
 	
 	/**
-	 * Description
+	 * Updatefunktion um Daten der Benutzer aus der Rest-Schnittstelle zu holen und sie anzuzeigen
 	 * @method Update
 	 * @param {} type
 	 * @param {} value
@@ -112,7 +112,7 @@ application.controller('Ctrl_Users', function ($rootScope, $scope, RESTFactory, 
 	}
 	
 	/**
-	 * Description
+	 * Funktion um Details der Benutzer aus der Rest-Schnittstelle zu laden und sie anzuzeigen
 	 * @method Load_Details
 	 * @param {} id
 	 * @return 
@@ -248,7 +248,7 @@ application.controller('Ctrl_Users', function ($rootScope, $scope, RESTFactory, 
 	
 	
 	/**
-	 * Description
+	 * Funktion um Modus zu wächseln in dem Daten geändert werden können einzuschalten
 	 * @method EnableEditMode
 	 * @return 
 	 */
@@ -258,7 +258,7 @@ application.controller('Ctrl_Users', function ($rootScope, $scope, RESTFactory, 
 	}
 	
 	/**
-	 * Description
+	 * Funktion um Modus zu wächseln in dem Daten geändert werden können auszuschalten
 	 * @method DisabledEditMode
 	 * @return 
 	 */
@@ -269,7 +269,7 @@ application.controller('Ctrl_Users', function ($rootScope, $scope, RESTFactory, 
 	
 	
 	/**
-	 * Description
+	 * Funktion um geänderte Werte zu speichern und an die Rest-Schnittstelle zu übergeben
 	 * @method Safe_Changes
 	 * @return 
 	 */
@@ -349,7 +349,7 @@ application.controller('Ctrl_Users', function ($rootScope, $scope, RESTFactory, 
 	}
 	
 	/**
-	 * Description
+	 * Funktion um abbrechen zu können
 	 * @method Dismiss_Changes
 	 * @return 
 	 */
@@ -360,7 +360,7 @@ application.controller('Ctrl_Users', function ($rootScope, $scope, RESTFactory, 
 	
 	
 	/**
-	 * Description
+	 * Funktion um neuen User zu speichern und seine Daten an die Rest-Schnittstelle zu übergeben
 	 * @method Safe_New
 	 * @return 
 	 */
@@ -447,7 +447,7 @@ application.controller('Ctrl_Users', function ($rootScope, $scope, RESTFactory, 
 	}
 	
 	/**
-	 * Description
+	 * Funktion um abbrechen zu können
 	 * @method Dismiss_New
 	 * @return 
 	 */
@@ -460,7 +460,7 @@ application.controller('Ctrl_Users', function ($rootScope, $scope, RESTFactory, 
 	
 	
 	/**
-	 * Description
+	 * Funktion um Neuen User anlegen anzuzeigen
 	 * @method Show_AddCustomer
 	 * @return 
 	 */
@@ -475,7 +475,7 @@ application.controller('Ctrl_Users', function ($rootScope, $scope, RESTFactory, 
 	}
 	
 	/**
-	 * Description
+	 * Funktion um Neuen User anlegen zu verstecken
 	 * @method Hide_AddCustomer
 	 * @return 
 	 */
@@ -490,7 +490,7 @@ application.controller('Ctrl_Users', function ($rootScope, $scope, RESTFactory, 
 	
 	
 	/**
-	 * Description
+	 * Funktion um in Modus in dem Daten geändert werden können zu wechseln
 	 * @method EnableEditMode
 	 * @return 
 	 */
@@ -499,7 +499,7 @@ application.controller('Ctrl_Users', function ($rootScope, $scope, RESTFactory, 
 	};
 	
 	/**
-	 * Description
+	 * Funktion um Details zu laden
 	 * @method Load_Details
 	 * @param {} id
 	 * @return 
@@ -510,7 +510,7 @@ application.controller('Ctrl_Users', function ($rootScope, $scope, RESTFactory, 
 	
 	
 	/**
-	 * Description
+	 * Funktion um Änderungen zu speichern
 	 * @method Safe_Changes
 	 * @return 
 	 */
@@ -519,7 +519,7 @@ application.controller('Ctrl_Users', function ($rootScope, $scope, RESTFactory, 
 	};
 	
 	/**
-	 * Description
+	 * Funktion um Änderungen nicht zu speichern
 	 * @method Dismiss_Changes
 	 * @return 
 	 */
@@ -529,7 +529,7 @@ application.controller('Ctrl_Users', function ($rootScope, $scope, RESTFactory, 
 	
 	
 	/**
-	 * Description
+	 * Funktion um neuen Benutzen zu speichern
 	 * @method Safe_New
 	 * @return 
 	 */
@@ -538,7 +538,7 @@ application.controller('Ctrl_Users', function ($rootScope, $scope, RESTFactory, 
 	};
 	
 	/**
-	 * Description
+	 * Funktion um Neuen Benutzer anlegen abzubrechen
 	 * @method Dismiss_New
 	 * @return 
 	 */
@@ -548,7 +548,7 @@ application.controller('Ctrl_Users', function ($rootScope, $scope, RESTFactory, 
 	
 	
 	/**
-	 * Description
+	 * Funktion um Neuen Benutzer anlegen zu zeigen
 	 * @method Show_AddCustomer
 	 * @return 
 	 */
@@ -557,8 +557,8 @@ application.controller('Ctrl_Users', function ($rootScope, $scope, RESTFactory, 
 	};
 	
 	/**
-	 * Description
-	 * @method Hide_AddCustomer
+	 * Funktion um Neuen Benutzer anlegen zu verstecken
+     * @method Hide_AddCustomer
 	 * @return 
 	 */
 	$scope.Hide_AddCustomer = function(){
@@ -566,7 +566,7 @@ application.controller('Ctrl_Users', function ($rootScope, $scope, RESTFactory, 
 	};
 	
 	/**
-	 * Description
+	 * Funktion um nach den in Suchfeld eingegebenen Wörtern zu suchen
 	 * @method Enter_Search
 	 * @return 
 	 */
@@ -589,7 +589,7 @@ application.controller('Ctrl_Users', function ($rootScope, $scope, RESTFactory, 
 	
 	
 	/**
-	 * Description
+	 * Initfunktion der Seite Users
 	 * @method Init
 	 * @return 
 	 */
