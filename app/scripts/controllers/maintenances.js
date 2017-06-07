@@ -414,18 +414,17 @@ application.controller('Ctrl_Maintenances', function ($rootScope, $scope, RESTFa
 					
 					var item = $scope.item;
 					
-					var data = {
-						maintenanceId: item.maintenanceID,
-						carId: parseInt(item.carID),
-						plannedDate: item.plannedDate.toUTCString()
-					};
+					var data = {};
+					data.carId = item.carID;
+					data.maintenanceId = item.maintenanceID;
+					data.plannedDate = item.plannedDate.toUTCString();
 					
-					console.log(data);
-					
-					RESTFactory.Car_Maintances_Post(maintenanceID, data).then(function(response){
+					RESTFactory.Car_Maintances_Post(data).then(function(response){
 						alert("Element erfolgreich hinzugefügt");
+						Update("ALL", undefined);
 					}, function(response){
 						alert("Element hinzufügen fehlgeschlagen");
+						Update("ALL", undefined);
 					});
 					
                     $scope.closeDialog();
@@ -450,11 +449,11 @@ application.controller('Ctrl_Maintenances', function ($rootScope, $scope, RESTFa
 		data.completedDate =endDate;
 		data.invoiceItemId = invoiceItemID;
 
-		RESTFactory.Car_Maintances_Patch_CompletedDate(carMainID, data).then(function(response){
-			alert("End Datum erfolgreich gesetzt");
+		RESTFactory.Car_Maintances_Patch(carMainID, data).then(function(response){
+			alert("End Datum und RechnungsElementID erfolgreich gesetzt");
 			new Update("ALL", undefined);
 		}, function(response){
-			alert("End Datum konnte nicht gesetzt werden");
+			alert("End Datum und RechnungsElementID konnten nicht gesetzt werden");
 			new Update("ALL", undefined);
 		});
 		

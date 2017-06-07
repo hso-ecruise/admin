@@ -201,6 +201,8 @@ application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactor
 					booking.statusText = "In der Zukunft";
 				}
 			}
+			
+			console.log(booking);
 
 			booking.tripState = "false";
 			booking.invoiceState = "false";
@@ -269,6 +271,8 @@ application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactor
 				//GET TRIP INFOS
 				RESTFactory.Trips_Get_TripID(booking.tripID).then(function(response){
 					
+					console.log(response.data);
+
 					var data = response.data;
 
 					if(booking.status === "PAST" && data.startDate === null){

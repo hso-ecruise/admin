@@ -912,13 +912,13 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 		
 		/**
 		 * PATCH Funktion für Car-MaintenancesID Completed-Date
-		 * @method Car_Maintances_Patch_CompletedDate
+		 * @method Car_Maintances_Patch
 		 * @param {} id
 		 * @param {} data
 		 * @return orig
 		 */
-		Car_Maintances_Patch_CompletedDate: function(id, data){
-			var url = IP + "/car-maintenances/" + id + "/completed-date";
+		Car_Maintances_Patch: function(id, data){
+			var url = IP + "/car-maintenances/" + id;
 			var orig = Promise.resolve(PatchCaller.Patch(url, data, true));
 			return orig;
 		},
