@@ -45,7 +45,9 @@ application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactor
 	function Update(type, value){
 		
 		bookings_all = {};
+		$scope.bookings = bookings_all;
 		
+			
 		$scope.booking_selected = "false";
 		
 		$scope.view = "info";
@@ -132,9 +134,6 @@ application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactor
 			});
 			
 		}, function(response){
-			
-			$scope.bookings = bookings_all;
-			$scope.$apply();
 			
 		});
 		

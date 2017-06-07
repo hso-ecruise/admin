@@ -39,6 +39,7 @@ application.controller('Ctrl_Maintenances', function ($rootScope, $scope, RESTFa
 	function Update(type, value){
 		
 		maintenances_all = {};
+		$scope.maintenances = maintenances_all;
 		
 		$scope.maintenance_selected = "false";
 		
@@ -98,9 +99,6 @@ application.controller('Ctrl_Maintenances', function ($rootScope, $scope, RESTFa
 			
 			
 		}, function(response){
-			
-			$scope.maintenances = maintenances_all;
-			$scope.$apply();
 			
 		});
 		

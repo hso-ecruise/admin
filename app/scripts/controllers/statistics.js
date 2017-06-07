@@ -21,6 +21,8 @@
 	function Update(type, value){
 		
 		statistics_all = {};
+		$scope.statistics = statistics_all;
+		
 		
 		$scope.statistic_selected = "false";
 		
@@ -63,9 +65,6 @@
 			});
 			
 		}, function(response){
-			
-			$scope.statistics = statistics_all;
-			$scope.$apply();
 			
 		});
 		

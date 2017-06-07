@@ -85,6 +85,7 @@ application.controller('Ctrl_Stations', function ($rootScope, $scope, RESTFactor
 	function Update(type, value){
 		
 		stations_all = {};
+		$scope.stations = stations_all;
 		
 		$scope.station_selected = "false";
 		
@@ -160,8 +161,6 @@ application.controller('Ctrl_Stations', function ($rootScope, $scope, RESTFactor
 			
 		}, function(response){
 			
-			$scope.stations = stations_all;
-			$scope.$apply();
 		
 		});
 		

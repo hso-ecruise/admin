@@ -34,6 +34,8 @@ application.controller('Ctrl_Invoices', function ($rootScope, $scope, RESTFactor
 	function Update(type, value){
 		
 		invoices_all = {};
+		$scope.invoices = invoices_all;
+		
 		
 		$scope.invoice_selected = "false";
 		
@@ -105,9 +107,6 @@ application.controller('Ctrl_Invoices', function ($rootScope, $scope, RESTFactor
 			
 			
 		}, function(response){
-			
-			$scope.invoices = invoices_all;
-			$scope.$apply();
 			
 		});
 		

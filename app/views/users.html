@@ -143,38 +143,10 @@
                             </form>
                         </md-tab>
 
-                        <md-tab label="Sonstiges">
-                            <md-content layout-padding>
-                                <md-content layout-padding>
-
-                                    <h4>Ausstehende Fahrten</h4>
-                                    <BLOCKQUOTE ng-switch="currentBooking.customerState">
-                                        <table>
-                                            <thead>
-                                                <tr>
-                                                    <td>
-                                                        <h4>ID &nbsp;</h4>
-                                                    </td>
-                                                    <td>
-                                                        <h4>Datum</h4>
-                                                    </td>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr ng-repeat="(key, booking) in currentCustomer.bookingsOpen track by $index">
-                                                    <td>
-                                                        <h5> {{key}}</h5>
-                                                    </td>
-                                                    <td>
-                                                        <h5>{{ booking.date.date }} um {{ booking.date.time }}</h5>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </BLOCKQUOTE>
-
-                                    <h4>Abgeschlossene Fahrten</h4>
-                                    <BLOCKQUOTE>
+                        <md-tab label="Fahrten">
+                            <md-tabs md-dynamic-height md-border-bottom>
+                                <md-tab label="Abgeschlossen">
+                                    
                                         <table>
                                             <thead>
                                                 <tr>
@@ -197,11 +169,10 @@
                                                 </tr>
                                             </tbody>
                                         </table>
-                                    </BLOCKQUOTE>
-
-
-                                    <h4>Rechnungen</h4>
-                                    <BLOCKQUOTE>
+                                </md-tab>
+                                
+                                <md-tab label="Ausstehend">
+                                    
                                         <table>
                                             <thead>
                                                 <tr>
@@ -209,28 +180,55 @@
                                                         <h4>ID &nbsp;</h4>
                                                     </td>
                                                     <td>
-                                                        <h4>Status</h4>
+                                                        <h4>Datum</h4>
                                                     </td>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr ng-repeat="(key, invoice) in currentCustomer.invoices track by $index">
+                                                <tr ng-repeat="(key, booking) in currentCustomer.bookingsOpen track by $index">
                                                     <td>
                                                         <h5> {{key}}</h5>
                                                     </td>
                                                     <td>
-                                                        <h5>{{ invoice.paidText }}</h5>
+                                                        <h5>{{ booking.date.date }} um {{ booking.date.time }}</h5>
                                                     </td>
                                                 </tr>
                                             </tbody>
                                         </table>
-                                    </BLOCKQUOTE>
-
-                                </md-content>
+                                        
                                 </md-tab>
                             </md-tabs>
-                        </div>
+                        </md-tab>
+
+                        <md-tab label="Rechnungen">
+
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <td>
+                                                <h4>ID &nbsp;</h4>
+                                            </td>
+                                            <td>
+                                                <h4>Status</h4>
+                                            </td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="(key, invoice) in currentCustomer.invoices track by $index">
+                                            <td>
+                                                <h5> {{key}}</h5>
+                                            </td>
+                                            <td>
+                                                <h5>{{ invoice.paidText }}</h5>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                        </md-tab>
+                    </md-tabs>
                 </div>
+            </div>
 
                 <div ng-switch-when="add">
                     <md-toolbar class="md-hue-2">

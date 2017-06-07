@@ -265,6 +265,11 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 			var orig = Promise.resolve(GetCaller.GetShort(url, true));
 			return orig;
 		},
+		Cars_Get_ChargeLevelPerMinute: function(){
+			var url = IP + "/cars/charge-level-per-minute";
+			var orig = Promise.resolve(GetCaller.GetShort(url, true));
+			return orig;
+		},
 		
 		Cars_Post: function(data){
 			var url = IP + "/cars";

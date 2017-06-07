@@ -152,14 +152,85 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
 
         var title = "Fahrzeugdetails " + carID;
 		
+		switch(car.bookingStateObj.be){
+
+			case "AVAILABLE":
+
+				if(car.chargeLevel < 100){
+
+					RESTFactory.Cars_Get_ChargeLevelPerMinute().then(function(response){
+						
+						var loadingPerSecond = response.data;
+					
+						var endTime = new Date();
+						endTime.setTime(endTime.getTime() + (100 - bat) * 1000 * 60 * loadingPerSecond);
+
+						var content = "Das Fahrzeug lädt. Ladezustand " + parseInt(bat) + " (" + car.loadingStateObj.text + "). Voraussichtliches Ende gegen " + Helper.Get_Zeit(endTime).time + ", bei einer Aufladung von " + loadingPerSecond + "% pro Minute.";
+						if(bat < 25){
+							new AddMarker(carID, title, content, "car_loading_00", lat, lon);
+						}else if (bat < 50){
+							new AddMarker(carID, title, content, "car_loading_25", lat, lon);
+						}else if (bat < 75){
+							new AddMarker(carID, title, content, "car_loading_50", lat, lon);
+						}else if (bat < 100){
+							new AddMarker(carID, title, content, "car_loading_75", lat, lon);
+						}
+
+					}, function(response){
+						
+						var endTime = new Date();
+						endTime.setTime(endTime.getTime() + (100 - bat) * 1000 * 60);
+
+						var content = "Das Fahrzeug lädt. Ladezustand " + parseInt(bat) + " (" + car.loadingStateObj.text + "). Voraussichtliches Ende gegen " + Helper.Get_Zeit(endTime).time + ", bei einer Aufladung von 1% pro Minute.";
+						if(bat < 25){
+							new AddMarker(carID, title, content, "car_loading_00", lat, lon);
+						}else if (bat < 50){
+							new AddMarker(carID, title, content, "car_loading_25", lat, lon);
+						}else if (bat < 75){
+							new AddMarker(carID, title, content, "car_loading_50", lat, lon);
+						}else if (bat < 100){
+							new AddMarker(carID, title, content, "car_loading_75", lat, lon);
+						}
+
+					});
+
+				}else{
+					var content = "Das Fahrzeug ist voll geladen und kann benutzt werden.";
+                	new AddMarker(carID, title, content, "car_available", lat, lon);
+				}
+
+				break;
+
+			case "BOOKED":
+
+				var now = Helper.Get_Zeit(new Date());
+
+				if(now.value - car.lastDate.value > 1000 * 60 * 60 * 24){
+					var content = "Das Fahrzeug ist gebucht, wurde aber seit mehr als 24 Stunden nicht mehr bewegt";
+					new AddMarker(carID, title, content, "car_standing_admin", lat, lon);
+				}else{
+					var content = "Das Fahrzeug ist gebucht, dies ist der letzte bekannte Standort vom " + car.lastDate.date + " um " + car.lastDate.time;
+					new AddMarker(carID, title, content, "car_occupied", lat, lon);
+				}
+
+				break;
+
+			case "BLOCKED":
+
+				var content = "Das Fahrzeug wurde blockiert";
+				new AddMarker(carID, title, content, "car_occupied", lat, lon);
+
+				break;
+
+		}
+
+/*
         if(car.bookingState === 1 || car.bookingState === 2){
 
 			
 			if(car.chargingState === 2){
 				
 				var now = Helper.Get_Zeit(new Date());
-
-				console.log();
 
 				if(now.value - car.lastDate.value > 1000 * 60 * 60 * 24){
 
@@ -238,17 +309,18 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
 			new AddMarker(carID, title, content, "car_occupied", lat, lon);
 
 		}
-
+*/
     }
 	
 	function Update_ID(id){
-		new Update("ID", id);
+		new Update("ID", id, null);
 	}
 	
-	function Update(type, value){
+	function Update(type, value, filter){
 		
 		vehicles_all = {};
-		
+		$scope.vehicles = vehicles_all;
+
 		$scope.vehicle_selected = "false";
 		
 		$scope.editDisabled = "true";
@@ -285,6 +357,8 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
 				vehicle.licensePlate = data_use.licensePlate;
 				vehicle.chargingState = data_use.chargingState;
 				vehicle.bookingState = data_use.bookingState;
+				vehicle.bookingStateObj = BOOKING_STATES[data_use.bookingState];
+				vehicle.loadingStateObj = LOADING_STATES[data_use.chargingState];
 				vehicle.mileage = data_use.mileage;
 				vehicle.chargeLevel = data_use.chargeLevel;
 				vehicle.kilowatts = data_use.kilowatts;
@@ -296,32 +370,35 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
 				vehicle.lastDate = Helper.Get_Zeit(data_use.lastKnownPositionDate);
 				vehicle.address_state = "false";
 				
-				new Cars_AddMarker(vehicle);
-				
-				vehicles_all[ID_STR] = vehicle;
-				$scope.vehicles = vehicles_all;
-				$scope.$apply();
-				
-				Helper.Get_Address(vehicle.lastLat, vehicle.lastLon).then(function(address){
-				
-					vehicle.address_state = "true";
-					vehicle.address = address;
+				if(filter === null || filter === undefined ||
+					filter.toLowerCase() === vehicle.bookingStateObj.be.toLowerCase() || filter.toLowerCase() === vehicle.loadingStateObj.be.toLowerCase() ||
+					filter.toLowerCase() === vehicle.bookingStateObj.text.toLowerCase() || filter.toLowerCase() === vehicle.loadingStateObj.text.toLowerCase()){
+
+
+					new Cars_AddMarker(vehicle);
 					
 					vehicles_all[ID_STR] = vehicle;
 					$scope.vehicles = vehicles_all;
 					$scope.$apply();
 					
-				}, function(response){
-				
-				});
-				
+					Helper.Get_Address(vehicle.lastLat, vehicle.lastLon).then(function(address){
+					
+						vehicle.address_state = "true";
+						vehicle.address = address;
+						
+						vehicles_all[ID_STR] = vehicle;
+						$scope.vehicles = vehicles_all;
+						$scope.$apply();
+						
+					}, function(response){
+					
+					});
+					
+				}
 				
 			});
 			
 		}, function(response){
-			
-			$scope.vehicles = vehicles_all;
-			$scope.$apply();
 			
 		});
 		
@@ -612,11 +689,11 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
 		RESTFactory.Cars_Post(vehicle).then(function(){
 			alert("Fahrzeug erfolgreich hinzugefügt");
 			new Hide_AddVehicle();
-			setTimeout(Update, 1000);
+			new Update("ALL", undefined, null);
 		}, function(){
 			alert("Fahrzeug konnte nicht hinzugefügt werden");
 			new Hide_AddVehicle();
-			setTimeout(Update, 1000);
+			new Update("ALL", undefined, null);
 		});
 		
 	}
@@ -777,12 +854,16 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
 		
 		var search = $scope.searchQuery;
 		
-		console.log(search);
-		
 		if(search === undefined || search.length === 0){
-			new Update("ALL", undefined);
+			new Update("ALL", undefined, null);
 		}else{
-			new Update_ID(search);			
+			if(isNaN(search)){
+
+				new Update("ALL", undefined, search);
+
+			}else{
+				new Update_ID(search);	
+			}
 		}
 
 	};
@@ -794,7 +875,7 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
 		$scope.bookingStates = BOOKING_STATES;
 		$scope.loadingStates = LOADING_STATES;
 		
-		new Update("ALL", undefined);
+		new Update("ALL", undefined, null);
 		
 	}
 

@@ -23,7 +23,8 @@ application.controller('Ctrl_Users', function ($rootScope, $scope, RESTFactory, 
 	function Update(type, value){
 		
 		customers_all = {};
-		
+		$scope.customers = customers_all;
+
 		$scope.customer_selected = "false";
 		
 		$scope.editDisabled = "true";
@@ -86,9 +87,6 @@ application.controller('Ctrl_Users', function ($rootScope, $scope, RESTFactory, 
 			}
 			
 		}, function(response){
-			
-			$scope.customers = customers_all;
-			$scope.$apply();
 			
 		});
 		
@@ -347,6 +345,9 @@ application.controller('Ctrl_Users', function ($rootScope, $scope, RESTFactory, 
 			var customerID = response.data.id;
 			
 			alert("Neuer Nutzer wurde angelegt");
+			Hide_AddCustomer();
+			new Update("ALL", undefined);
+
 			
 			/*
 			var address = {};
@@ -395,6 +396,9 @@ application.controller('Ctrl_Users', function ($rootScope, $scope, RESTFactory, 
 		}, function(response){
 			
 			alert("Neuer Nutzer konnte nicht angelegt werden");
+			Hide_AddCustomer();
+			new Update("ALL", undefined);
+
 			
 		});
 		
@@ -467,12 +471,12 @@ application.controller('Ctrl_Users', function ($rootScope, $scope, RESTFactory, 
 	$scope.Enter_Search = function(){
 		
 		var search = $scope.searchQuery;
-		
+
 		if(search === undefined || search.length === 0){
 			new Update("ALL", undefined);
 		}else{
 			if(isNaN(search)){
-				new Update_Name(search.toLowerCase());				
+				new Update_Name(search);			
 			}else{
 				new Update_ID(search);				
 			}
