@@ -16,7 +16,7 @@ const API_KEY = "AIzaSyBCbY_MjWJ1cDjugF_MBHwnYDWFNJYAa4o&callback=initMap";
 application.service('GetCaller', function ($http, $rootScope) {
 
     /**
-     * Description
+     * GET Funktion Implementation
      * @method Get
      * @param {} url
      * @param {} body
@@ -50,7 +50,7 @@ application.service('GetCaller', function ($http, $rootScope) {
 		return get;
     };
 	/**
-	 * Description
+	 * GETShort Funktion Implementation
 	 * @method GetShort
 	 * @param {} url
 	 * @param {} token
@@ -85,7 +85,7 @@ application.service('GetCaller', function ($http, $rootScope) {
 application.service('PostCaller', function ($http, $rootScope) {
 
     /**
-     * Description
+     * POST Funktion Implementation
      * @method Post
      * @param {} url
      * @param {} body
@@ -122,7 +122,7 @@ application.service('PostCaller', function ($http, $rootScope) {
 application.service('PatchCaller', function ($http, $rootScope) {
 
     /**
-     * Description
+     * PATCH Funktion Implementation
      * @method Patch
      * @param {} url
      * @param {} body
@@ -163,7 +163,7 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 
 	//OTHERS
 		/**
-		 * Description
+		 * GET Funktion für Adresse durch übergabe von lat lon
 		 * @method GetAddress
 		 * @param {} lat
 		 * @param {} lon
@@ -181,7 +181,7 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 		
 	//TRIPS
 		/**
-		 * Description
+		 * GET Funktion für Trips
 		 * @method Trips_Get
 		 * @return orig
 		 */
@@ -191,7 +191,7 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 			return orig;
 		},
 		/**
-		 * Description
+		 * GET Funktion für TripsID
 		 * @method Trips_Get_TripID
 		 * @param {} id
 		 * @return orig
@@ -202,7 +202,7 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 			return orig;
 		},
 		/**
-		 * Description
+		 * GET Funktion für Trips by Auto ID
 		 * @method Trips_Get_CarID
 		 * @param {} id
 		 * @return orig
@@ -214,7 +214,7 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 		},
 		
 		/**
-		 * Description
+		 * POST Funktion für Trips
 		 * @method Trips_Post
 		 * @param {} data
 		 * @return orig
@@ -226,7 +226,7 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 		},
 		
 		/**
-		 * Description
+		 * PATCH Funktion für TripsID
 		 * @method Trips_Patch
 		 * @param {} id
 		 * @param {} data
@@ -243,7 +243,7 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 		
 	//PUBLIC
 		/**
-		 * Description
+		 * GET Funktion für Login Email
 		 * @method Login_Get
 		 * @param {} email
 		 * @param {} data
@@ -255,7 +255,7 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 			return orig;
 		},
 		/**
-		 * Description
+		 * GET Funktion für Login Passwort
 		 * @method User_Login
 		 * @param {} email
 		 * @param {} password
@@ -267,7 +267,7 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 			return orig;
 		},
 		/**
-		 * Description
+		 * POST Funktion für Registrieren
 		 * @method User_Register
 		 * @param {} data
 		 * @return orig
@@ -283,7 +283,7 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 	
 	//CUSTOMERS
 		/**
-		 * Description
+		 * GET Funktion für Customers
 		 * @method Customers_Get
 		 * @return orig
 		 */
@@ -293,7 +293,7 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 			return orig;
 		},
 		/**
-		 * Description
+		 * GET Funktion für CustomersID
 		 * @method Customers_Get_CustomerID
 		 * @param {} id
 		 * @return orig
@@ -304,7 +304,7 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 			return orig;
 		},
 		/**
-		 * Description
+		 * GET Funktion für Customer by Lastname
 		 * @method Customers_Get_Name
 		 * @param {} name
 		 * @return orig
@@ -316,7 +316,7 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 		},
 		
 		/**
-		 * Description
+		 * POST Funktion für Registrieren
 		 * @method Customers_Post
 		 * @param {} data
 		 * @return orig
@@ -328,7 +328,7 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 		},
 		
 		/**
-		 * Description
+		 * PATCH Funktion für CustomerID Password
 		 * @method Customers_Patch_Password
 		 * @param {} id
 		 * @param {} pwd
@@ -340,7 +340,7 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 			return orig;
 		},
 		/**
-		 * Description
+		 * PATCH Funktion für CustomerID Email
 		 * @method Customers_Patch_Email
 		 * @param {} id
 		 * @param {} email
@@ -352,7 +352,7 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 			return orig;
 		},
 		/**
-		 * Description
+		 * PATCH Funktion für Telefonnummer
 		 * @method Customers_Patch_PhoneNr
 		 * @param {} id
 		 * @param {} phoneNr
@@ -364,7 +364,7 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 			return orig;
 		},
 		/**
-		 * Description
+		 * PATCH Funktion für Adresse
 		 * @method Customers_Patch_Address
 		 * @param {} id
 		 * @param {} address
@@ -376,7 +376,7 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 			return orig;
 		},
 		/**
-		 * Description
+		 * PATCH Funktion für ChipCard
 		 * @method Customers_Patch_ChipCard
 		 * @param {} id
 		 * @param {} chipID
@@ -388,7 +388,7 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 			return orig;
 		},
 		/**
-		 * Description
+		 * PATCH Funktion für Verified
 		 * @method Customers_Patch_Verified
 		 * @param {} id
 		 * @param {} verified
@@ -404,7 +404,7 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 		
 	//CARS
 		/**
-		 * Description
+		 * GET Funktion für Autos
 		 * @method Cars_Get
 		 * @return orig
 		 */
@@ -414,7 +414,7 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 			return orig;
 		},
 		/**
-		 * Description
+		 * GET Funktion für CarID
 		 * @method Cars_Get_CarID
 		 * @param {} id
 		 * @return orig
@@ -425,7 +425,7 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 			return orig;
 		},
 		/**
-		 * Description
+		 * GET Funktion für Autos in der Nähe von lat lon
 		 * @method Cars_Get_ClosestTo
 		 * @param {} lat
 		 * @param {} lon
@@ -437,7 +437,7 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 			return orig;
 		},
 		/**
-		 * Description
+		 * GET Funktion für Autoladestatus
 		 * @method Cars_Get_ChargeLevelPerMinute
 		 * @return orig
 		 */
@@ -448,7 +448,7 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 		},
 		
 		/**
-		 * Description
+		 * POST Funktion für Autos
 		 * @method Cars_Post
 		 * @param {} data
 		 * @return orig
@@ -460,7 +460,7 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 		},
 		
 		/**
-		 * Description
+		 * PATCH Funktion für Autoladestatus
 		 * @method Cars_Patch_ChargingState
 		 * @param {} id
 		 * @param {} data
@@ -472,7 +472,7 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 			return orig;
 		},
 		/**
-		 * Description
+		 * PATCH Funktion für Autobuchungsstatus
 		 * @method Cars_Patch_BookingState
 		 * @param {} id
 		 * @param {} data
@@ -484,7 +484,7 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 			return orig;
 		},
 		/**
-		 * Description
+		 * PATCH Funktion für Autokilometerstand
 		 * @method Cars_Patch_Mileage
 		 * @param {} id
 		 * @param {} data
@@ -496,7 +496,7 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 			return orig;
 		},
 		/**
-		 * Description
+		 * PATCH Funktion für Autoladeladungstatus
 		 * @method Cars_Patch_ChargeLevel
 		 * @param {} id
 		 * @param {} data
@@ -508,7 +508,7 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 			return orig;
 		},
 		/**
-		 * Description
+		 * PATCH Funktion für Autoposition
 		 * @method Cars_Patch_Position
 		 * @param {} id
 		 * @param {} lat
@@ -526,7 +526,7 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 		
 	//CHARGING-STATION
 		/**
-		 * Description
+		 * GET Funktion für Ladesäulen
 		 * @method Charging_Stations_Get
 		 * @return orig
 		 */
@@ -536,7 +536,7 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 			return orig;
 		},
 		/**
-		 * Description
+		 * GET Funktion für Ladesäulen ID
 		 * @method Charging_Stations_Get_Charging_StationID
 		 * @param {} id
 		 * @return orig
@@ -547,7 +547,7 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 			return orig;
 		},
 		/**
-		 * Description
+		 * GET Funktion für Ladesäulen in der Nähe von lat lon
 		 * @method Charging_Stations_Get_ClosestTo
 		 * @param {} lat
 		 * @param {} lon
@@ -560,7 +560,7 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 		},
 		
 		/**
-		 * Description
+		 * POST Funktion für Ladesäulen
 		 * @method Charging_Stations_Post
 		 * @param {} data
 		 * @return orig
@@ -576,7 +576,7 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 	
 	//CAR CHARGING STATION
 		/**
-		 * Description
+		 * GET Funktion für Autoladestationen
 		 * @method Car_Charging_Stations_Get
 		 * @return orig
 		 */
@@ -586,7 +586,7 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 			return orig;
 		},
 		/**
-		 * Description
+		 * GET Funktion für Autoladestationen by CarID
 		 * @method Car_Charging_Stations_Get_CarID
 		 * @param {} id
 		 * @return orig
@@ -597,7 +597,7 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 			return orig;
 		},
 		/**
-		 * Description
+		 * GET Funktion für Autoladestationen sortiert nach Ladesäulenstation
 		 * @method Car_Charging_Stations_Get_ChargingStationID
 		 * @param {} id
 		 * @return orig
@@ -609,7 +609,7 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 		},
 		
 		/**
-		 * Description
+		 * POST Funktion für Autoladestationen
 		 * @method Car_Charging_Stations_Post
 		 * @param {} data
 		 * @return orig
@@ -621,7 +621,7 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 		},
 		
 		/**
-		 * Description
+		 * PATCH Funktion für Autoladestationen 
 		 * @method Car_Charging_Stations_Patch_ChargeEnd
 		 * @param {} id
 		 * @param {} data
@@ -638,7 +638,7 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 	
 	//INVOICES
 		/**
-		 * Description
+		 * GET Funktion für Invoices
 		 * @method Invoices_Get
 		 * @return orig
 		 */
@@ -648,7 +648,7 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 			return orig;
 		},
 		/**
-		 * Description
+		 * GET Funktion für InvoiceID
 		 * @method Invoices_Get_InvoiceID
 		 * @param {} id
 		 * @return orig
@@ -659,7 +659,7 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 			return orig;
 		},
 		/**
-		 * Description
+		 * GET Funktion für Invoices CustomerID
 		 * @method Invoices_Get_CustomerID
 		 * @param {} id
 		 * @return orig
@@ -670,7 +670,7 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 			return orig;
 		},
 		/**
-		 * Description
+		 * GET Funktion für InvoiceID Items
 		 * @method Invoices_Get_Items
 		 * @param {} id
 		 * @return orig
@@ -681,7 +681,7 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 			return orig;
 		},
 		/**
-		 * Description
+		 * GET Funktion für Invoices ItemID
 		 * @method Invoices_Get_Items_ItemID
 		 * @param {} itemID
 		 * @return orig
@@ -692,7 +692,7 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 			return orig;
 		},
 		/**
-		 * Description
+		 * GET Funktion für InvoicesID ItemID
 		 * @method Invoices_Get_InvoiceID_Items_ItemID
 		 * @param {} id
 		 * @param {} itemID
@@ -705,11 +705,7 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 		},
 		
 		/**
-		 * Invoices_Post: function(data){
-		 * var url = IP + "/invoices";
-		 * var orig = Promise.resolve(PostCaller.Get(url, data));
-		 * return orig;
-		 * },
+		 * POST Funktion für InvoiceID Items
 		 * @method Invoices_Post_Items
 		 * @param {} id
 		 * @param {} data
@@ -722,7 +718,7 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 		},
 		
 		/**
-		 * Description
+		 * PATCH Funktion für InvoiceID bezahlt
 		 * @method Invoices_Patch_Paid
 		 * @param {} id
 		 * @param {} data
@@ -739,7 +735,7 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 		
 	//BOOKINGS
 		/**
-		 * Description
+		 * GET Funktion für Bookings
 		 * @method Bookings_Get
 		 * @return orig
 		 */
@@ -749,7 +745,7 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 			return orig;
 		},
 		/**
-		 * Description
+		 * GET Funktion für BookingID
 		 * @method Bookings_Get_BookingID
 		 * @param {} id
 		 * @return orig
@@ -760,7 +756,7 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 			return orig;
 		},
 		/**
-		 * Description
+		 * GET Funktion für Booking CustomerID
 		 * @method Bookings_Get_CustomerID
 		 * @param {} id
 		 * @return orig
@@ -771,7 +767,7 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 			return orig;
 		},
 		/**
-		 * Description
+		 * GET Funktion für Booking TripID
 		 * @method Bookings_Get_TripID
 		 * @param {} id
 		 * @return orig
@@ -782,7 +778,7 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 			return orig;
 		},
 		/**
-		 * Description
+		 * GET Funktion für Booking Date
 		 * @method Bookings_Get_Date
 		 * @param {} date
 		 * @return orig
@@ -794,7 +790,7 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 		},
 		
 		/**
-		 * Description
+		 * POST Funktion für Booking
 		 * @method Bookings_Post
 		 * @param {} data
 		 * @return orig
@@ -810,7 +806,7 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 	
 	//MAINTENANCES
 		/**
-		 * Description
+		 * GET Funktion für Maintenances
 		 * @method Maintances_Get
 		 * @return orig
 		 */
@@ -820,7 +816,7 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 			return orig;
 		},
 		/**
-		 * Description
+		 * GET Funktion für MaintenancesID
 		 * @method Maintances_Get_MaintenanceID
 		 * @param {} id
 		 * @return orig
@@ -832,7 +828,7 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 		},
 		
 		/**
-		 * Description
+		 * POST Funktion für Maintenances
 		 * @method Maintances_Post
 		 * @param {} data
 		 * @return orig
@@ -848,7 +844,7 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 		
 	//CAR MAINTENANCES
 		/**
-		 * Description
+		 * GET Funktion für Car-Maintenances
 		 * @method Car_Maintances_Get
 		 * @return orig
 		 */
@@ -858,7 +854,7 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 			return orig;
 		},
 		/**
-		 * Description
+		 * GET Funktion für Car-MaintenancesID
 		 * @method Car_Maintances_Get_CarMaintenanceID
 		 * @param {} id
 		 * @return orig
@@ -869,7 +865,7 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 			return orig;
 		},
 		/**
-		 * Description
+		 * GET Funktion für Car-Maintenances MaintenancesID
 		 * @method Car_Maintances_Get_MaintenanceID
 		 * @param {} id
 		 * @return orig
@@ -880,7 +876,7 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 			return orig;
 		},
 		/**
-		 * Description
+		 * GET Funktion für Car-Maintenances CarID
 		 * @method Car_Maintances_Get_CarID
 		 * @param {} id
 		 * @return orig
@@ -891,7 +887,7 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 			return orig;
 		},
 		/**
-		 * Description
+		 * GET Funktion für Car-Maintenances InvoiceItemID
 		 * @method Car_Maintances_Get_InvoiceItemID
 		 * @param {} id
 		 * @return orig
@@ -903,7 +899,7 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 		},
 		
 		/**
-		 * Description
+		 * POST Funktion für Car-Maintenances
 		 * @method Car_Maintances_Post
 		 * @param {} data
 		 * @return orig
@@ -915,7 +911,7 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 		},
 		
 		/**
-		 * Description
+		 * PATCH Funktion für Car-MaintenancesID Completed-Date
 		 * @method Car_Maintances_Patch_CompletedDate
 		 * @param {} id
 		 * @param {} data
@@ -929,7 +925,7 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 		
 	//STATISTICS
 		/**
-		 * Description
+		 * GET Funktion für Statistik
 		 * @method Statistics_Get
 		 * @return orig
 		 */
@@ -939,7 +935,7 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 			return orig;
 		},
 		/**
-		 * Description
+		 * GET Funktion für Statistik Datum
 		 * @method Statistics_Get_ByDate
 		 * @param {} date
 		 * @return orig
@@ -962,7 +958,7 @@ application.factory('Helper', function (RESTFactory, $cookies) {
 
     return {
 	/**
-	 * Description
+	 * Funktion um Uhrzeit als String zu kriegen
 	 * @method Get_Time
 	 * @param {} input
 	 * @return time
@@ -976,7 +972,7 @@ application.factory('Helper', function (RESTFactory, $cookies) {
 	    return time;
 	},
 	/**
-	 * Description
+	 * Funktion um Datum als String zu kriegen
 	 * @method Get_Date
 	 * @param {} input
 	 * @return date
@@ -993,7 +989,7 @@ application.factory('Helper', function (RESTFactory, $cookies) {
 	    return date;
 	},
 	/**
-	 * Description
+	 * Funktion um Adresse als String zu kriegen
 	 * @method Get_Address
 	 * @param {} lat
 	 * @param {} lon
@@ -1039,7 +1035,7 @@ application.factory('Helper', function (RESTFactory, $cookies) {
 	    
 	},
 	/**
-	 * Description
+	 * Funktion um Cookie zu setzen
 	 * @method Cookie_Set
 	 * @param {} name
 	 * @param {} value
@@ -1051,7 +1047,7 @@ application.factory('Helper', function (RESTFactory, $cookies) {
 	    return "";
 	},
 	/**
-	 * Description
+	 * Funktion um Cookie zu kriegen
 	 * @method Cookie_Get
 	 * @param {} name
 	 * @return CallExpression
@@ -1061,7 +1057,7 @@ application.factory('Helper', function (RESTFactory, $cookies) {
 	},
 	
 	/**
-	 * Description
+	 * Funktion um das aktuelle Datum und Uhrzeit zu kriegen
 	 * @method Get_Now
 	 * @return date
 	 */
@@ -1093,7 +1089,7 @@ application.factory('Helper', function (RESTFactory, $cookies) {
 	},
 	
 	/**
-	 * Description
+	 * Funktion um das aktuelle Datum und Uhrzeit zu kriegen
 	 * @method Get_Zeit
 	 * @param {} value
 	 * @return date
@@ -1126,7 +1122,7 @@ application.factory('Helper', function (RESTFactory, $cookies) {
 	},
 
 	/**
-	 * Description
+	 * Funktion um das aktuelle Datum und Uhrzeit von Server zu kriegen
 	 * @method Get_Zeit_Server
 	 * @param {} value
 	 * @return date
