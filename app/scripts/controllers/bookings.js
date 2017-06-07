@@ -16,7 +16,7 @@ application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactor
 	
 	
 	/**
-	 * Description
+	 * Funktion die den User Name ändert
 	 * @method Update_UserName
 	 * @param {} name
 	 * @return 
@@ -45,7 +45,7 @@ application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactor
 	}
 	
 	/**
-	 * Description
+	 * Funktion die den User ID ändert
 	 * @method Update_ID
 	 * @param {} id
 	 * @return 
@@ -55,7 +55,8 @@ application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactor
 	}
 	
 	/**
-	 * Description
+	 * Funktion die Userdaten ändert
+     * BookingID, CustomerID,  TripID, InvoiceItemID
 	 * @method Update
 	 * @param {} type
 	 * @param {} value
@@ -65,8 +66,6 @@ application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactor
 		
 		bookings_all = {};
 		$scope.bookings = bookings_all;
-		
-			
 		$scope.booking_selected = "false";
 		
 		$scope.view = "info";
@@ -130,7 +129,7 @@ application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactor
 				
 				
 				/**
-				 * Description
+				 * Funktion die Userdata von der Rest-Schnittstelle holt
 				 * @method CallCustomer
 				 * @return 
 				 */
@@ -160,18 +159,13 @@ application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactor
 				}
 				
 				setTimeout(CallCustomer, 500);
-				
 			});
-			
 		}, function(response){
-			
 		});
-		
-		
 	}
 	
 	/**
-	 * Description
+	 * Funktion die Userdata Details von der Rest-Schnittstelle holt
 	 * @method Load_Details
 	 * @param {} id
 	 * @return 
@@ -402,7 +396,7 @@ application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactor
 	
 	
 	/**
-	 * Description
+	 * Funktion die geänderte Buchungsdaten speichert und sie an die Rest-Schnittstelle übergibt
 	 * @method Safe_New
 	 * @return 
 	 */
@@ -442,7 +436,7 @@ application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactor
 	}
 	
 	/**
-	 * Description
+	 * Funktion um Neue Buchung hinzufügen abzubrechen
 	 * @method Dismiss_New
 	 * @return 
 	 */
@@ -455,7 +449,7 @@ application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactor
 	
 	
 	/**
-	 * Description
+	 * Funktion um Neue Buchung hinzufügen anzuzeigen
 	 * @method Show_AddBooking
 	 * @return 
 	 */
@@ -491,7 +485,7 @@ application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactor
 		$scope.new_booking = new_booking;
 		
 		/**
-		 * Description
+		 * Init-Funktion die Karte Initialisiert und diese anzeigt
 		 * @method Init_Map
 		 * @return 
 		 */
@@ -544,7 +538,7 @@ application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactor
 	}
 	
 	/**
-	 * Description
+	 * Funktion um eine Position auf der Karte auswählen zu können
 	 * @method PositionSelected
 	 * @param {} map2
 	 * @param {} lat
@@ -581,7 +575,7 @@ application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactor
 	}
 	
 	/**
-	 * Description
+	 * Funktion um Neue Buchung hinzufügen zu verstecken
 	 * @method Hide_AddBooking
 	 * @return 
 	 */
@@ -596,7 +590,7 @@ application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactor
 	
 	
 	/**
-	 * Description
+	 * Funktion um Details einer Buchung zu laden
 	 * @method Load_Details
 	 * @param {} input
 	 * @return 
@@ -607,7 +601,7 @@ application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactor
 	
 	
 	/**
-	 * Description
+	 * Funktion um geänderte Daten zu speichern
 	 * @method Safe_New
 	 * @return 
 	 */
@@ -616,7 +610,7 @@ application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactor
 	};
 	
 	/**
-	 * Description
+	 * Funktion um geänderte Daten nicht zu speicher und abzubrechen 
 	 * @method Dismiss_New
 	 * @return 
 	 */
@@ -626,7 +620,7 @@ application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactor
 
 	
 	/**
-	 * Description
+	 * Funktion um Neue Buchung hinzufügen aufzurufen
 	 * @method Show_AddBooking
 	 * @return 
 	 */
@@ -635,7 +629,7 @@ application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactor
 	};
 	
 	/**
-	 * Description
+	 * Funktion um Neue Buchung hinzufügen verstecken
 	 * @method Hide_AddBooking
 	 * @return 
 	 */
@@ -644,7 +638,7 @@ application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactor
 	};
 	
 	/**
-	 * Description
+	 * Funktion um nach eingegebenen Wörter in Suchen-Feld zu suchen
 	 * @method Enter_Search
 	 * @return 
 	 */
@@ -657,21 +651,18 @@ application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactor
 		}else{
 			new Update_ID(search);			
 		}
-
 	};
 	
 	
 	/**
-	 * Description
+	 * Init-Funktion für die Seite
 	 * @method Init
 	 * @return 
 	 */
 	function Init(){
 		
-		new Update();
-		
+		new Update();	
 	}
-	
 	new Init();
 	
 });
