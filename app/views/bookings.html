@@ -8,7 +8,7 @@
             </md-toolbar>
             <md-content flex layout-padding >
                 <md-input-container class="md-block">
-                    <label> Suche nach Buchungs ID</label>
+                    <label> Suche nach ID</label>
                     <input ng-model="bookingID" my-enter="Enter_Search()"/>
                 </md-input-container>
                 <div class="scroll">
@@ -56,7 +56,7 @@
             <div ng-switch-when="info" ng-switch="booking_selected">
                 <md-toolbar class="md-hue-2">
                     <div class="md-toolbar-tools">
-                        <h2 class="md-flex">Buchungsdetails</h2>
+                        <h2 class="md-flex">Buchung-Informationen</h2>
                     </div>
                 </md-toolbar>
                 <!-- Booking Objekt hierfür ist $scope.currentBooking -->
@@ -68,7 +68,9 @@
 
                 <div ng-switch-when="true">
                     <md-content layout-padding>
-                        <label> Buchungs-ID: {{ currentBooking.bookingID }} </label>
+                        <p>
+                            <label> Buchungs-ID: {{ currentBooking.bookingID }} </label>
+                        </p>
                         <label> Status: {{ currentBooking.statusText }}</label>
                         <label> Geplantes Datum: {{ currentBooking.plannedDate.date }} um {{currentBooking.plannedDate.time}}</label>
                         <br/>

@@ -150,7 +150,7 @@
 		
 		var search = $scope.searchQuery;
 		
-		if(search === undefined){
+		if(search === undefined || search === null){
 			new Update("ALL", undefined);
 		}else{
 			

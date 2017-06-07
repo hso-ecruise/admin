@@ -12,45 +12,48 @@
                     <h2 class="md-flex">Ladestationen</h2>
                 </div>
             </md-toolbar>
-            <md-input-container style="width:100%">
-                <input ng-model="searchQuery" my-enter="Enter_Search()" placeholder="Suchen nach ID" />
-            </md-input-container>	
-            <div class="scroll">
-                <md-content>
-                    <table>
-                        <thead>
-                            <tr>
-                                <td>
-                                    <h4> ID &nbsp;</h4>
-                                </td>
+            <md-content flex layout-padding>
+                <md-input-container style="width:100%">
+                    <label> Suche nach ID</label>
+                    <input ng-model="searchQuery" my-enter="Enter_Search()"/>
+                </md-input-container>
+                <div class="scroll">
+                    <md-content>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <td>
+                                        <h4> ID &nbsp;</h4>
+                                    </td>
 
-                                <td>
-                                    <h4> Strasse </h4>
-                                </td>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr ng-repeat="(key, station) in stations track by $index" ng-click="Load_Details(key)">
-                                <td>
-                                    {{ key }}
-                                </td>
-                                <td>
-                                    {{ station.address.street }}
-                                </td>
-                            </tr>
-                        </tbody>
-                        <tfoot>
-                            <tr ng-click="Show_AddStation()">
-                                <td colspan="2">
-                                    <div class="md-list-item-text" layout="column">
-                                        <h4>Neue Ladestation hinzufügen</h4>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tfoot>
-                    </table>
-                </md-content>
-            </div>
+                                    <td>
+                                        <h4> Strasse </h4>
+                                    </td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="(key, station) in stations track by $index" ng-click="Load_Details(key)">
+                                    <td>
+                                        {{ key }}
+                                    </td>
+                                    <td>
+                                        {{ station.address.street }}
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr ng-click="Show_AddStation()">
+                                    <td colspan="2">
+                                        <div class="md-list-item-text" layout="column">
+                                            <h4>Neue Ladestation hinzufügen</h4>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </md-content>
+                </div>
+            </md-content>
             <!--
 <md-button class="md-raised md-primary button-to-right" ng-click="Show_AddStation()"> Hinzufügen </md-button>
 -->
@@ -63,7 +66,7 @@
 
                 <md-toolbar class="md-hue-2">
                     <div class="md-toolbar-tools">
-                        <h2 class="md-flex">Station-Informationen</h2>
+                        <h2 class="md-flex">Ladestation-Informationen</h2>
                     </div>
                 </md-toolbar>
                 <div ng-switch-when="true" style="padding:15px;">
@@ -95,7 +98,9 @@
                     </md-content>
                 </div>
                 <div ng-switch-when="false">
-                    <h4>W&auml;hlen Sie eine Ladestation aus oder f&uuml;gen Sie eine Neue hinzu</h4>
+                    <md-content layout-padding>
+                        <h4>W&auml;hlen Sie eine Ladestation aus oder f&uuml;gen Sie eine Neue hinzu</h4>
+                    </md-content>
                 </div>
             </div>
 
