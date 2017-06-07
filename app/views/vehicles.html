@@ -11,46 +11,48 @@
                     <h2 class="md-flex">Fahrzeuge</h2>
                 </div>
             </md-toolbar>
-            <md-input-container style="width:100%">
-                <label> Suche nach Fahrzeug ID oder Status</label>
-                <input ng-model="searchQuery" my-enter="Enter_Search()"/>
-            </md-input-container>	
+            <md-content flex layout-padding>
+                <md-input-container style="width:100%">
+                    <label> Suche nach ID oder Status</label>
+                    <input ng-model="searchQuery" my-enter="Enter_Search()"/>
+                </md-input-container>	
 
-            <div class="scroll">
-                <md-content>
-                    <table>
-                        <thead>
-                            <tr>
-                                <td>
-                                    <h4> ID &nbsp;</h4>
-                                </td>
-                                <td>
-                                    <h4> Strasse </h4>
-                                </td>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr ng-repeat="(key, vehicle) in vehicles track by $index" ng-click="Load_Details(key)">
-                                <td>
-                                    {{ key }}
-                                </td>
-                                <td>
-                                    {{ vehicle.address.street }}
-                                </td>
-                            </tr>
-                        </tbody>
-                        <tfoot>
-                            <tr ng-click="Show_AddVehicle()">
-                                <td colspan="2">
-                                    <div class="md-list-item-text" layout="column">
-                                        <h4>Neues Fahrzeug hinzufügen</h4>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tfoot>
-                    </table>
-                </md-content>
-            </div>
+                <div class="scroll">
+                    <md-content>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <td>
+                                        <h4> ID &nbsp;</h4>
+                                    </td>
+                                    <td>
+                                        <h4> Strasse </h4>
+                                    </td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="(key, vehicle) in vehicles track by $index" ng-click="Load_Details(key)">
+                                    <td>
+                                        {{ key }}
+                                    </td>
+                                    <td>
+                                        {{ vehicle.address.street }}
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr ng-click="Show_AddVehicle()">
+                                    <td colspan="2">
+                                        <div class="md-list-item-text" layout="column">
+                                            <h4>Neues Fahrzeug hinzufügen</h4>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </md-content>
+                </div>
+            </md-content>
         </div>
         <div style="padding: 15px;"></div>
 

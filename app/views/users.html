@@ -8,7 +8,7 @@
             </md-toolbar>
             <md-content flex layout-padding >
                 <md-input-container class="md-block">
-                    <label> Suche nach Nutzer ID oder Nachname</label>
+                    <label> Suche nach ID oder Nachname</label>
                     <input ng-model="searchQuery" my-enter="Enter_Search()"/>
                 </md-input-container>
                 <div class="scroll">
@@ -70,7 +70,7 @@
                             <form name="user_Form">
                                 <md-content flex layout-padding>
                                     <md-input-container flex-gt-sm>
-                                        <input value="ID {{ currentCustomer.customerID }}" disabled>
+                                        <input type="text" placeholder="ID" value="{{ currentCustomer.customerID }}" disabled>
                                     </md-input-container>	
                                     <md-input-container flex-gt-sm>
                                         <input type="text" placeholder="ChipID" ng-model="currentCustomer.chipID" ng-disabled="editDisabled"/>
