@@ -28,7 +28,7 @@ application.controller('Ctrl_Invoices', function ($rootScope, $scope, RESTFactor
 	
 	
 	/**
-	 * Description
+	 * Hilfsfunktion die Update mit ID
 	 * @method Update_ID
 	 * @param {} id
 	 * @return 
@@ -38,7 +38,7 @@ application.controller('Ctrl_Invoices', function ($rootScope, $scope, RESTFactor
 	}
 	
 	/**
-	 * Description
+	 * Funktion die Daten der Buchung aus der Rest-Schnittstelle holt und diese ausgibt
 	 * @method Update
 	 * @param {} type
 	 * @param {} value
@@ -77,7 +77,6 @@ application.controller('Ctrl_Invoices', function ($rootScope, $scope, RESTFactor
 				var invoice = {};
 				
 				var ID_STR = data_use.invoiceId;
-				
 				
 				invoice.invoiceID = data_use.invoiceId;
 				invoice.totalAmount = data_use.totalAmount;
@@ -122,12 +121,10 @@ application.controller('Ctrl_Invoices', function ($rootScope, $scope, RESTFactor
 		}, function(response){
 			
 		});
-		
-		
 	}
 	
 	/**
-	 * Description
+	 * Funktion die Details der Buchung aus der Rest-Schnittstelle holt und diese ausgibt
 	 * @method Load_Details
 	 * @param {} id
 	 * @return 
@@ -222,7 +219,7 @@ application.controller('Ctrl_Invoices', function ($rootScope, $scope, RESTFactor
 	
 	
 	/**
-	 * Description
+	 * Funktion um Buchung zu speichern
 	 * @method Safe_New
 	 * @return 
 	 */
@@ -247,7 +244,7 @@ application.controller('Ctrl_Invoices', function ($rootScope, $scope, RESTFactor
 	}
 	
 	/**
-	 * Description
+	 * Funktion um abzubrechen
 	 * @method Dismiss_New
 	 * @return 
 	 */
@@ -259,7 +256,7 @@ application.controller('Ctrl_Invoices', function ($rootScope, $scope, RESTFactor
 	
 	
 	/**
-	 * Description
+	 * Funktion um Neue Rechnung hinzufügen anzuzeigen
 	 * @method Show_AddInvoice
 	 * @return 
 	 */
@@ -278,7 +275,7 @@ application.controller('Ctrl_Invoices', function ($rootScope, $scope, RESTFactor
 	}
 	
 	/**
-	 * Description
+	 * Funktion um Neue Rechnung hinzuzufügen zu verstecken
 	 * @method Hide_AddInvoice
 	 * @return 
 	 */
@@ -290,7 +287,7 @@ application.controller('Ctrl_Invoices', function ($rootScope, $scope, RESTFactor
 	}
 
 	/**
-	 * Description
+	 * Funktion um eine Rechnung als bezahlt zu setzen
 	 * @method SetPaid
 	 * @param {} id
 	 * @return 
@@ -306,7 +303,7 @@ application.controller('Ctrl_Invoices', function ($rootScope, $scope, RESTFactor
 	
 	
 	/**
-	 * Description
+	 * Funktion um Neuen Rechnungselement hinzufügen anzuzeigen
 	 * @method Show_AddItem_PopUp
 	 * @param {} invoiceID
 	 * @return 
@@ -368,8 +365,8 @@ application.controller('Ctrl_Invoices', function ($rootScope, $scope, RESTFactor
             '</md-dialog>',
 
             /**
-             * Description
-             * @method controller
+             * Controller um Daten aus Dialog Neue Rechnungselemnt hinzufügen zu verwalten
+             * @method DialogController
              * @param {} $scope
              * @param {} $mdDialog
              * @return 
@@ -387,7 +384,7 @@ application.controller('Ctrl_Invoices', function ($rootScope, $scope, RESTFactor
 				
 
                 /**
-                 * Description
+                 * Funktion um Dialog Neuer Rechnungselement hinzufügen zu verstecken
                  * @method closeDialog
                  * @return 
                  */
@@ -396,7 +393,7 @@ application.controller('Ctrl_Invoices', function ($rootScope, $scope, RESTFactor
                 };
 
                 /**
-                 * Description
+                 * Funktion um Dialog Neuer Rechnungselement hinzufügen zu speichern und an die Rest-Schnittstelle zu übergeben
                  * @method Save
                  * @return 
                  */
@@ -435,7 +432,7 @@ application.controller('Ctrl_Invoices', function ($rootScope, $scope, RESTFactor
 	
 	
 	/**
-	 * Description
+	 * Funktion um Details zu laden
 	 * @method Load_Details
 	 * @param {} input
 	 * @return 
@@ -446,7 +443,7 @@ application.controller('Ctrl_Invoices', function ($rootScope, $scope, RESTFactor
 	
 	
 	/**
-	 * Description
+	 * Funktion um Details zu speichern
 	 * @method Safe_New
 	 * @return 
 	 */
@@ -455,7 +452,7 @@ application.controller('Ctrl_Invoices', function ($rootScope, $scope, RESTFactor
 	};
 	
 	/**
-	 * Description
+	 * Funktion um abzubrechen
 	 * @method Dismiss_New
 	 * @return 
 	 */
@@ -465,7 +462,7 @@ application.controller('Ctrl_Invoices', function ($rootScope, $scope, RESTFactor
 
 
 	/**
-	 * Description
+	 * Funktion um eine Rechnung als bezahlt zu setzen
 	 * @method SetPaid
 	 * @param {} id
 	 * @return 
@@ -476,7 +473,7 @@ application.controller('Ctrl_Invoices', function ($rootScope, $scope, RESTFactor
 
 	
 	/**
-	 * Description
+	 * Funktion um Rechnungselement anzuzeigen
 	 * @method Show_AddInvoice
 	 * @return 
 	 */
@@ -485,7 +482,7 @@ application.controller('Ctrl_Invoices', function ($rootScope, $scope, RESTFactor
 	};
 	
 	/**
-	 * Description
+	 * Funktion um Rechnungselement zu verstecken
 	 * @method Hide_AddInvoice
 	 * @return 
 	 */
@@ -494,7 +491,7 @@ application.controller('Ctrl_Invoices', function ($rootScope, $scope, RESTFactor
 	};
 	
 	/**
-	 * Description
+	 * Funktion die die Suche mit eingegebenen Wörter startet
 	 * @method Enter_Search
 	 * @return 
 	 */
@@ -514,7 +511,7 @@ application.controller('Ctrl_Invoices', function ($rootScope, $scope, RESTFactor
 	
 	
 	/**
-	 * Description
+	 * Funktion um Neues Rechnungselement hinzufügen anzuzeigen
 	 * @method ShowItemAddPopUp
 	 * @param {} id
 	 * @return 
@@ -526,7 +523,7 @@ application.controller('Ctrl_Invoices', function ($rootScope, $scope, RESTFactor
 	
 	
 	/**
-	 * Description
+	 * Init-Funktion der Seite invoices
 	 * @method Init
 	 * @return 
 	 */
@@ -537,7 +534,6 @@ application.controller('Ctrl_Invoices', function ($rootScope, $scope, RESTFactor
 		new Update();
 		
 	}
-	
 	new Init();
 	
 });
