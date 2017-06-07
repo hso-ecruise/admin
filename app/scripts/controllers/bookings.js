@@ -15,6 +15,12 @@ application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactor
 	var marker_Address;
 	
 	
+	/**
+	 * Description
+	 * @method Update_UserName
+	 * @param {} name
+	 * @return 
+	 */
 	function Update_UserName(name){
 		
 		//Search for customerName
@@ -38,10 +44,23 @@ application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactor
 		
 	}
 	
+	/**
+	 * Description
+	 * @method Update_ID
+	 * @param {} id
+	 * @return 
+	 */
 	function Update_ID(id){
 		new Update("ID", id);
 	}
 	
+	/**
+	 * Description
+	 * @method Update
+	 * @param {} type
+	 * @param {} value
+	 * @return 
+	 */
 	function Update(type, value){
 		
 		bookings_all = {};
@@ -110,6 +129,11 @@ application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactor
 				$scope.$apply();
 				
 				
+				/**
+				 * Description
+				 * @method CallCustomer
+				 * @return 
+				 */
 				function CallCustomer(){
 				
 					//GET CUSTOMER
@@ -146,6 +170,12 @@ application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactor
 		
 	}
 	
+	/**
+	 * Description
+	 * @method Load_Details
+	 * @param {} id
+	 * @return 
+	 */
 	function Load_Details(id){
 		
 		$scope.booking_selected = "true";
@@ -371,6 +401,11 @@ application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactor
 	
 	
 	
+	/**
+	 * Description
+	 * @method Safe_New
+	 * @return 
+	 */
 	function Safe_New(){
 		
 		var booking = {};
@@ -406,6 +441,11 @@ application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactor
 		
 	}
 	
+	/**
+	 * Description
+	 * @method Dismiss_New
+	 * @return 
+	 */
 	function Dismiss_New(){
 		
 		new Hide_AddBooking();
@@ -414,6 +454,11 @@ application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactor
 	
 	
 	
+	/**
+	 * Description
+	 * @method Show_AddBooking
+	 * @return 
+	 */
 	function Show_AddBooking(){
 		
 		$scope.view = "add";
@@ -445,6 +490,11 @@ application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactor
 		
 		$scope.new_booking = new_booking;
 		
+		/**
+		 * Description
+		 * @method Init_Map
+		 * @return 
+		 */
 		function Init_Map(){
 			
 			var map = new google.maps.Map(document.getElementById('map_booking'), {
@@ -493,6 +543,14 @@ application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactor
 
 	}
 	
+	/**
+	 * Description
+	 * @method PositionSelected
+	 * @param {} map2
+	 * @param {} lat
+	 * @param {} lon
+	 * @return 
+	 */
 	function PositionSelected(map2, lat, lon){
 		
 		map2.panTo(new google.maps.LatLng(lat, lon));
@@ -522,6 +580,11 @@ application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactor
 
 	}
 	
+	/**
+	 * Description
+	 * @method Hide_AddBooking
+	 * @return 
+	 */
 	function Hide_AddBooking(){
 		$scope.new_booking = {};
 		$scope.view = "info";
@@ -532,28 +595,59 @@ application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactor
 	
 	
 	
+	/**
+	 * Description
+	 * @method Load_Details
+	 * @param {} input
+	 * @return 
+	 */
 	$scope.Load_Details = function(input){
 		new Load_Details(input);
 	};
 	
 	
+	/**
+	 * Description
+	 * @method Safe_New
+	 * @return 
+	 */
 	$scope.Safe_New = function(){
 		new Safe_New();
 	};
 	
+	/**
+	 * Description
+	 * @method Dismiss_New
+	 * @return 
+	 */
 	$scope.Dismiss_New = function(){
 		new Hide_AddBooking();
 	};
 
 	
+	/**
+	 * Description
+	 * @method Show_AddBooking
+	 * @return 
+	 */
 	$scope.Show_AddBooking = function(){
 		new Show_AddBooking();
 	};
 	
+	/**
+	 * Description
+	 * @method Hide_AddBooking
+	 * @return 
+	 */
 	$scope.Hide_AddBooking = function(){
 		new Hide_AddBooking();
 	};
 	
+	/**
+	 * Description
+	 * @method Enter_Search
+	 * @return 
+	 */
 	$scope.Enter_Search = function(){
 		
 		var search = $scope.bookingID;
@@ -567,6 +661,11 @@ application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactor
 	};
 	
 	
+	/**
+	 * Description
+	 * @method Init
+	 * @return 
+	 */
 	function Init(){
 		
 		new Update();

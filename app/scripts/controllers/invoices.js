@@ -27,10 +27,23 @@ application.controller('Ctrl_Invoices', function ($rootScope, $scope, RESTFactor
 	
 	
 	
+	/**
+	 * Description
+	 * @method Update_ID
+	 * @param {} id
+	 * @return 
+	 */
 	function Update_ID(id){
 		new Update("ID", id);
 	}
 	
+	/**
+	 * Description
+	 * @method Update
+	 * @param {} type
+	 * @param {} value
+	 * @return 
+	 */
 	function Update(type, value){
 		
 		invoices_all = {};
@@ -113,6 +126,12 @@ application.controller('Ctrl_Invoices', function ($rootScope, $scope, RESTFactor
 		
 	}
 	
+	/**
+	 * Description
+	 * @method Load_Details
+	 * @param {} id
+	 * @return 
+	 */
 	function Load_Details(id){
 		
 		$scope.invoice_selected = "true";
@@ -202,6 +221,11 @@ application.controller('Ctrl_Invoices', function ($rootScope, $scope, RESTFactor
 	
 	
 	
+	/**
+	 * Description
+	 * @method Safe_New
+	 * @return 
+	 */
 	function Safe_New(){
 		
 		var invoice = {};
@@ -222,6 +246,11 @@ application.controller('Ctrl_Invoices', function ($rootScope, $scope, RESTFactor
 		
 	}
 	
+	/**
+	 * Description
+	 * @method Dismiss_New
+	 * @return 
+	 */
 	function Dismiss_New(){
 		
 		new Hide_AddInvoice();
@@ -229,6 +258,11 @@ application.controller('Ctrl_Invoices', function ($rootScope, $scope, RESTFactor
 	}
 	
 	
+	/**
+	 * Description
+	 * @method Show_AddInvoice
+	 * @return 
+	 */
 	function Show_AddInvoice(){
 		
 		$scope.view = "add";
@@ -243,6 +277,11 @@ application.controller('Ctrl_Invoices', function ($rootScope, $scope, RESTFactor
 
 	}
 	
+	/**
+	 * Description
+	 * @method Hide_AddInvoice
+	 * @return 
+	 */
 	function Hide_AddInvoice(){
 		$scope.new_invoice = {};
 		$scope.view = "info";
@@ -250,6 +289,12 @@ application.controller('Ctrl_Invoices', function ($rootScope, $scope, RESTFactor
 		$scope.$apply();
 	}
 
+	/**
+	 * Description
+	 * @method SetPaid
+	 * @param {} id
+	 * @return 
+	 */
 	function SetPaid(id){
 		if($scope.currentInvoice.paid === true){
 			RESTFactory.Invoices_Patch_Paid(id, false);
@@ -260,6 +305,12 @@ application.controller('Ctrl_Invoices', function ($rootScope, $scope, RESTFactor
 	}
 	
 	
+	/**
+	 * Description
+	 * @method Show_AddItem_PopUp
+	 * @param {} invoiceID
+	 * @return 
+	 */
 	function Show_AddItem_PopUp(invoiceID){
 
         $mdDialog.show({
@@ -316,6 +367,13 @@ application.controller('Ctrl_Invoices', function ($rootScope, $scope, RESTFactor
             '	</md-dialog-content>' +
             '</md-dialog>',
 
+            /**
+             * Description
+             * @method controller
+             * @param {} $scope
+             * @param {} $mdDialog
+             * @return 
+             */
             controller: function DialogController($scope, $mdDialog){
 
 				var new_item = {};
@@ -328,10 +386,20 @@ application.controller('Ctrl_Invoices', function ($rootScope, $scope, RESTFactor
                 $scope.new_item = new_item;
 				
 
+                /**
+                 * Description
+                 * @method closeDialog
+                 * @return 
+                 */
                 $scope.closeDialog = function(){
                     $mdDialog.hide();
                 };
 
+                /**
+                 * Description
+                 * @method Save
+                 * @return 
+                 */
                 $scope.Save = function(){
 					
 					var item = $scope.new_item;
@@ -366,33 +434,70 @@ application.controller('Ctrl_Invoices', function ($rootScope, $scope, RESTFactor
 	}
 	
 	
+	/**
+	 * Description
+	 * @method Load_Details
+	 * @param {} input
+	 * @return 
+	 */
 	$scope.Load_Details = function(input){
 		new Load_Details(input);
 	};
 	
 	
+	/**
+	 * Description
+	 * @method Safe_New
+	 * @return 
+	 */
 	$scope.Safe_New = function(){
 		new Safe_New();
 	};
 	
+	/**
+	 * Description
+	 * @method Dismiss_New
+	 * @return 
+	 */
 	$scope.Dismiss_New = function(){
 		new Dismiss_New();
 	};
 
 
+	/**
+	 * Description
+	 * @method SetPaid
+	 * @param {} id
+	 * @return 
+	 */
 	$scope.SetPaid = function(id){
 		new SetPaid(id);
 	};
 
 	
+	/**
+	 * Description
+	 * @method Show_AddInvoice
+	 * @return 
+	 */
 	$scope.Show_AddInvoice = function(){
 		new Show_AddInvoice();
 	};
 	
+	/**
+	 * Description
+	 * @method Hide_AddInvoice
+	 * @return 
+	 */
 	$scope.Hide_AddInvoice = function(){
 		new Hide_AddInvoice();
 	};
 	
+	/**
+	 * Description
+	 * @method Enter_Search
+	 * @return 
+	 */
 	$scope.Enter_Search = function(){
 		
 		var search = $scope.searchQuery;
@@ -408,12 +513,23 @@ application.controller('Ctrl_Invoices', function ($rootScope, $scope, RESTFactor
 	};
 	
 	
+	/**
+	 * Description
+	 * @method ShowItemAddPopUp
+	 * @param {} id
+	 * @return 
+	 */
 	$scope.ShowItemAddPopUp = function(id){
 		new Show_AddItem_PopUp(id);
 	};
 	
 	
 	
+	/**
+	 * Description
+	 * @method Init
+	 * @return 
+	 */
 	function Init(){
 		
 		$scope.invoiceTypes = INVOICE_TYPES;

@@ -19,6 +19,15 @@ var application = angular.module('adminApp', [
     'ngSanitize'
 ]);
 
+/**
+ * Funktion die überprüft ob user eingeloggt ist
+ * Falls nein wird der User auf /start weitergeleitet
+ * @method checkRouting
+ * @param {} $rootScope
+ * @param {} $location
+ * @param {} Helper
+ * @return 
+ */
 var checkRouting= function ($rootScope, $location, Helper) {
     
     var loggedIN = Helper.Cookie_Get("loggedIN");
@@ -145,7 +154,6 @@ application.directive('myEnter', function () {
                 scope.$apply(function (){
                     scope.$eval(attrs.myEnter);
                 });
-
                 event.preventDefault();
             }
         });

@@ -92,6 +92,17 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
 	
 	
 	
+	/**
+	 * Description
+	 * @method AddMarker
+	 * @param {} id
+	 * @param {} title
+	 * @param {} content
+	 * @param {} image_string
+	 * @param {} lat
+	 * @param {} lon
+	 * @return 
+	 */
 	function AddMarker(id, title, content, image_string, lat, lon){
 	
         var img = {
@@ -133,6 +144,11 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
 
     }
 	
+	/**
+	 * Description
+	 * @method Delete_Markers
+	 * @return 
+	 */
 	function Delete_Markers(){
 		
 		for(var i = 0; i < markers.length; i++){
@@ -143,6 +159,12 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
 		
 	}
 	
+	/**
+	 * Description
+	 * @method Cars_AddMarker
+	 * @param {} car
+	 * @return 
+	 */
 	function Cars_AddMarker(car){
 
         var lat = car.lastLat;
@@ -226,10 +248,24 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
 
     }
 	
+	/**
+	 * Description
+	 * @method Update_ID
+	 * @param {} id
+	 * @return 
+	 */
 	function Update_ID(id){
 		new Update("ID", id, null);
 	}
 	
+	/**
+	 * Description
+	 * @method Update
+	 * @param {} type
+	 * @param {} value
+	 * @param {} filter
+	 * @return 
+	 */
 	function Update(type, value, filter){
 		
 		vehicles_all = {};
@@ -321,6 +357,12 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
 	}
 	
 	
+	/**
+	 * Description
+	 * @method Load_Details
+	 * @param {} id
+	 * @return 
+	 */
 	function Load_Details(id){
 		
 		new DisabledEditMode();
@@ -510,17 +552,32 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
 	
 	
 	
+	/**
+	 * Description
+	 * @method EnableEditMode
+	 * @return 
+	 */
 	function EnableEditMode(){
 		vehicle_old = angular.copy($scope.currentVehicle);
 		$scope.editDisabled = false;
 	}
 	
+	/**
+	 * Description
+	 * @method DisabledEditMode
+	 * @return 
+	 */
 	function DisabledEditMode(){
 		$scope.editDisabled = true;
 	}
 	
 	
 	
+	/**
+	 * Description
+	 * @method Safe_Changes
+	 * @return 
+	 */
 	function Safe_Changes(){
 		
 		var vehicle = $scope.currentVehicle;
@@ -567,12 +624,22 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
 		
 	}
 	
+	/**
+	 * Description
+	 * @method Dismiss_Changes
+	 * @return 
+	 */
 	function Dismiss_Changes(){
 		new Load_Details($scope.currentVehicle.vehicleID);
 	}
 	
 	
 	
+	/**
+	 * Description
+	 * @method Safe_New
+	 * @return 
+	 */
 	function Safe_New(){
 		
 		if($scope.new_vehicle.hasPosition === false){
@@ -611,6 +678,11 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
 		
 	}
 	
+	/**
+	 * Description
+	 * @method Dismiss_New
+	 * @return 
+	 */
 	function Dismiss_New(){
 		
 		new Hide_AddVehicle();
@@ -619,6 +691,11 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
 	
 	
 	
+	/**
+	 * Description
+	 * @method Show_AddVehicle
+	 * @return 
+	 */
 	function Show_AddVehicle(){
 		
 		$scope.view = "add";
@@ -643,6 +720,11 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
 		
 		$scope.new_vehicle = new_vehicle;
 		
+		/**
+		 * Description
+		 * @method Init_Map
+		 * @return 
+		 */
 		function Init_Map(){
 			
 			var input = document.getElementById('search_input');
@@ -691,6 +773,14 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
 		
 	}
 	
+	/**
+	 * Description
+	 * @method PositionSelected
+	 * @param {} map2
+	 * @param {} lat
+	 * @param {} lon
+	 * @return 
+	 */
 	function PositionSelected(map2, lat, lon){
 		
 		map2.panTo(new google.maps.LatLng(lat, lon));
@@ -720,6 +810,11 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
 
 	}
 	
+	/**
+	 * Description
+	 * @method Hide_AddVehicle
+	 * @return 
+	 */
 	function Hide_AddVehicle(){
 		$scope.new_vehicle = {};
 		$scope.view = "info";
@@ -729,41 +824,87 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
 	
 	
 	
+	/**
+	 * Description
+	 * @method EnableEditMode
+	 * @return 
+	 */
 	$scope.EnableEditMode = function(){
 		new EnableEditMode();
 	};
 	
+	/**
+	 * Description
+	 * @method Load_Details
+	 * @param {} id
+	 * @return 
+	 */
 	$scope.Load_Details = function(id){
 		new Load_Details(id);
 	};
 	
 	
+	/**
+	 * Description
+	 * @method Safe_Changes
+	 * @return 
+	 */
 	$scope.Safe_Changes = function(){
 		new Safe_Changes();
 	};
 	
+	/**
+	 * Description
+	 * @method Dismiss_Changes
+	 * @return 
+	 */
 	$scope.Dismiss_Changes = function(){
 		new Dismiss_Changes();
 	};
 	
 	
+	/**
+	 * Description
+	 * @method Safe_New
+	 * @return 
+	 */
 	$scope.Safe_New = function(){
 		new Safe_New();
 	};
 	
+	/**
+	 * Description
+	 * @method Dismiss_New
+	 * @return 
+	 */
 	$scope.Dismiss_New = function(){
 		new Dismiss_New();
 	};
 	
 	
+	/**
+	 * Description
+	 * @method Show_AddVehicle
+	 * @return 
+	 */
 	$scope.Show_AddVehicle = function(){
 		new Show_AddVehicle();
 	};
 	
+	/**
+	 * Description
+	 * @method Hide_AddVehicle
+	 * @return 
+	 */
 	$scope.Hide_AddVehicle = function(){
 		new Hide_AddVehicle();
 	};
 	
+	/**
+	 * Description
+	 * @method Enter_Search
+	 * @return 
+	 */
 	$scope.Enter_Search = function(){
 		
 		var search = $scope.searchQuery;
@@ -784,6 +925,11 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
 	
 	
 	
+	/**
+	 * Description
+	 * @method Init
+	 * @return 
+	 */
 	function Init(){
 		
 		$scope.bookingStates = BOOKING_STATES;

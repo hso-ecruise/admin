@@ -27,6 +27,17 @@ application.controller('Ctrl_Stations', function ($rootScope, $scope, RESTFactor
         }
     };
 	
+	/**
+	 * Description
+	 * @method AddMarker
+	 * @param {} id
+	 * @param {} title
+	 * @param {} content
+	 * @param {} image_string
+	 * @param {} lat
+	 * @param {} lon
+	 * @return 
+	 */
 	function AddMarker(id, title, content, image_string, lat, lon){
 
         var img = {
@@ -68,6 +79,11 @@ application.controller('Ctrl_Stations', function ($rootScope, $scope, RESTFactor
 		
     }
 	
+	/**
+	 * Description
+	 * @method Delete_Markers
+	 * @return 
+	 */
 	function Delete_Markers(){
 		
 		for(var i = 0; i < markers.length; i++){
@@ -78,10 +94,23 @@ application.controller('Ctrl_Stations', function ($rootScope, $scope, RESTFactor
 		
 	}
 	
+	/**
+	 * Description
+	 * @method Update_ID
+	 * @param {} id
+	 * @return 
+	 */
 	function Update_ID(id){
 		new Update("ID", id);
 	}
 	
+	/**
+	 * Description
+	 * @method Update
+	 * @param {} type
+	 * @param {} value
+	 * @return 
+	 */
 	function Update(type, value){
 		
 		stations_all = {};
@@ -166,6 +195,12 @@ application.controller('Ctrl_Stations', function ($rootScope, $scope, RESTFactor
 		
 	}
 	
+	/**
+	 * Description
+	 * @method Load_Details
+	 * @param {} id
+	 * @return 
+	 */
 	function Load_Details(id){
 		
 		new DisabledEditMode();
@@ -212,32 +247,37 @@ application.controller('Ctrl_Stations', function ($rootScope, $scope, RESTFactor
 	
 	
 	
+	/**
+	 * Description
+	 * @method EnableEditMode
+	 * @return 
+	 */
 	function EnableEditMode(){
 		$scope.editDisabled = false;
 	}
 	
+	/**
+	 * Description
+	 * @method DisabledEditMode
+	 * @return 
+	 */
 	function DisabledEditMode(){
 		$scope.editDisabled = true;
 	}
 	
 	
-	/*
-	var Safe_Changes = function(){
-		
-		var station = $scope.currentStation;
-		
-		var stationID = station.stationID;
-		
-		//REST CALL TO MAKE CHANGES
-		
-	};
-	
-	var Dismiss_Changes = function(){
-		Load_Details($scope.currentStation.stationID);
-	};
-	*/
-	
-	
+	/**
+	 * var Safe_Changes = function(){
+	 * var station = $scope.currentStation;
+	 * var stationID = station.stationID;
+	 * //REST CALL TO MAKE CHANGES
+	 * };
+	 * var Dismiss_Changes = function(){
+	 * Load_Details($scope.currentStation.stationID);
+	 * };
+	 * @method Safe_New
+	 * @return 
+	 */
 	function Safe_New(){
 		
 		if($scope.new_station.hasPosition === false){
@@ -264,6 +304,11 @@ application.controller('Ctrl_Stations', function ($rootScope, $scope, RESTFactor
 		
 	}
 	
+	/**
+	 * Description
+	 * @method Dismiss_New
+	 * @return 
+	 */
 	function Dismiss_New(){
 		
 		new Hide_AddStation();
@@ -272,6 +317,11 @@ application.controller('Ctrl_Stations', function ($rootScope, $scope, RESTFactor
 	
 	
 	
+	/**
+	 * Description
+	 * @method Show_AddStation
+	 * @return 
+	 */
 	function Show_AddStation(){
 		
 		$scope.view = "add";
@@ -288,6 +338,11 @@ application.controller('Ctrl_Stations', function ($rootScope, $scope, RESTFactor
 		
 		$scope.new_station = new_station;
 		
+		/**
+		 * Description
+		 * @method Init_Map
+		 * @return 
+		 */
 		function Init_Map(){
 			
 			var input = document.getElementById('search_input');
@@ -337,6 +392,14 @@ application.controller('Ctrl_Stations', function ($rootScope, $scope, RESTFactor
 		
 	}
 	
+		/**
+		 * Description
+		 * @method PositionSelected
+		 * @param {} map2
+		 * @param {} lat
+		 * @param {} lon
+		 * @return 
+		 */
 		function PositionSelected(map2, lat, lon){
 		
 		map2.panTo(new google.maps.LatLng(lat, lon));
@@ -366,6 +429,11 @@ application.controller('Ctrl_Stations', function ($rootScope, $scope, RESTFactor
 
 	}
 	
+	/**
+	 * Description
+	 * @method Hide_AddStation
+	 * @return 
+	 */
 	function Hide_AddStation(){
 		$scope.new_station = {};
 		$scope.view = "info";
@@ -373,6 +441,11 @@ application.controller('Ctrl_Stations', function ($rootScope, $scope, RESTFactor
 		$scope.$apply();
 	}
 	
+	/**
+	 * Description
+	 * @method Show_Heatmap
+	 * @return 
+	 */
 	function Show_Heatmap(){
 		
 		for(var i = 0; i < markers.length; i++){
@@ -468,6 +541,11 @@ application.controller('Ctrl_Stations', function ($rootScope, $scope, RESTFactor
 		
 	}
 	
+	/**
+	 * Description
+	 * @method Hide_Heatmap
+	 * @return 
+	 */
 	function Hide_Heatmap(){
 		
 		for(var i = 0; i < markers.length; i++){
@@ -484,40 +562,71 @@ application.controller('Ctrl_Stations', function ($rootScope, $scope, RESTFactor
 	
 	
 	
+	/**
+	 * Description
+	 * @method EnableEditMode
+	 * @return 
+	 */
 	$scope.EnableEditMode = function(){
 		new EnableEditMode();
 	};
 	
+	/**
+	 * Description
+	 * @method Load_Details
+	 * @param {} id
+	 * @return 
+	 */
 	$scope.Load_Details = function(id){
 		new Load_Details(id);
 	};
 	
-	/*
-	$scope.Safe_Changes = function(){
-		Safe_Changes();
-	};
-	
-	$scope.Dismiss_Changes = function(){
-		Dismiss_Changes();
-	};
-	*/
-	
+	/**
+	 * $scope.Safe_Changes = function(){
+	 * Safe_Changes();
+	 * };
+	 * $scope.Dismiss_Changes = function(){
+	 * Dismiss_Changes();
+	 * };
+	 * @method Safe_New
+	 * @return 
+	 */
 	$scope.Safe_New = function(){
 		new Safe_New();
 	};
 	
+	/**
+	 * Description
+	 * @method Dismiss_New
+	 * @return 
+	 */
 	$scope.Dismiss_New = function(){
 		new Dismiss_New();
 	};
 	
+	/**
+	 * Description
+	 * @method Show_AddStation
+	 * @return 
+	 */
 	$scope.Show_AddStation = function(){
 		new Show_AddStation();
 	};
 	
+	/**
+	 * Description
+	 * @method Hide_AddStation
+	 * @return 
+	 */
 	$scope.Hide_AddStation = function(){
 		new Hide_AddStation();
 	};
 	
+	/**
+	 * Description
+	 * @method Enter_Search
+	 * @return 
+	 */
 	$scope.Enter_Search = function(){
 		
 		var search = $scope.searchQuery;
@@ -530,6 +639,11 @@ application.controller('Ctrl_Stations', function ($rootScope, $scope, RESTFactor
 
 	};
 	
+	/**
+	 * Description
+	 * @method ToggleHeatmap
+	 * @return 
+	 */
 	$scope.ToggleHeatmap = function(){
 		if(heatmap_shown === true){
 			new Hide_Heatmap();
@@ -539,6 +653,11 @@ application.controller('Ctrl_Stations', function ($rootScope, $scope, RESTFactor
 		
 	};
 	
+	/**
+	 * Description
+	 * @method Init
+	 * @return 
+	 */
 	function Init(){
 		
 		var input = document.getElementById('toggle_heatmap');

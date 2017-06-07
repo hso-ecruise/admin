@@ -32,10 +32,23 @@ application.controller('Ctrl_Maintenances', function ($rootScope, $scope, RESTFa
 	};
 	
 	
+	/**
+	 * Description
+	 * @method Update_ID
+	 * @param {} id
+	 * @return 
+	 */
 	function Update_ID(id){
 		new Update("ID", id);
 	}
 	
+	/**
+	 * Description
+	 * @method Update
+	 * @param {} type
+	 * @param {} value
+	 * @return 
+	 */
 	function Update(type, value){
 		
 		maintenances_all = {};
@@ -105,6 +118,12 @@ application.controller('Ctrl_Maintenances', function ($rootScope, $scope, RESTFa
 		
 	}
 	
+	/**
+	 * Description
+	 * @method Load_Details
+	 * @param {} id
+	 * @return 
+	 */
 	function Load_Details(id){
 		
 		$scope.maintenance_selected = "true";
@@ -236,6 +255,11 @@ application.controller('Ctrl_Maintenances', function ($rootScope, $scope, RESTFa
 	
 	
 	
+	/**
+	 * Description
+	 * @method Safe_New
+	 * @return 
+	 */
 	function Safe_New(){
 		
 		var maintenance = {};
@@ -267,6 +291,11 @@ application.controller('Ctrl_Maintenances', function ($rootScope, $scope, RESTFa
 		
 	}
 	
+	/**
+	 * Description
+	 * @method Dismiss_New
+	 * @return 
+	 */
 	function Dismiss_New(){
 		
 		new Hide_AddInvoice();
@@ -274,6 +303,11 @@ application.controller('Ctrl_Maintenances', function ($rootScope, $scope, RESTFa
 	}
 	
 	
+	/**
+	 * Description
+	 * @method Show_AddMaintenance
+	 * @return 
+	 */
 	function Show_AddMaintenance(){
 		
 		$scope.view = "add";
@@ -291,6 +325,11 @@ application.controller('Ctrl_Maintenances', function ($rootScope, $scope, RESTFa
 
 	}
 	
+	/**
+	 * Description
+	 * @method Hide_AddMaintenance
+	 * @return 
+	 */
 	function Hide_AddMaintenance(){
 		$scope.new_maintenance = {};
 		$scope.view = "info";
@@ -299,6 +338,12 @@ application.controller('Ctrl_Maintenances', function ($rootScope, $scope, RESTFa
 	}
 	
 	
+	/**
+	 * Description
+	 * @method Show_CarMaintenance_Add_PopUp
+	 * @param {} maintenanceID
+	 * @return 
+	 */
 	function Show_CarMaintenance_Add_PopUp(maintenanceID){
 
         $mdDialog.show({
@@ -342,6 +387,13 @@ application.controller('Ctrl_Maintenances', function ($rootScope, $scope, RESTFa
             '	</md-dialog-content>' +
             '</md-dialog>',
 
+            /**
+             * Description
+             * @method controller
+             * @param {} $scope
+             * @param {} $mdDialog
+             * @return 
+             */
             controller: function DialogController($scope, $mdDialog){
 
 				var item = {};
@@ -354,10 +406,20 @@ application.controller('Ctrl_Maintenances', function ($rootScope, $scope, RESTFa
                 $scope.item = item;
 				
 
+                /**
+                 * Description
+                 * @method closeDialog
+                 * @return 
+                 */
                 $scope.closeDialog = function(){
                     $mdDialog.hide();
                 };
 
+                /**
+                 * Description
+                 * @method Save
+                 * @return 
+                 */
                 $scope.Save = function(){
 					
 					var item = $scope.item;
@@ -384,6 +446,14 @@ application.controller('Ctrl_Maintenances', function ($rootScope, $scope, RESTFa
 		
 	}
 	
+	/**
+	 * Description
+	 * @method SafeEndDate
+	 * @param {} mainID
+	 * @param {} carMainID
+	 * @param {} endDate
+	 * @return 
+	 */
 	function SafeEndDate(mainID, carMainID, endDate){
 		
 		var date = endDate;
@@ -399,28 +469,59 @@ application.controller('Ctrl_Maintenances', function ($rootScope, $scope, RESTFa
 	}
 	
 	
+	/**
+	 * Description
+	 * @method Load_Details
+	 * @param {} input
+	 * @return 
+	 */
 	$scope.Load_Details = function(input){
 		new Load_Details(input);
 	};
 	
 	
+	/**
+	 * Description
+	 * @method Safe_New
+	 * @return 
+	 */
 	$scope.Safe_New = function(){
 		new Safe_New();
 	};
 	
+	/**
+	 * Description
+	 * @method Dismiss_New
+	 * @return 
+	 */
 	$scope.Dismiss_New = function(){
 		new Hide_AddMaintenance();
 	};
 
 	
+	/**
+	 * Description
+	 * @method Show_AddMaintenance
+	 * @return 
+	 */
 	$scope.Show_AddMaintenance = function(){
 		new Show_AddMaintenance();
 	};
 	
+	/**
+	 * Description
+	 * @method Hide_AddMaintenance
+	 * @return 
+	 */
 	$scope.Hide_AddMaintenance = function(){
 		new Hide_AddMaintenance();
 	};
 	
+	/**
+	 * Description
+	 * @method Enter_Search
+	 * @return 
+	 */
 	$scope.Enter_Search = function(){
 		
 		var search = $scope.searchQuery;
@@ -433,16 +534,27 @@ application.controller('Ctrl_Maintenances', function ($rootScope, $scope, RESTFa
 
 	};
 	
-/*	
-	$scope.ShowCarMaintenanceAddPopUp = function(id){
-		new Show_CarMaintenance_Add_PopUp(id);
-	};
-*/
+/**
+	 * $scope.ShowCarMaintenanceAddPopUp = function(id){
+	 * new Show_CarMaintenance_Add_PopUp(id);
+	 * };
+	 * @method ShowCarMaintenanceAddPopUp
+	 * @param {} id
+	 * @return 
+	 */
 	$scope.ShowCarMaintenanceAddPopUp = function(id){
 		new Show_CarMaintenance_Add_PopUp(id);
 	};
 
 	
+	/**
+	 * Description
+	 * @method SafeEndDate
+	 * @param {} mainID
+	 * @param {} carMainID
+	 * @param {} endDate
+	 * @return 
+	 */
 	$scope.SafeEndDate = function(mainID, carMainID, endDate){
 		new SafeEndDate(mainID, carMainID, endDate);
 	};
@@ -450,6 +562,11 @@ application.controller('Ctrl_Maintenances', function ($rootScope, $scope, RESTFa
 	
 	
 	
+	/**
+	 * Description
+	 * @method Init
+	 * @return 
+	 */
 	function Init(){
 		
 		$scope.maintenanceStates = MAINTENANCE_TYPES;

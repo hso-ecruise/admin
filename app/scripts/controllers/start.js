@@ -11,6 +11,11 @@ application.controller('Ctrl_Main', function ($rootScope, $scope, Helper, $locat
     
     var inited = false;
     
+    /**
+     * Description
+     * @method Init
+     * @return 
+     */
     function Init(){
 	
 		if(inited === true){
@@ -37,6 +42,11 @@ application.controller('Ctrl_Main', function ($rootScope, $scope, Helper, $locat
     
     Init();
     
+    /**
+     * Description
+     * @method Logout
+     * @return 
+     */
     $scope.Logout = function(){
 	
 		//DELETE COOKIES
@@ -55,6 +65,11 @@ application.controller('Ctrl_Main', function ($rootScope, $scope, Helper, $locat
 	
     };
 	
+	/**
+	 * Description
+	 * @method showLogin
+	 * @return 
+	 */
 	$scope.showLogin = function(){
 		
 		$mdDialog.show({
@@ -91,13 +106,34 @@ application.controller('Ctrl_Main', function ($rootScope, $scope, Helper, $locat
             '	</md-dialog-content>' +
             '</md-dialog>',
 
+            /**
+             * Description
+             * @method controller
+             * @param {} $scope
+             * @param {} $rootScope
+             * @param {} $location
+             * @param {} $mdDialog
+             * @param {} RESTFactory
+             * @param {} Helper
+             * @return 
+             */
             controller: function DialogController($scope, $rootScope, $location, $mdDialog, RESTFactory, Helper){
 				
 
+                /**
+                 * Description
+                 * @method closeDialog
+                 * @return 
+                 */
                 $scope.closeDialog = function(){
                     $mdDialog.hide();
                 };
 
+                /**
+                 * Description
+                 * @method Login
+                 * @return 
+                 */
                 $scope.Login = function(){
 
 					var email = $scope.login_email;

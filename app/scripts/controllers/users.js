@@ -12,14 +12,33 @@ application.controller('Ctrl_Users', function ($rootScope, $scope, RESTFactory, 
 	var customers_all = {};
 	var customer_old = {};
 	
+	/**
+	 * Description
+	 * @method Update_Name
+	 * @param {} name
+	 * @return 
+	 */
 	function Update_Name(name){
 		new Update("NAME", name);
 	}
 	
+	/**
+	 * Description
+	 * @method Update_ID
+	 * @param {} id
+	 * @return 
+	 */
 	function Update_ID(id){
 		new Update("ID", id);
 	}
 	
+	/**
+	 * Description
+	 * @method Update
+	 * @param {} type
+	 * @param {} value
+	 * @return 
+	 */
 	function Update(type, value){
 		
 		customers_all = {};
@@ -92,6 +111,12 @@ application.controller('Ctrl_Users', function ($rootScope, $scope, RESTFactory, 
 		
 	}
 	
+	/**
+	 * Description
+	 * @method Load_Details
+	 * @param {} id
+	 * @return 
+	 */
 	function Load_Details(id){
 		
 		customer_old = {};
@@ -222,17 +247,32 @@ application.controller('Ctrl_Users', function ($rootScope, $scope, RESTFactory, 
 	
 	
 	
+	/**
+	 * Description
+	 * @method EnableEditMode
+	 * @return 
+	 */
 	function EnableEditMode(){
 		customer_old = angular.copy($scope.currentCustomer);
 		$scope.editDisabled = false;
 	}
 	
+	/**
+	 * Description
+	 * @method DisabledEditMode
+	 * @return 
+	 */
 	function DisabledEditMode(){
 		$scope.editDisabled = true;
 	}
 	
 	
 	
+	/**
+	 * Description
+	 * @method Safe_Changes
+	 * @return 
+	 */
 	function Safe_Changes(){
 		
 		var customer = $scope.currentCustomer;
@@ -308,12 +348,22 @@ application.controller('Ctrl_Users', function ($rootScope, $scope, RESTFactory, 
 		
 	}
 	
+	/**
+	 * Description
+	 * @method Dismiss_Changes
+	 * @return 
+	 */
 	function Dismiss_Changes(){
 		new Load_Details($scope.currentCustomer.customerID);
 	}
 	
 	
 	
+	/**
+	 * Description
+	 * @method Safe_New
+	 * @return 
+	 */
 	function Safe_New(){
 		
 		var customer = $scope.new_customer;
@@ -396,6 +446,11 @@ application.controller('Ctrl_Users', function ($rootScope, $scope, RESTFactory, 
 		
 	}
 	
+	/**
+	 * Description
+	 * @method Dismiss_New
+	 * @return 
+	 */
 	function Dismiss_New(){
 		
 		new Hide_AddCustomer();
@@ -404,6 +459,11 @@ application.controller('Ctrl_Users', function ($rootScope, $scope, RESTFactory, 
 	
 	
 	
+	/**
+	 * Description
+	 * @method Show_AddCustomer
+	 * @return 
+	 */
 	function Show_AddCustomer(){
 		
 		var customer = {};
@@ -414,6 +474,11 @@ application.controller('Ctrl_Users', function ($rootScope, $scope, RESTFactory, 
 		
 	}
 	
+	/**
+	 * Description
+	 * @method Hide_AddCustomer
+	 * @return 
+	 */
 	function Hide_AddCustomer(){
 		$scope.new_customer = {};
 		$scope.view = "info";
@@ -424,41 +489,87 @@ application.controller('Ctrl_Users', function ($rootScope, $scope, RESTFactory, 
 	
 	
 	
+	/**
+	 * Description
+	 * @method EnableEditMode
+	 * @return 
+	 */
 	$scope.EnableEditMode = function(){
 		new EnableEditMode();
 	};
 	
+	/**
+	 * Description
+	 * @method Load_Details
+	 * @param {} id
+	 * @return 
+	 */
 	$scope.Load_Details = function(id){
 		new Load_Details(id);
 	};
 	
 	
+	/**
+	 * Description
+	 * @method Safe_Changes
+	 * @return 
+	 */
 	$scope.Safe_Changes = function(){
 		new Safe_Changes();
 	};
 	
+	/**
+	 * Description
+	 * @method Dismiss_Changes
+	 * @return 
+	 */
 	$scope.Dismiss_Changes = function(){
 		new Dismiss_Changes();
 	};
 	
 	
+	/**
+	 * Description
+	 * @method Safe_New
+	 * @return 
+	 */
 	$scope.Safe_New = function(){
 		new Safe_New();
 	};
 	
+	/**
+	 * Description
+	 * @method Dismiss_New
+	 * @return 
+	 */
 	$scope.Dismiss_New = function(){
 		new Dismiss_New();
 	};
 	
 	
+	/**
+	 * Description
+	 * @method Show_AddCustomer
+	 * @return 
+	 */
 	$scope.Show_AddCustomer = function(){
 		new Show_AddCustomer();
 	};
 	
+	/**
+	 * Description
+	 * @method Hide_AddCustomer
+	 * @return 
+	 */
 	$scope.Hide_AddCustomer = function(){
 		new Hide_AddCustomer();
 	};
 	
+	/**
+	 * Description
+	 * @method Enter_Search
+	 * @return 
+	 */
 	$scope.Enter_Search = function(){
 		
 		var search = $scope.searchQuery;
@@ -477,6 +588,11 @@ application.controller('Ctrl_Users', function ($rootScope, $scope, RESTFactory, 
 	
 	
 	
+	/**
+	 * Description
+	 * @method Init
+	 * @return 
+	 */
 	function Init(){
 		
 		new Update("ALL", undefined);

@@ -13,11 +13,24 @@
 	var statistics_all = {};
 	
 	
+	/**
+	 * Description
+	 * @method Update_Date
+	 * @param {} name
+	 * @return 
+	 */
 	function Update_Date(name){
 		new Update("DATE", name);
 	}
 	
 	
+	/**
+	 * Description
+	 * @method Update
+	 * @param {} type
+	 * @param {} value
+	 * @return 
+	 */
 	function Update(type, value){
 		
 		statistics_all = {};
@@ -71,6 +84,12 @@
 		
 	}
 	
+	/**
+	 * Description
+	 * @method Load_Details
+	 * @param {} date
+	 * @return 
+	 */
 	function Load_Details(date){
 		
 		date = date + ".000Z";
@@ -96,6 +115,11 @@
 		
 	}
 	
+	/**
+	 * Description
+	 * @method LoadHeatMap
+	 * @return 
+	 */
 	function LoadHeatMap(){
 		
 		//Get all stations
@@ -109,11 +133,22 @@
 	
 	
 	
+	/**
+	 * Description
+	 * @method Load_Details
+	 * @param {} id
+	 * @return 
+	 */
 	$scope.Load_Details = function(id){
 		new Load_Details(id);
 	};
 	
 	
+	/**
+	 * Description
+	 * @method Enter_Search
+	 * @return 
+	 */
 	$scope.Enter_Search = function(){
 		
 		var search = $scope.searchQuery;
@@ -145,6 +180,11 @@
 	};
 	
 	
+	/**
+	 * Description
+	 * @method Init
+	 * @return 
+	 */
 	function Init(){
 		
 		new Update("ALL", undefined);
