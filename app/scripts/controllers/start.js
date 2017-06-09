@@ -2,6 +2,78 @@
 
 /**
  * @ngdoc function
+ * @name webApp.controller:Ctrl_Login
+ * @description
+ * # Ctrl_Login
+ * Controller of the webApp
+ */
+application.controller('Ctrl_Login', function ($rootScope, $scope, $mdDialog, RESTFactory, Helper, $location) {
+
+	$scope.testing = false;
+
+	/**
+    * Description
+    * @method closeDialog
+    * @return 
+    */
+	$scope.closeDialog = function () {
+		$mdDialog.hide();
+	};
+
+    /**
+    * Description
+    * @method Login
+	* @return 
+    */
+	$scope.Login = function () {
+
+		var email = $scope.login_email;
+		var password = String($scope.login_password);
+
+		var use_pwd = "\"" + password + "\"";
+
+		RESTFactory.User_Login(email, use_pwd).then(function (response) {
+
+			var data = response.data;
+
+			$rootScope.token = data.token;
+			$rootScope.customerID = data.id;
+
+			$rootScope.loggedIN = true;
+			$scope.loggedIN = true;
+
+			//Save data in cookies
+			Helper.Cookie_Set("loggedIN", true);
+			Helper.Cookie_Set("token", data.token);
+			Helper.Cookie_Set("customerID", data.id);
+			Helper.Cookie_Set("password", password);
+
+			$scope.login_email = "";
+			$scope.login_password = "";
+
+			if ($scope.testing === false) {
+				$rootScope.$apply(function () { $location.path('/vehicles'); });
+			}
+
+		}, function (response) {
+
+			alert("Anmelden fehgeschlagen");
+
+			$scope.login_password = "";
+
+		});
+
+		$scope.closeDialog();
+
+	};
+
+
+});
+
+
+
+/**
+ * @ngdoc function
  * @name adminApp.controller:StartCtrl
  * @description
  * # StartCtrl
@@ -9,7 +81,7 @@
  */
 application.controller('Ctrl_Main', function ($rootScope, $scope, Helper, $location, RESTFactory, $mdDialog) {
     
-    var inited = false;
+	$scope.testing = false;
     
     /**
      * Init-funktion der Seite Start
@@ -18,30 +90,26 @@ application.controller('Ctrl_Main', function ($rootScope, $scope, Helper, $locat
      * @return 
      */
     function Init(){
-	
-		if(inited === true){
-			return;
-		}
 		
 		var loggedIN = Helper.Cookie_Get("loggedIN");
 		var token = Helper.Cookie_Get("token");
 		var customerID = Helper.Cookie_Get("customerID");
 		
-		if(loggedIN !== "true"){
+		if (loggedIN !== "true") {
 			loggedIN = false;
+		} else {
+			loggedIN = true;
 		}
 		
 		$rootScope.loggedIN = loggedIN;
 		$rootScope.token = token;
 		$rootScope.customerID = customerID;
 		
-		inited = true;
-		
 		$scope.loggedIN = $rootScope.loggedIN;
 		
     }
     
-    Init();
+    new Init();
     
     /**
      * Funktion die den Cookie bei Logout löscht
@@ -62,7 +130,9 @@ application.controller('Ctrl_Main', function ($rootScope, $scope, Helper, $locat
 		Helper.Cookie_Set("token", "");
 		Helper.Cookie_Set("customerID", "");
 		
-		$location.path('/start');
+		if ($scope.testing === false) {
+			$rootScope.$apply(function () { $location.path('/start'); });
+		}
 	
     };
 	
@@ -107,111 +177,10 @@ application.controller('Ctrl_Main', function ($rootScope, $scope, Helper, $locat
             '	</md-dialog-content>' +
             '</md-dialog>',
 
-            /**
-             * Funktion die eingegebenen in Login-Dialog Daten an die Rest-Schnittstelle schickt, sie überprüft
-             * und falls login erfolgreich ist diese in Cookie speichert
-             * @method controller DialogController
-             * @param {} $scope
-             * @param {} $rootScope
-             * @param {} $location
-             * @param {} $mdDialog
-             * @param {} RESTFactory
-             * @param {} Helper
-             * @return 
-             */
-            controller: function DialogController($scope, $rootScope, $location, $mdDialog, RESTFactory, Helper){
-				
+            controller: 'Ctrl_Login'
 
-                /**
-                 * Description
-                 * @method closeDialog
-                 * @return 
-                 */
-                $scope.closeDialog = function(){
-                    $mdDialog.hide();
-                };
-
-                /**
-                 * Description
-                 * @method Login
-                 * @return 
-                 */
-                $scope.Login = function(){
-
-					var email = $scope.login_email;
-					var password = String($scope.login_password);
-					
-					var use_pwd = "\"" + password + "\"";
-					
-					RESTFactory.User_Login(email, use_pwd).then(function(response){
-						
-						var data = response.data;
-						
-						$rootScope.token = data.token;
-						$rootScope.customerID = data.id;
-						
-						$rootScope.loggedIN = true;
-						$scope.loggedIN = true;
-						
-						//Save data in cookies
-						Helper.Cookie_Set("loggedIN", true);
-						Helper.Cookie_Set("token", data.token);
-						Helper.Cookie_Set("customerID", data.id);
-						Helper.Cookie_Set("password", password);
-						
-						$rootScope.$apply( function(){$location.path('/vehicles'); } );
-						
-					}, function(response){
-						
-						alert("Anmelden fehlgeschlagen");
-						
-					});
-					
-					$scope.closeDialog();
-					
-                };
-
-            }
         });
 		
 	};
-	/*
-	$scope.Login = function(){
-
 	
-	
-		var email = $scope.login_email;
-		var password = $scope.login_password;
-
-		password = "\"" + password + "\"";
-		
-			$scope.loggedIN = true;
-		
-		RESTFactory.User_Login(email, password).then(function(response){
-			
-			var data = response.data;
-			
-			$rootScope.token = data.token;
-			$rootScope.customerID = data.id;
-			
-			$rootScope.loggedIN = true;
-			$scope.$apply();
-			
-			//Save data in cookies
-			Helper.Cookie_Set("loggedIN", true);
-			Helper.Cookie_Set("token", data.token);
-			Helper.Cookie_Set("customerID", data.id);
-			
-			console.log($scope.loggedIN);
-			
-			//$rootScope.$apply( function(){$location.path('/vehicles'); } );
-			
-		}, function(response){
-			
-			alert("Anmelden fehlgeschlagen");
-		
-		});
-	
-    }
-	*/
 });
