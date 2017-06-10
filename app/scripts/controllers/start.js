@@ -2,10 +2,10 @@
 
 /**
  * @ngdoc function
- * @name webApp.controller:Ctrl_Login
+ * @name adminApp.controller:Ctrl_Login
  * @description
  * # Ctrl_Login
- * Controller of the webApp
+ * Controller of the adminApp
  */
 application.controller('Ctrl_Login', function ($rootScope, $scope, $mdDialog, RESTFactory, Helper, $location) {
 

@@ -8,8 +8,10 @@
  * give some description here
  */
 
- application.controller('Ctrl_Statistics', function ($rootScope, $scope, RESTFactory, Helper, $mdDialog) {
+ application.controller('Ctrl_Statistics', function ($rootScope, $scope, RESTFactory, Helper) {
 	
+	 $scope.testing = false;
+
 	var statistics_all = {};
 	
 	
@@ -35,7 +37,6 @@
 		
 		statistics_all = {};
 		$scope.statistics = statistics_all;
-		
 		
 		$scope.statistic_selected = "false";
 		
@@ -72,12 +73,13 @@
 				statistic.averageCharge = data_use.averageChargeLevel;
 				
 				statistics_all[ID_STR] = statistic;
+				
 				$scope.statistics = statistics_all;
-				$scope.$apply();
+				if ($scope.testing === false) {
+					$scope.$apply();
+				}
 				
 			});
-			
-		}, function(response){
 			
 		});
 		
@@ -102,32 +104,18 @@
 			
 			var statistic = {};
 			
-			statistic.date = Helper.Get_Zeit(data_use.date);
+			statistic.date = Helper.Get_Zeit_Server(data_use.date);
 			statistic.bookings = data_use.bookings;
 			statistic.averageCharge = data_use.averageChargeLevel;
 			
 			$scope.currentStatistic = statistic;
-			$scope.$apply();
-			
-		}, function(response){
+			if ($scope.testing === false) {
+				$scope.$apply();
+			}
 			
 		});
 		
 	}
-	
-	/**
-	 * Funktion um die Heatmap zu laden
-	 * @method LoadHeatMap
-	 * @return 
-	 */
-	function LoadHeatMap(){
-		
-		//Get all stations
-			//Get all car charging stations for each station
-
-		
-	}
-	
 	
 	
 	/**
@@ -150,7 +138,7 @@
 		
 		var search = $scope.searchQuery;
 		
-		if(search === undefined || search === null){
+		if(search === undefined || search === null || search === ""){
 			new Update("ALL", undefined);
 		}else{
 			
@@ -166,11 +154,11 @@
 				day = "0" + day;
 			}
 			
-			var search = date.date_ele.year + "-" + month + "-" + day;
+			search = date.date_ele.year + "-" + month + "-" + day;
 			search = search + "T00:00:00.000Z";
 			
-			console.log(search);
-			
+			alert(search);
+
 			new Update_Date(search);
 		}
 		

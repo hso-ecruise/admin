@@ -10,6 +10,8 @@
  
 application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactory, Helper, $mdDialog) {
 	
+	$scope.testing = false;
+
 	var bookings_all = {};
 	
 	var marker_Address;
@@ -38,8 +40,6 @@ application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactor
 				
 			}
 			
-		}, function(response){
-			alert("Nutzername kann nicht gefunden werden");
 		});
 		
 	}
@@ -125,7 +125,9 @@ application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactor
 				
 				bookings_all[ID_STR] = booking;
 				$scope.bookings = bookings_all;
-				$scope.$apply();
+				if ($scope.testing === false) {
+					$scope.$apply();
+				}
 				
 				
 				/**
@@ -150,17 +152,18 @@ application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactor
 						
 						bookings_all[ID_STR] = booking;
 						$scope.bookings = bookings_all;
-						$scope.$apply();
-						
-					}, function(response){
+						if ($scope.testing === false) {
+							$scope.$apply();
+						}
 						
 					});
 				
 				}
 				
 				setTimeout(CallCustomer, 500);
+
 			});
-		}, function(response){
+
 		});
 	}
 	
@@ -209,7 +212,9 @@ application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactor
 			booking.customerState = "false";
 			
 			$scope.currentBooking = booking;
-			$scope.$apply();
+			if ($scope.testing === false) {
+				$scope.$apply();
+			}
 			
 			if(booking.invoiceItemID !== null && booking.invoiceItemID !== 0){
 
@@ -232,9 +237,9 @@ application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactor
 					
 					booking.invoiceState = "true";	
 					$scope.currentBooking = booking;
-					$scope.$apply();
-					
-				}, function(response){
+					if ($scope.testing === false) {
+						$scope.$apply();
+					}
 					
 				});
 
@@ -258,9 +263,9 @@ application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactor
 					
 					booking.customerState = "true";
 					$scope.currentBooking = booking;
-					$scope.$apply();
-					
-				}, function(response){
+					if ($scope.testing === false) {
+						$scope.$apply();
+					}
 					
 				});
 
@@ -302,7 +307,9 @@ application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactor
 						
 						booking.tripState = "true";
 						$scope.currentBooking = booking;
-						$scope.$apply();
+						if ($scope.testing === false) {
+							$scope.$apply();
+						}
 						
 						if(trip.startChargingStationID !== null && trip.startChargingStationID !== 0){
 
@@ -323,21 +330,21 @@ application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactor
 								
 								booking.trip.startState = "true";
 								$scope.currentBooking = booking;
-								$scope.$apply();
+								if ($scope.testing === false) {
+									$scope.$apply();
+								}
 								
 								
-								Helper.Get_Address(station.lat, station.lon).then(function(address){
+								RESTFactory.Get_Address(station.lat, station.lon).then(function(address){
 									
 									booking.trip.start.station.address = address;
 									
 									$scope.currentBooking = booking;
-									$scope.$apply();
-									
-								}, function(response){
+									if ($scope.testing === false) {
+										$scope.$apply();
+									}
 									
 								});
-								
-							}, function(response){
 								
 							});
 						
@@ -362,10 +369,12 @@ application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactor
 								
 								booking.trip.endState = "true";
 								$scope.currentBooking = booking;
-								$scope.$apply();
+								if ($scope.testing === false) {
+									$scope.$apply();
+								}
 							
 							
-								Helper.Get_Address(station.lat, station.lon).then(function(response){
+								RESTFactory.Get_Address(station.lat, station.lon).then(function(response){
 									
 									var address = response;
 									address.status = true;
@@ -373,13 +382,11 @@ application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactor
 									booking.trip.end.station.address = address;
 									
 									$scope.currentBooking = booking;
-									$scope.$apply();
-									
-								}, function(response){
+									if ($scope.testing === false) {
+										$scope.$apply();
+									}
 									
 								});
-								
-							}, function(response){
 								
 							});
 							
@@ -387,8 +394,6 @@ application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactor
 
 					}
 
-				}, function(response){
-					
 				});
 			
 			}
@@ -556,11 +561,14 @@ application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactor
 		$scope.new_booking.lat = lat;
 		$scope.new_booking.lon = lon;
 		$scope.new_booking.hasPosition = true;
+		$scope.new_booking.address_state = "false";
 		
-		Helper.Get_Address(lat, lon).then(function(address){
+		RESTFactory.Get_Address(lat, lon).then(function(address){
 			$scope.new_booking.address_state = "true";
 			$scope.new_booking.address = address;
-			$scope.$apply();
+			if ($scope.testing === false) {
+				$scope.$apply();
+			}
 			
 			if(marker_Address !== undefined){
 				marker_Address.setMap(null);
@@ -572,8 +580,6 @@ application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactor
 				title: "Aktuelle Position"
 			});
 			
-		}, function(response){
-			$scope.new_booking.address_state = "false";
 		});
 
 	}
@@ -664,9 +670,9 @@ application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactor
 	 * @return 
 	 */
 	function Init(){
-		
 		new Update();	
 	}
+
 	new Init();
 	
 });

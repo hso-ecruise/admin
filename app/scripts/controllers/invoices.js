@@ -10,6 +10,8 @@
  
 application.controller('Ctrl_Invoices', function ($rootScope, $scope, RESTFactory, Helper, $mdDialog) {
 	
+	$scope.testing = false;
+
 	var invoices_all = {};
 	
 	var INVOICE_TYPES = {
@@ -90,7 +92,9 @@ application.controller('Ctrl_Invoices', function ($rootScope, $scope, RESTFactor
 				invoices_all[ID_STR] = invoice;
 				
 				$scope.invoices = invoices_all;
-				$scope.$apply();
+				if ($scope.testing === false) {
+					$scope.$apply();
+				}
 				
 				
 				//GET CUSTOMER
@@ -109,16 +113,14 @@ application.controller('Ctrl_Invoices', function ($rootScope, $scope, RESTFactor
 					
 					invoices_all[ID_STR] = invoice;
 					$scope.invoices = invoices_all;
-					$scope.$apply();
-					
-				}, function(response){
+					if ($scope.testing === false) {
+						$scope.$apply();
+					}
 					
 				});
 				
 			});
 			
-			
-		}, function(response){
 			
 		});
 	}
@@ -153,7 +155,9 @@ application.controller('Ctrl_Invoices', function ($rootScope, $scope, RESTFactor
 			invoice.itemState = "false";
 			
 			$scope.currentInvoice = invoice;
-			$scope.$apply();
+			if ($scope.testing === false) {
+				$scope.$apply();
+			}
 			
 			
 			//GET CUSTOMER
@@ -171,9 +175,9 @@ application.controller('Ctrl_Invoices', function ($rootScope, $scope, RESTFactor
 				invoice.customerState = "true";
 				
 				$scope.currentInvoice = invoice;
-				$scope.$apply();
-				
-			}, function(response){
+				if ($scope.testing === false) {
+					$scope.$apply();
+				}
 				
 			});
 			
@@ -204,14 +208,12 @@ application.controller('Ctrl_Invoices', function ($rootScope, $scope, RESTFactor
 				
 				
 				$scope.currentInvoice = invoice;
-				$scope.$apply();
-				
-			}, function(response){
+				if ($scope.testing === false) {
+					$scope.$apply();
+				}
 				
 			});
 		
-		}, function(response){
-			
 		});
 		
 	}
@@ -283,7 +285,9 @@ application.controller('Ctrl_Invoices', function ($rootScope, $scope, RESTFactor
 		$scope.new_invoice = {};
 		$scope.view = "info";
 		$scope.invoice_selected = "false";
-		$scope.$apply();
+		if ($scope.testing === false) {
+			$scope.$apply();
+		}
 	}
 
 	/**
@@ -534,6 +538,7 @@ application.controller('Ctrl_Invoices', function ($rootScope, $scope, RESTFactor
 		new Update();
 		
 	}
+	
 	new Init();
 	
 });

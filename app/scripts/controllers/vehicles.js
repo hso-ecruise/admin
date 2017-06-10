@@ -10,6 +10,8 @@
 
 application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactory, Helper, $mdDialog) {
 
+	$scope.testing = false;
+
     var vehicles_all = {};
     var vehicle_old = {};
 
@@ -124,7 +126,7 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
 
         marker.addListener('click', function(event){
 
-            Load_Details(this.id);
+            new Load_Details(this.id);
 
             var new_alert = $mdDialog.alert({
                 title: title,
@@ -244,7 +246,7 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
 
                 break;
 
-                                     }
+        }
 
     }
 
@@ -329,7 +331,9 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
 
                     vehicles_all[ID_STR] = vehicle;
                     $scope.vehicles = vehicles_all;
-                    $scope.$apply();
+					if ($scope.testing === false) {
+						$scope.$apply();
+					}
 
                     Helper.Get_Address(vehicle.lastLat, vehicle.lastLon).then(function(address){
 
@@ -338,17 +342,15 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
 
                         vehicles_all[ID_STR] = vehicle;
                         $scope.vehicles = vehicles_all;
-                        $scope.$apply();
-
-                    }, function(response){
+						if ($scope.testing === false) {
+							$scope.$apply();
+						}
 
                     });
 
                 }
 
             });
-
-        }, function(response){
 
         });
 
@@ -366,6 +368,9 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
     function Load_Details(id){
 
         new DisabledEditMode();
+            
+		$scope.vehicle_selected = "false";
+        $scope.$apply();			
 
         RESTFactory.Cars_Get_CarID(id).then(function(response){
 
@@ -400,7 +405,9 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
             vehicle.trip_state = "false";
 
             $scope.currentVehicle = vehicle;
-            $scope.$apply();
+			if ($scope.testing === false) {
+				$scope.$apply();
+			}
 
 
             map.panTo(new google.maps.LatLng(vehicle.lastLat, vehicle.lastLon));
@@ -413,9 +420,9 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
                 vehicle.address = address;
 
                 $scope.currentVehicle = vehicle;
-                $scope.$apply();
-
-            }, function(response){
+				if ($scope.testing === false) {
+					$scope.$apply();
+				}
 
             });
 
@@ -453,7 +460,9 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
                         vehicle.maintenancesOpen = maintenancesOpen;
 
                         $scope.currentVehicle = vehicle;
-                        $scope.$apply();
+						if ($scope.testing === false) {
+							$scope.$apply();
+						}
 
                         if(data_use.invoiceItemId !== null){
 
@@ -479,9 +488,9 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
                                 vehicle.maintenanceDone = maintenancesDone;
 
                                 $scope.currentVehicle = vehicle;
-                                $scope.$apply();
-
-                            }, function(){
+								if ($scope.testing === false) {
+									$scope.$apply();
+								}
 
                             });
 
@@ -490,10 +499,6 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
                     });
 
                 }
-
-
-
-            }, function(response){
 
             });
 
@@ -532,19 +537,15 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
                     vehicle.trip_state = "true";
                     vehicle.trips = trips;
                     $scope.currentVehicle = vehicle;
-                    $scope.$apply();
+					if ($scope.testing === false) {
+						$scope.$apply();
+					}
 
                 }
-
-            }, function(){
 
             });
 
 
-
-        }, function(response){
-            $scope.vehicle_selected = "false";
-            $scope.$apply();			
 
         });
 
@@ -785,11 +786,15 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
         $scope.new_vehicle.lat = lat;
         $scope.new_vehicle.lon = lon;
         $scope.new_vehicle.hasPosition = true;
+        $scope.new_vehicle.address_state = "false";
 
         Helper.Get_Address(lat, lon).then(function(address){
             $scope.new_vehicle.address_state = "true";
-            $scope.new_vehicle.address = address;
-            $scope.$apply();
+			$scope.new_vehicle.address = address;
+			
+			if ($scope.testing === false) {
+				$scope.$apply();
+			}
 
             if(marker_Address !== undefined){
                 marker_Address.setMap(null);
@@ -801,8 +806,6 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
                 title: "Aktuelle Position"
             });
 
-        }, function(response){
-            $scope.new_vehicle.address_state = "false";
         });
 
     }
@@ -816,7 +819,9 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
         $scope.new_vehicle = {};
         $scope.view = "info";
         $scope.vehicle_selected = "false";
-        $scope.$apply();
+		if ($scope.testing === false) {
+			$scope.$apply();
+		}
     }
 
 

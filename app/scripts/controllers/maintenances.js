@@ -1,5 +1,84 @@
 'use strict';
 
+
+/**
+ * @ngdoc function
+ * @name adminApp.controller:Ctrl_Add_CarMaintenance
+ * @description
+ * # Ctrl_Add_CarMaintenance
+ * Controller of the adminApp
+ */
+application.controller('Ctrl_Add_CarMaintenance', function ($rootScope, $scope, $mdDialog, RESTFactory, Helper, $location) {
+
+	$scope.testing = false;
+
+	$scope.maintenanceID = $rootScope.add_car_maintenance_maintenanceID;
+
+	
+	function Init() {
+		var item = {};
+		item.maintenanceID = $scope.maintenanceID;
+		item.carID = 0;
+		item.plannedDate = new Date();
+		item.minDate = new Date();
+		$scope.item = item;
+	}
+
+	new Init();
+
+	/**
+    * Description
+    * @method closeDialog
+    * @return 
+    */
+	$scope.closeDialog = function () {
+		$mdDialog.hide();
+	};
+
+
+
+	/**
+	 * Funktion Dialog zu schliessen
+	 * @method closeDialog
+	 * @return 
+	 */
+	$scope.closeDialog = function () {
+		$mdDialog.hide();
+	};
+
+	/**
+	 * Funktion um in Dialog eingegebenen Daten zu speichern
+	 * @method Save
+	 * @return 
+	 */
+	$scope.Save = function () {
+
+		var item = $scope.item;
+
+		var data = {};
+		data.carId = item.carID;
+		data.maintenanceId = item.maintenanceID;
+		data.plannedDate = item.plannedDate.toUTCString();
+
+
+		//WORKAROUNG ZUM UPDATEN NOCH ERSTELLEN
+
+		RESTFactory.Car_Maintances_Post(data).then(function (response) {
+			alert("Element erfolgreich hinzugefügt");
+			//new Update("ALL", undefined);
+		}, function (response) {
+			alert("Element hinzufügen fehlgeschlagen");
+			//new Update("ALL", undefined);
+		});
+
+		$scope.closeDialog();
+
+	};
+
+
+});
+
+
 /**
  * @ngdoc function
  * @name adminApp.controller:BookingsCtrl
@@ -10,6 +89,8 @@
  
 application.controller('Ctrl_Maintenances', function ($rootScope, $scope, RESTFactory, Helper, $mdDialog) {
 	
+	$scope.testing = false;
+
 	var maintenances_all = {};
 	
 	
@@ -102,9 +183,10 @@ application.controller('Ctrl_Maintenances', function ($rootScope, $scope, RESTFa
 				
 			}
 			$scope.maintenances = maintenances_all;
-			$scope.$apply();
-		}, function(response){
-			
+			if ($scope.testing === false) {
+				$scope.$apply();
+			}
+
 		});
 		
 		
@@ -147,7 +229,9 @@ application.controller('Ctrl_Maintenances', function ($rootScope, $scope, RESTFa
 			maintenance.car_maintenance_state = "false";
 			
 			$scope.currentMaintenance = maintenance;
-			$scope.$apply();
+			if ($scope.testing === false) {
+				$scope.$apply();
+			}
 			
 			//GET CAR MAINTENCE
 			RESTFactory.Car_Maintances_Get_MaintenanceID(maintenance.maintenanceID).then(function(response){
@@ -193,7 +277,9 @@ application.controller('Ctrl_Maintenances', function ($rootScope, $scope, RESTFa
 						maintenance.car_maintenance[ID_STR] = car_maintenance;
 						
 						$scope.currentMaintenance = maintenance;
-						$scope.$apply();
+						if ($scope.testing === false) {
+							$scope.$apply();
+						}
 						
 						if(car_maintenance.invoiceItemID !== null && car_maintenance.invoiceItemID !== undefined){
 						
@@ -220,11 +306,10 @@ application.controller('Ctrl_Maintenances', function ($rootScope, $scope, RESTFa
 								maintenance.car_maintenance[ID_STR] = car_maintenance;
 								
 								$scope.currentMaintenance = maintenance;
-								$scope.$apply();
+								if ($scope.testing === false) {
+									$scope.$apply();
+								}
 								
-							}, function(response){
-								
-							
 							});
 						
 						}
@@ -234,13 +319,9 @@ application.controller('Ctrl_Maintenances', function ($rootScope, $scope, RESTFa
 				}
 				
 				
-			}, function(response){
-				
 			});
 			
 		
-		}, function(response){
-			
 		});
 		
 	}
@@ -290,7 +371,7 @@ application.controller('Ctrl_Maintenances', function ($rootScope, $scope, RESTFa
 	 */
 	function Dismiss_New(){
 		
-		new Hide_AddInvoice();
+		new Hide_AddMaintenance();
 		
 	}
 	
@@ -326,7 +407,9 @@ application.controller('Ctrl_Maintenances', function ($rootScope, $scope, RESTFa
 		$scope.new_maintenance = {};
 		$scope.view = "info";
 		$scope.maintenance_selected = "false";
-		$scope.$apply();
+		if ($scope.testing === false) {
+			$scope.$apply();
+		}
 	}
 	
 	
@@ -337,6 +420,8 @@ application.controller('Ctrl_Maintenances', function ($rootScope, $scope, RESTFa
 	 * @return 
 	 */
 	function Show_CarMaintenance_Add_PopUp(maintenanceID){
+
+		$rootScope.add_car_maintenance_maintenanceID = maintenanceID;
 
         $mdDialog.show({
             clickOutsideToClose: true,
@@ -386,7 +471,8 @@ application.controller('Ctrl_Maintenances', function ($rootScope, $scope, RESTFa
              * @param {} $mdDialog
              * @return 
              */
-            controller: function DialogController($scope, $mdDialog){
+			controller: 'Ctrl_Add_CarMaintenance'
+			/* function DialogController($scope, $mdDialog){
 
 				var item = {};
 				item.maintenanceID = maintenanceID;
@@ -394,22 +480,24 @@ application.controller('Ctrl_Maintenances', function ($rootScope, $scope, RESTFa
 				item.plannedDate = new Date();
 				item.minDate = new Date();
                 $scope.item = item;
-				
+				*/
 
                 /**
                  * Funktion Dialog zu schliessen
                  * @method closeDialog
                  * @return 
                  */
+			/*
                 $scope.closeDialog = function(){
                     $mdDialog.hide();
                 };
-
+*/
                 /**
                  * Funktion um in Dialog eingegebenen Daten zu speichern
                  * @method Save
                  * @return 
                  */
+			/*
                 $scope.Save = function(){
 					
 					var item = $scope.item;
@@ -421,16 +509,17 @@ application.controller('Ctrl_Maintenances', function ($rootScope, $scope, RESTFa
 					
 					RESTFactory.Car_Maintances_Post(data).then(function(response){
 						alert("Element erfolgreich hinzugefügt");
-						Update("ALL", undefined);
+						new Update("ALL", undefined);
 					}, function(response){
 						alert("Element hinzufügen fehlgeschlagen");
-						Update("ALL", undefined);
+						new Update("ALL", undefined);
 					});
 					
                     $scope.closeDialog();
                 };
 
             }
+			*/
         });
 		
 	}

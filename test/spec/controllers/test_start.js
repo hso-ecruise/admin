@@ -1,3 +1,4 @@
+'use strict';
 
 describe('Testsuite: Startpage admin', function () {
 
@@ -33,7 +34,7 @@ describe('Testsuite: Startpage admin', function () {
 			hide: function () {
 
 			}
-		}
+		};
 
 	});
 
@@ -145,7 +146,7 @@ describe('Testsuite: Startpage admin', function () {
 
 		afterEach(function () {
 			scope.Logout();
-		})
+		});
 
 		it('Check if loggedIN is set true after previous tests, where the login was set true', function () {
 

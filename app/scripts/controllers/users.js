@@ -7,8 +7,10 @@
  * # UsersCtrl
  * give some description here
  */
-application.controller('Ctrl_Users', function ($rootScope, $scope, RESTFactory, Helper, $mdDialog) {
+application.controller('Ctrl_Users', function ($rootScope, $scope, RESTFactory, Helper) {
 	
+	$scope.testing = false;
+
 	var customers_all = {};
 	var customer_old = {};
 	
@@ -101,11 +103,11 @@ application.controller('Ctrl_Users', function ($rootScope, $scope, RESTFactory, 
 				
 				customers_all[ID_STR] = customer;
 				$scope.customers = customers_all;
-				$scope.$apply();
+				if ($scope.testing === false) {
+					$scope.$apply();
+				}
 				
 			}
-			
-		}, function(response){
 			
 		});
 		
@@ -122,6 +124,9 @@ application.controller('Ctrl_Users', function ($rootScope, $scope, RESTFactory, 
 		customer_old = {};
 		
 		new DisabledEditMode();
+
+		$scope.customer_selected = "false";
+		$scope.$apply();			
 		
 		RESTFactory.Customers_Get_CustomerID(id).then(function(response){
 			
@@ -162,7 +167,9 @@ application.controller('Ctrl_Users', function ($rootScope, $scope, RESTFactory, 
 			customer.bookingsOpen = {};
 			
 			$scope.currentCustomer = customer;
-			$scope.$apply();			
+			if ($scope.testing === false) {
+				$scope.$apply();
+			}		
 			
 			//LOAD BOOKING INFOS
 			RESTFactory.Bookings_Get_CustomerID(id).then(function(response){
@@ -197,9 +204,9 @@ application.controller('Ctrl_Users', function ($rootScope, $scope, RESTFactory, 
 				customer.bookingsOpen = bookingsOpen;
 				customer.bookingsDone = bookingsDone;
 				$scope.currentCustomer = customer;
-				$scope.$apply();
-				
-			}, function(response){
+				if ($scope.testing === false) {
+					$scope.$apply();
+				}
 				
 			});
 			
@@ -229,17 +236,12 @@ application.controller('Ctrl_Users', function ($rootScope, $scope, RESTFactory, 
 				
 				customer.invoices = invoices;
 				$scope.currentCustomer = customer;
-				$scope.$apply();
-				
-			}, function(response){
+				if ($scope.testing === false) {
+					$scope.$apply();
+				}
 				
 			});
 			
-			
-		}, function(response){
-			
-			$scope.customer_selected = "false";
-			$scope.$apply();			
 			
 		});
 		
@@ -386,7 +388,7 @@ application.controller('Ctrl_Users', function ($rootScope, $scope, RESTFactory, 
 			var customerID = response.data.id;
 			
 			alert("Neuer Nutzer wurde angelegt");
-			Hide_AddCustomer();
+			new Hide_AddCustomer();
 			new Update("ALL", undefined);
 
 			
@@ -437,7 +439,7 @@ application.controller('Ctrl_Users', function ($rootScope, $scope, RESTFactory, 
 		}, function(response){
 			
 			alert("Neuer Nutzer konnte nicht angelegt werden");
-			Hide_AddCustomer();
+			new Hide_AddCustomer();
 			new Update("ALL", undefined);
 
 			
@@ -483,7 +485,9 @@ application.controller('Ctrl_Users', function ($rootScope, $scope, RESTFactory, 
 		$scope.new_customer = {};
 		$scope.view = "info";
 		$scope.customer_selected = "false";
-		$scope.$apply();		
+		if ($scope.testing === false) {
+			$scope.$apply();
+		}	
 	}
 	
 	
