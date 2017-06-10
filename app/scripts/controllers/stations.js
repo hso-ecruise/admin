@@ -167,7 +167,7 @@ application.controller('Ctrl_Stations', function ($rootScope, $scope, RESTFactor
 
 
 				//GET CUSTOMER
-				Helper.Get_Address(station.lat, station.lon).then(function (address) {
+				RESTFactory.Get_Address(station.lat, station.lon).then(function (address) {
 
 					station.address = address;
 
@@ -195,45 +195,57 @@ application.controller('Ctrl_Stations', function ($rootScope, $scope, RESTFactor
 
 		new DisabledEditMode();
 
-		$scope.station_selected = "false";
-		if ($scope.testing === false) {
-			$scope.$apply();
-		}
+		function Load_1() {
+			
+			RESTFactory.Charging_Stations_Get_Charging_StationID(id).then(function (response) {
 
-		RESTFactory.Charging_Stations_Get_Charging_StationID(id).then(function (response) {
+				$scope.station_selected = "true";
 
-			$scope.station_selected = "true";
+				var data_use = response.data;
 
-			var data_use = response.data;
+				var station = {};
 
-			var station = {};
-
-			station.stationID = data_use.chargingStationId;
-			station.slots = data_use.slots;
-			station.slotsOccupied = data_use.slotsOccupied;
-			station.lat = data_use.latitude;
-			station.lon = data_use.longitude;
-
-			$scope.currentStation = station;
-			if ($scope.testing === false) {
-				$scope.$apply();
-			}
-
-			map.panTo(new google.maps.LatLng(station.lat, station.lon));
-
-			//GET CUSTOMER
-			Helper.Get_Address(station.lat, station.lon).then(function (address) {
-
-				station.address = address;
+				station.stationID = data_use.chargingStationId;
+				station.slots = data_use.slots;
+				station.slotsOccupied = data_use.slotsOccupied;
+				station.lat = data_use.latitude;
+				station.lon = data_use.longitude;
 
 				$scope.currentStation = station;
 				if ($scope.testing === false) {
 					$scope.$apply();
 				}
 
+				map.panTo(new google.maps.LatLng(station.lat, station.lon));
+
+				function Load_2() {
+
+					RESTFactory.Get_Address(station.lat, station.lon).then(function (address) {
+
+						station.address = address;
+
+						$scope.currentStation = station;
+						if ($scope.testing === false) {
+							$scope.$apply();
+						}
+
+					});
+				}
+				
+				setTimeout(Load_2, 100);
+
+			}, function (response) {
+				$scope.station_selected = "false";
+				if ($scope.testing === false) {
+					$scope.$apply();
+				}
 			});
 
-		});
+		}
+
+		setTimeout(Load_1, 100);
+
+
 
 	}
 
@@ -394,7 +406,7 @@ application.controller('Ctrl_Stations', function ($rootScope, $scope, RESTFactor
 		$scope.new_station.lon = lon;
 		$scope.new_station.hasPosition = true;
 
-		Helper.Get_Address(lat, lon).then(function (address) {
+		RESTFactory.Get_Address(lat, lon).then(function (address) {
 			$scope.new_station.address_state = "true";
 			$scope.new_station.address = address;
 			if ($scope.testing === false) {
@@ -454,75 +466,87 @@ application.controller('Ctrl_Stations', function ($rootScope, $scope, RESTFactor
 
 			var data = response.data;
 
-			data.forEach(function (data_use, index) {
-
-				var station = {};
-
-				var ID_STR = data_use.chargingStationId;
-
-				station.stationID = data_use.chargingStationId;
-				station.lat = data_use.latitude;
-				station.lon = data_use.longitude;
-				station.weight = 0;
-
-				stations[ID_STR] = station;
-
-			});
-
-			RESTFactory.Car_Charging_Stations_Get().then(function (response) {
-
-				var data = response.data;
-
+			if (data.length === undefined || data.length < 1) {
+				new Hide_Heatmap();
+			} else {
+				
 				data.forEach(function (data_use, index) {
+
+					var station = {};
 
 					var ID_STR = data_use.chargingStationId;
 
-					stations[ID_STR].weight++;
+					station.stationID = data_use.chargingStationId;
+					station.lat = data_use.latitude;
+					station.lon = data_use.longitude;
+					station.weight = 0;
+
+					stations[ID_STR] = station;
 
 				});
 
-				for (var key in stations) {
+				RESTFactory.Car_Charging_Stations_Get().then(function (response) {
 
-					var station = stations[key];
+					var data = response.data;
 
-					var lat = station.lat;
-					var lon = station.lon;
-					var weight = station.weight;
-					var heat = {};
+					if (data.length !== undefined && data.length > 0) {
 
-					heat.location = new google.maps.LatLng(lat, lon);
-					heat.weight = weight;
+						data.forEach(function (data_use, index) {
 
-					heatmap_data.push(heat);
+							var ID_STR = data_use.chargingStationId;
 
-				}
+							stations[ID_STR].weight++;
 
-				heatmap = new google.maps.visualization.HeatmapLayer({
-					data: heatmap_data
+						});
+
+					}
+
+
+					for (var key in stations) {
+
+						var station = stations[key];
+
+						var lat = station.lat;
+						var lon = station.lon;
+						var weight = station.weight;
+						var heat = {};
+
+						heat.location = new google.maps.LatLng(lat, lon);
+						heat.weight = weight;
+
+						heatmap_data.push(heat);
+
+					}
+
+					heatmap = new google.maps.visualization.HeatmapLayer({
+						data: heatmap_data
+					});
+
+					heatmap.setMap(map);
+
+					var gradient = [
+						'rgba(0, 0, 255, 0)',
+						'rgba(0, 0, 255, 1)',
+						'rgba(0, 127, 255, 1)',
+						'rgba(0, 127, 127, 1)',
+						'rgba(0, 127, 0, 1)',
+						'rgba(0, 255, 0, 1)',
+						'rgba(127, 255, 0, 1)',
+						'rgba(127, 127, 0, 1)',
+						'rgba(127, 0, 0, 1)',
+						'rgba(255, 0, 0, 1)'
+					];
+
+					heatmap.set('gradient', gradient);
+
+					heatmap.set('radius', 50);
+
+				}, function (response) {
+					new Hide_Heatmap();
 				});
 
-				heatmap.setMap(map);
+			}
 
-				var gradient = [
-					'rgba(0, 0, 255, 0)',
-					'rgba(0, 0, 255, 1)',
-					'rgba(0, 127, 255, 1)',
-					'rgba(0, 127, 127, 1)',
-					'rgba(0, 127, 0, 1)',
-					'rgba(0, 255, 0, 1)',
-					'rgba(127, 255, 0, 1)',
-					'rgba(127, 127, 0, 1)',
-					'rgba(127, 0, 0, 1)',
-					'rgba(255, 0, 0, 1)'
-				];
-
-				heatmap.set('gradient', gradient);
-
-				heatmap.set('radius', 50);
-
-			}, function (response) {
-				new Hide_Heatmap();
-			});
 
 		}, function (response) {
 			new Hide_Heatmap();

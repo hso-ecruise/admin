@@ -124,9 +124,6 @@ application.controller('Ctrl_Users', function ($rootScope, $scope, RESTFactory, 
 		customer_old = {};
 		
 		new DisabledEditMode();
-
-		$scope.customer_selected = "false";
-		$scope.$apply();			
 		
 		RESTFactory.Customers_Get_CustomerID(id).then(function(response){
 			
@@ -171,78 +168,96 @@ application.controller('Ctrl_Users', function ($rootScope, $scope, RESTFactory, 
 				$scope.$apply();
 			}		
 			
-			//LOAD BOOKING INFOS
-			RESTFactory.Bookings_Get_CustomerID(id).then(function(response){
+			function Load_1() {
 				
-				var data = response.data;
-				
-				var bookingsOpen = {};
-				var bookingsDone = {};
-				
-				for(var i = 0; i < data.length; i++){
+				//LOAD BOOKING INFOS
+				RESTFactory.Bookings_Get_CustomerID(id).then(function(response){
 					
-					var data_use = data[i];
+					var data = response.data;
 					
-					var booking = {};
+					var bookingsOpen = {};
+					var bookingsDone = {};
 					
-					booking.bookingID = data_use.bookingId;
-					booking.tripID = data_use.tripId;
-					booking.customerID = data_use.customerId;
-					booking.invoiceItemID = data_use.invoiceItemId;
-					booking.plannedDate = Helper.Get_Zeit_Server(data_use.plannedDate);
-					
-					var now = new Date();
-					
-					if(booking.plannedDate.value - now.getTime() < 0){
-						bookingsDone[booking.bookingID] = booking;
-					}else{
-						bookingsOpen[booking.bookingID] = booking;
+					for(var i = 0; i < data.length; i++){
+						
+						var data_use = data[i];
+						
+						var booking = {};
+						
+						booking.bookingID = data_use.bookingId;
+						booking.tripID = data_use.tripId;
+						booking.customerID = data_use.customerId;
+						booking.invoiceItemID = data_use.invoiceItemId;
+						booking.plannedDate = Helper.Get_Zeit_Server(data_use.plannedDate);
+						
+						var now = new Date();
+						
+						if(booking.plannedDate.value - now.getTime() < 0){
+							bookingsDone[booking.bookingID] = booking;
+						}else{
+							bookingsOpen[booking.bookingID] = booking;
+						}
+						
 					}
 					
-				}
-				
-				customer.bookingsOpen = bookingsOpen;
-				customer.bookingsDone = bookingsDone;
-				$scope.currentCustomer = customer;
-				if ($scope.testing === false) {
-					$scope.$apply();
-				}
-				
-			});
+					customer.bookingsOpen = bookingsOpen;
+					customer.bookingsDone = bookingsDone;
+					$scope.currentCustomer = customer;
+					if ($scope.testing === false) {
+						$scope.$apply();
+					}
+					
+				});
+
+			}
 			
-			//LOAD INVOICE INFOS
-			RESTFactory.Invoices_Get_CustomerID(id).then(function(response){
+			function Load_2() {
+
+				//LOAD INVOICE INFOS
+				RESTFactory.Invoices_Get_CustomerID(id).then(function (response) {
 				
-				var data = response.data;
+					var data = response.data;
 				
-				var invoices = {};
+					var invoices = {};
 				
-				for(var i = 0; i < data.length; i++){
+					for (var i = 0; i < data.length; i++) {
 					
-					var data_use = data[i];
+						var data_use = data[i];
 					
-					var invoice = {};
+						var invoice = {};
 					
-					invoice.invoiceID = data_use.invoiceId;
-					invoice.totalAmount = data_use.totalAmount;
-					invoice.paid = data_use.paid;
-					invoice.paidText = "Nicht bezahlt";
-					if(invoice.paid === true){ invoice.paidText = "Bezahlt"; }
+						invoice.invoiceID = data_use.invoiceId;
+						invoice.totalAmount = data_use.totalAmount;
+						invoice.paid = data_use.paid;
+						invoice.paidText = "Nicht bezahlt";
+						if (invoice.paid === true) { invoice.paidText = "Bezahlt"; }
 					
 					
-					invoices[invoice.invoiceID] = invoice;
+						invoices[invoice.invoiceID] = invoice;
 					
-				}
+					}
 				
-				customer.invoices = invoices;
-				$scope.currentCustomer = customer;
-				if ($scope.testing === false) {
-					$scope.$apply();
-				}
+					customer.invoices = invoices;
+					$scope.currentCustomer = customer;
+					if ($scope.testing === false) {
+						$scope.$apply();
+					}
 				
-			});
+				});
+
+			}
+			
+			setTimeout(Load_1, 100);
+			setTimeout(Load_2, 200);
 			
 			
+		}, function (response) {
+			
+			$scope.customer_selected = "false";
+			if ($scope.testing === false) {
+				$scope.$apply();
+			}
+
 		});
 		
 	}

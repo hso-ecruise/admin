@@ -299,58 +299,62 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
                 data = response.data;
             }
 
-            data.forEach(function(data_use, index){
+			if (data.length > 0) {
 
-                var vehicle = {};
+				data.forEach(function (data_use, index) {
 
-                var ID_STR = data_use.carId;
+					var vehicle = {};
 
-                vehicle.vehicleID = data_use.carId;
-                vehicle.licensePlate = data_use.licensePlate;
-                vehicle.chargingState = data_use.chargingState;
-                vehicle.bookingState = data_use.bookingState;
-                vehicle.bookingStateObj = BOOKING_STATES[data_use.bookingState];
-                vehicle.loadingStateObj = LOADING_STATES[data_use.chargingState];
-                vehicle.mileage = data_use.mileage;
-                vehicle.chargeLevel = data_use.chargeLevel;
-                vehicle.kilowatts = data_use.kilowatts;
-                vehicle.manufacturer = data_use.manufacturer;
-                vehicle.model = data_use.model;
-                vehicle.constructionYear = data_use.yearOfConstruction;
-                vehicle.lastLat = data_use.lastKnownPositionLatitude;
-                vehicle.lastLon = data_use.lastKnownPositionLongitude;
-                vehicle.lastDate = Helper.Get_Zeit_Server(data_use.lastKnownPositionDate);
-                vehicle.address_state = "false";
+					var ID_STR = data_use.carId;
 
-                if(filter === null || filter === undefined ||
-                   filter.toLowerCase() === vehicle.bookingStateObj.be.toLowerCase() || filter.toLowerCase() === vehicle.loadingStateObj.be.toLowerCase() ||
-                   filter.toLowerCase() === vehicle.bookingStateObj.text.toLowerCase() || filter.toLowerCase() === vehicle.loadingStateObj.text.toLowerCase()){
+					vehicle.vehicleID = data_use.carId;
+					vehicle.licensePlate = data_use.licensePlate;
+					vehicle.chargingState = data_use.chargingState;
+					vehicle.bookingState = data_use.bookingState;
+					vehicle.bookingStateObj = BOOKING_STATES[data_use.bookingState];
+					vehicle.loadingStateObj = LOADING_STATES[data_use.chargingState];
+					vehicle.mileage = data_use.mileage;
+					vehicle.chargeLevel = data_use.chargeLevel;
+					vehicle.kilowatts = data_use.kilowatts;
+					vehicle.manufacturer = data_use.manufacturer;
+					vehicle.model = data_use.model;
+					vehicle.constructionYear = data_use.yearOfConstruction;
+					vehicle.lastLat = data_use.lastKnownPositionLatitude;
+					vehicle.lastLon = data_use.lastKnownPositionLongitude;
+					vehicle.lastDate = Helper.Get_Zeit_Server(data_use.lastKnownPositionDate);
+					vehicle.address_state = "false";
+
+					if (filter === null || filter === undefined ||
+						filter.toLowerCase() === vehicle.bookingStateObj.be.toLowerCase() || filter.toLowerCase() === vehicle.loadingStateObj.be.toLowerCase() ||
+						filter.toLowerCase() === vehicle.bookingStateObj.text.toLowerCase() || filter.toLowerCase() === vehicle.loadingStateObj.text.toLowerCase()) {
 
 
-                    new Cars_AddMarker(vehicle);
+						new Cars_AddMarker(vehicle);
 
-                    vehicles_all[ID_STR] = vehicle;
-                    $scope.vehicles = vehicles_all;
-					if ($scope.testing === false) {
-						$scope.$apply();
-					}
-
-                    Helper.Get_Address(vehicle.lastLat, vehicle.lastLon).then(function(address){
-
-                        vehicle.address_state = "true";
-                        vehicle.address = address;
-
-                        vehicles_all[ID_STR] = vehicle;
-                        $scope.vehicles = vehicles_all;
+						vehicles_all[ID_STR] = vehicle;
+						$scope.vehicles = vehicles_all;
 						if ($scope.testing === false) {
 							$scope.$apply();
 						}
 
-                    });
+						Helper.Get_Address(vehicle.lastLat, vehicle.lastLon).then(function (address) {
 
-                }
+							vehicle.address_state = "true";
+							vehicle.address = address;
 
-            });
+							vehicles_all[ID_STR] = vehicle;
+							$scope.vehicles = vehicles_all;
+							if ($scope.testing === false) {
+								$scope.$apply();
+							}
+
+						});
+
+					}
+
+				});
+
+			}	
 
         });
 

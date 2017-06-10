@@ -129,7 +129,7 @@ application.controller('Ctrl_Main', function ($rootScope, $scope, Helper, $locat
 		Helper.Cookie_Set("loggedIN", false);
 		Helper.Cookie_Set("token", "");
 		Helper.Cookie_Set("customerID", "");
-		alert($scope.testing);
+		
 		if ($scope.testing === false) {
 			$location.path('/start');
 		}

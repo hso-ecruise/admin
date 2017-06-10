@@ -2,10 +2,9 @@
 
 /**
  * @ngdoc function
- * @name webApp.controller:MainCtrl
  * @description
- * # MainCtrl
- * Controller of the webApp
+ * # Factories
+ * Controller of the adminApp
  */
 
 const IP = 'https://api.ecruise.me/v1';
@@ -23,14 +22,14 @@ application.service('GetCaller', function ($http, $rootScope) {
      * @param {} token
      * @return get
      */
-    this.Get = function (url, body, token) {
-		
+	this.Get = function (url, body, token) {
+
 		var myToken = $rootScope.token;
-		
+
 		var get = {};
-		
-		if(token === true){
-			
+
+		if (token === true) {
+
 			get = $http({
 				method: "get",
 				url: url,
@@ -39,16 +38,16 @@ application.service('GetCaller', function ($http, $rootScope) {
 					'access_token': myToken
 				}
 			});
-		}else{
+		} else {
 			get = $http({
 				method: "get",
 				url: url,
 				data: body
 			});
 		}
-		
+
 		return get;
-    };
+	};
 	/**
 	 * Description
 	 * @method GetShort
@@ -57,13 +56,13 @@ application.service('GetCaller', function ($http, $rootScope) {
 	 * @return get
 	 */
 	this.GetShort = function (url, token) {
-		
+
 		var myToken = $rootScope.token;
-		
+
 		var get = {};
-		
-		if(token === true){
-			
+
+		if (token === true) {
+
 			get = $http({
 				method: "get",
 				url: url,
@@ -71,15 +70,15 @@ application.service('GetCaller', function ($http, $rootScope) {
 					'access_token': myToken
 				}
 			});
-		}else{
+		} else {
 			get = $http({
 				method: "get",
 				url: url
 			});
 		}
-		
+
 		return get;
-    };
+	};
 });
 
 application.service('PostCaller', function ($http, $rootScope) {
@@ -92,11 +91,11 @@ application.service('PostCaller', function ($http, $rootScope) {
      * @param {} token
      * @return post
      */
-    this.Post = function (url, body, token) {
-		
+	this.Post = function (url, body, token) {
+
 		var post = {};
-		
-		if(token === true){
+
+		if (token === true) {
 			post = $http({
 				method: "post",
 				url: url,
@@ -105,17 +104,17 @@ application.service('PostCaller', function ($http, $rootScope) {
 					'access_token': $rootScope.token
 				}
 			});
-		}else{
+		} else {
 			post = $http({
 				method: "post",
 				url: url,
 				data: body
-			});			
+			});
 		}
-		
+
 		return post;
-		
-    };
+
+	};
 
 });
 
@@ -129,11 +128,11 @@ application.service('PatchCaller', function ($http, $rootScope) {
      * @param {} token
      * @return patch
      */
-    this.Patch = function (url, body, token) {
-		
+	this.Patch = function (url, body, token) {
+
 		var patch = {};
-		
-		if(token === true){
+
+		if (token === true) {
 			patch = $http({
 				method: "patch",
 				url: url,
@@ -142,17 +141,17 @@ application.service('PatchCaller', function ($http, $rootScope) {
 					'access_token': $rootScope.token
 				}
 			});
-		}else{
+		} else {
 			patch = $http({
 				method: "patch",
 				url: url,
 				data: body
 			});
 		}
-		
+
 		return patch;
-		
-    };
+
+	};
 
 });
 
@@ -161,7 +160,6 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 
 	return {
 
-	//OTHERS
 		/**
 		 * Description
 		 * @method GetAddress
@@ -169,7 +167,7 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 		 * @param {} lon
 		 * @return orig
 		 */
-		Get_Address: function(lat, lon){
+		Get_Address: function (lat, lon) {
 			var url = "https://maps.googleapis.com/maps/api/geocode/json?latlng=";
 			url += lat + "," + lon + "&key=" + API_KEY;
 
@@ -212,17 +210,17 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 			//var orig = Promise.resolve(GetCaller.Get(url, null, false));
 			//return orig;
 		},
-		
-		
-		
-		
-	//TRIPS
+
+
+
+
+		//TRIPS
 		/**
 		 * Description
 		 * @method Trips_Get
 		 * @return orig
 		 */
-		Trips_Get: function(){
+		Trips_Get: function () {
 			var url = IP + "/trips";
 			var orig = Promise.resolve(GetCaller.GetShort(url, true));
 			return orig;
@@ -233,7 +231,7 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 		 * @param {} id
 		 * @return orig
 		 */
-		Trips_Get_TripID: function(id){
+		Trips_Get_TripID: function (id) {
 			var url = IP + "/trips/" + id;
 			var orig = Promise.resolve(GetCaller.GetShort(url, true));
 			return orig;
@@ -244,24 +242,24 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 		 * @param {} id
 		 * @return orig
 		 */
-		Trips_Get_CarID: function(id){
+		Trips_Get_CarID: function (id) {
 			var url = IP + "/trips/by-car/" + id;
 			var orig = Promise.resolve(GetCaller.GetShort(url, true));
 			return orig;
 		},
-		
+
 		/**
 		 * Description
 		 * @method Trips_Post
 		 * @param {} data
 		 * @return orig
 		 */
-		Trips_Post: function(data){
+		Trips_Post: function (data) {
 			var url = IP + "/trips";
 			var orig = Promise.resolve(PostCaller.Get(url, data, true));
 			return orig;
 		},
-		
+
 		/**
 		 * Description
 		 * @method Trips_Patch
@@ -269,16 +267,16 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 		 * @param {} data
 		 * @return orig
 		 */
-		Trips_Patch: function(id, data){
+		Trips_Patch: function (id, data) {
 			var url = IP + "/trips?TripId=" + id;
 			var orig = Promise.resolve(PatchCaller.Patch(url, data, true));
 			return orig;
 		},
-		
-		
-		
-		
-	//PUBLIC
+
+
+
+
+		//PUBLIC
 		/**
 		 * Description
 		 * @method Login_Get
@@ -286,7 +284,7 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 		 * @param {} data
 		 * @return orig
 		 */
-		Login_Get: function(email, data){
+		Login_Get: function (email, data) {
 			var url = IP + "/public/login/" + email;
 			var orig = Promise.resolve(GetCaller.Get(url, data, false));
 			return orig;
@@ -298,7 +296,7 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 		 * @param {} password
 		 * @return orig
 		 */
-		User_Login: function(email, password){
+		User_Login: function (email, password) {
 			var url = IP + "/public/login/" + email;
 			var orig = Promise.resolve(PostCaller.Post(url, password, false));
 			return orig;
@@ -309,22 +307,22 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 		 * @param {} data
 		 * @return orig
 		 */
-		User_Register: function(data){
+		User_Register: function (data) {
 			var url = IP + "/public/register";
 			var orig = Promise.resolve(PostCaller.Post(url, data, false));
 			return orig;
 		},
-		
-		
-		
-	
-	//CUSTOMERS
+
+
+
+
+		//CUSTOMERS
 		/**
 		 * Description
 		 * @method Customers_Get
 		 * @return orig
 		 */
-		Customers_Get: function(){
+		Customers_Get: function () {
 			var url = IP + "/customers";
 			var orig = Promise.resolve(GetCaller.GetShort(url, true));
 			return orig;
@@ -335,7 +333,7 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 		 * @param {} id
 		 * @return orig
 		 */
-		Customers_Get_CustomerID: function(id){
+		Customers_Get_CustomerID: function (id) {
 			var url = IP + "/customers/" + id;
 			var orig = Promise.resolve(GetCaller.GetShort(url, true));
 			return orig;
@@ -346,24 +344,24 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 		 * @param {} name
 		 * @return orig
 		 */
-		Customers_Get_Name: function(name){
+		Customers_Get_Name: function (name) {
 			var url = IP + "/customers/by-lastname/" + name;
 			var orig = Promise.resolve(GetCaller.GetShort(url, true));
 			return orig;
 		},
-		
+
 		/**
 		 * Description
 		 * @method Customers_Post
 		 * @param {} data
 		 * @return orig
 		 */
-		Customers_Post: function(data){
+		Customers_Post: function (data) {
 			var url = IP + "/public/register";		// "/customers";
 			var orig = Promise.resolve(PostCaller.Post(url, data, true));
 			return orig;
 		},
-		
+
 		/**
 		 * Description
 		 * @method Customers_Patch_Password
@@ -371,7 +369,7 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 		 * @param {} pwd
 		 * @return orig
 		 */
-		Customers_Patch_Password: function(id, pwd){
+		Customers_Patch_Password: function (id, pwd) {
 			var url = IP + "/customers/" + id + "/password";
 			var orig = Promise.resolve(PatchCaller.Patch(url, pwd, true));
 			return orig;
@@ -383,7 +381,7 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 		 * @param {} email
 		 * @return orig
 		 */
-		Customers_Patch_Email: function(id, email){
+		Customers_Patch_Email: function (id, email) {
 			var url = IP + "/customers/" + id + "/email";
 			var orig = Promise.resolve(PatchCaller.Patch(url, email, true));
 			return orig;
@@ -395,7 +393,7 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 		 * @param {} phoneNr
 		 * @return orig
 		 */
-		Customers_Patch_PhoneNr: function(id, phoneNr){
+		Customers_Patch_PhoneNr: function (id, phoneNr) {
 			var url = IP + "/customers/" + id + "/phone-number";
 			var orig = Promise.resolve(PatchCaller.Patch(url, phoneNr, true));
 			return orig;
@@ -407,7 +405,7 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 		 * @param {} address
 		 * @return orig
 		 */
-		Customers_Patch_Address: function(id, address){
+		Customers_Patch_Address: function (id, address) {
 			var url = IP + "/customers/" + id + "/address";
 			var orig = Promise.resolve(PatchCaller.Patch(url, address, true));
 			return orig;
@@ -419,7 +417,7 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 		 * @param {} chipID
 		 * @return orig
 		 */
-		Customers_Patch_ChipCard: function(id, chipID){
+		Customers_Patch_ChipCard: function (id, chipID) {
 			var url = IP + "/customers/" + id + "/chipcarduid";
 			var orig = Promise.resolve(PatchCaller.Patch(url, chipID, true));
 			return orig;
@@ -431,21 +429,21 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 		 * @param {} verified
 		 * @return orig
 		 */
-		Customers_Patch_Verified: function(id, verified){
+		Customers_Patch_Verified: function (id, verified) {
 			var url = IP + "/customers/" + id + "/verified";
 			var orig = Promise.resolve(PatchCaller.Patch(url, verified, true));
 			return orig;
 		},
-		
-		
-		
-	//CARS
+
+
+
+		//CARS
 		/**
 		 * Description
 		 * @method Cars_Get
 		 * @return orig
 		 */
-		Cars_Get: function(){
+		Cars_Get: function () {
 			var url = IP + "/cars";
 			var orig = Promise.resolve(GetCaller.GetShort(url, true));
 			return orig;
@@ -456,7 +454,7 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 		 * @param {} id
 		 * @return orig
 		 */
-		Cars_Get_CarID: function(id){
+		Cars_Get_CarID: function (id) {
 			var url = IP + "/cars/" + id;
 			var orig = Promise.resolve(GetCaller.GetShort(url, true));
 			return orig;
@@ -468,7 +466,7 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 		 * @param {} lon
 		 * @return orig
 		 */
-		Cars_Get_ClosestTo: function(lat, lon){
+		Cars_Get_ClosestTo: function (lat, lon) {
 			var url = IP + "/cars/closest-to/" + lat + "/" + lon;
 			var orig = Promise.resolve(GetCaller.GetShort(url, true));
 			return orig;
@@ -478,24 +476,24 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 		 * @method Cars_Get_ChargeLevelPerMinute
 		 * @return orig
 		 */
-		Cars_Get_ChargeLevelPerMinute: function(){
+		Cars_Get_ChargeLevelPerMinute: function () {
 			var url = IP + "/cars/charge-level-per-minute";
 			var orig = Promise.resolve(GetCaller.GetShort(url, true));
 			return orig;
 		},
-		
+
 		/**
 		 * Description
 		 * @method Cars_Post
 		 * @param {} data
 		 * @return orig
 		 */
-		Cars_Post: function(data){
+		Cars_Post: function (data) {
 			var url = IP + "/cars";
 			var orig = Promise.resolve(PostCaller.Post(url, data, true));
 			return orig;
 		},
-		
+
 		/**
 		 * Description
 		 * @method Cars_Patch_ChargingState
@@ -503,7 +501,7 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 		 * @param {} data
 		 * @return orig
 		 */
-		Cars_Patch_ChargingState: function(id, data){
+		Cars_Patch_ChargingState: function (id, data) {
 			var url = IP + "/cars/" + id + "/chargingstate";
 			var orig = Promise.resolve(PatchCaller.Patch(url, data, true));
 			return orig;
@@ -515,7 +513,7 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 		 * @param {} data
 		 * @return orig
 		 */
-		Cars_Patch_BookingState: function(id, data){
+		Cars_Patch_BookingState: function (id, data) {
 			var url = IP + "/cars/" + id + "/bookingstate";
 			var orig = Promise.resolve(PatchCaller.Patch(url, data, true));
 			return orig;
@@ -527,7 +525,7 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 		 * @param {} data
 		 * @return orig
 		 */
-		Cars_Patch_Mileage: function(id, data){
+		Cars_Patch_Mileage: function (id, data) {
 			var url = IP + "/cars/" + id + "/mileage";
 			var orig = Promise.resolve(PatchCaller.Patch(url, data, true));
 			return orig;
@@ -539,7 +537,7 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 		 * @param {} data
 		 * @return orig
 		 */
-		Cars_Patch_ChargeLevel: function(id, data){
+		Cars_Patch_ChargeLevel: function (id, data) {
 			var url = IP + "/cars/" + id + "/chargelevel";
 			var orig = Promise.resolve(PatchCaller.Patch(url, data, true));
 			return orig;
@@ -552,22 +550,22 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 		 * @param {} lon
 		 * @return orig
 		 */
-		Cars_Patch_Position: function(id, lat, lon){
+		Cars_Patch_Position: function (id, lat, lon) {
 			var url = IP + "/cars/" + id + "/position/" + lat + "/" + lon;
 			var orig = Promise.resolve(PatchCaller.Patch(url, null));
 			return orig;
 		},
-		
-		
-		
-		
-	//CHARGING-STATION
+
+
+
+
+		//CHARGING-STATION
 		/**
 		 * Description
 		 * @method Charging_Stations_Get
 		 * @return orig
 		 */
-		Charging_Stations_Get: function(){
+		Charging_Stations_Get: function () {
 			var url = IP + "/charging-stations";
 			var orig = Promise.resolve(GetCaller.GetShort(url, true));
 			return orig;
@@ -578,7 +576,7 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 		 * @param {} id
 		 * @return orig
 		 */
-		Charging_Stations_Get_Charging_StationID: function(id){
+		Charging_Stations_Get_Charging_StationID: function (id) {
 			var url = IP + "/charging-stations/" + id;
 			var orig = Promise.resolve(GetCaller.GetShort(url, true));
 			return orig;
@@ -590,34 +588,34 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 		 * @param {} lon
 		 * @return orig
 		 */
-		Charging_Stations_Get_ClosestTo: function(lat, lon){
+		Charging_Stations_Get_ClosestTo: function (lat, lon) {
 			var url = IP + "/charging-stations/closest-to/" + lat + "/" + lon;
 			var orig = Promise.resolve(GetCaller.GetShort(url, true));
 			return orig;
 		},
-		
+
 		/**
 		 * Description
 		 * @method Charging_Stations_Post
 		 * @param {} data
 		 * @return orig
 		 */
-		Charging_Stations_Post: function(data){
+		Charging_Stations_Post: function (data) {
 			var url = IP + "/charging-stations";
 			var orig = Promise.resolve(PostCaller.Post(url, data, true));
 			return orig;
 		},
-		
-		
-		
-	
-	//CAR CHARGING STATION
+
+
+
+
+		//CAR CHARGING STATION
 		/**
 		 * Description
 		 * @method Car_Charging_Stations_Get
 		 * @return orig
 		 */
-		Car_Charging_Stations_Get: function(){
+		Car_Charging_Stations_Get: function () {
 			var url = IP + "/car-charging-stations";
 			var orig = Promise.resolve(GetCaller.GetShort(url, true));
 			return orig;
@@ -628,7 +626,7 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 		 * @param {} id
 		 * @return orig
 		 */
-		Car_Charging_Stations_Get_CarID: function(id){
+		Car_Charging_Stations_Get_CarID: function (id) {
 			var url = IP + "/car-charging-stations/by-car/" + id;
 			var orig = Promise.resolve(GetCaller.GetShort(url, true));
 			return orig;
@@ -639,24 +637,24 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 		 * @param {} id
 		 * @return orig
 		 */
-		Car_Charging_Stations_Get_ChargingStationID: function(id){
+		Car_Charging_Stations_Get_ChargingStationID: function (id) {
 			var url = IP + "/car-charging-stations/by-charging-station/" + id;
 			var orig = Promise.resolve(GetCaller.GetShort(url, true));
 			return orig;
 		},
-		
+
 		/**
 		 * Description
 		 * @method Car_Charging_Stations_Post
 		 * @param {} data
 		 * @return orig
 		 */
-		Car_Charging_Stations_Post: function(data){
+		Car_Charging_Stations_Post: function (data) {
 			var url = IP + "/car-charging-stations";
 			var orig = Promise.resolve(PostCaller.Post(url, data, true));
 			return orig;
 		},
-		
+
 		/**
 		 * Description
 		 * @method Car_Charging_Stations_Patch_ChargeEnd
@@ -664,22 +662,22 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 		 * @param {} data
 		 * @return orig
 		 */
-		Car_Charging_Stations_Patch_ChargeEnd: function(id, data){
+		Car_Charging_Stations_Patch_ChargeEnd: function (id, data) {
 			var url = IP + "/car-charging-stations/" + id + "/charge-end/";
 			var orig = Promise.resolve(PatchCaller.Patch(url, data, true));
 			return orig;
 		},
-		
-	
-	
-	
-	//INVOICES
+
+
+
+
+		//INVOICES
 		/**
 		 * Description
 		 * @method Invoices_Get
 		 * @return orig
 		 */
-		Invoices_Get: function(){
+		Invoices_Get: function () {
 			var url = IP + "/invoices";
 			var orig = Promise.resolve(GetCaller.GetShort(url, true));
 			return orig;
@@ -690,7 +688,7 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 		 * @param {} id
 		 * @return orig
 		 */
-		Invoices_Get_InvoiceID: function(id){
+		Invoices_Get_InvoiceID: function (id) {
 			var url = IP + "/invoices/" + id;
 			var orig = Promise.resolve(GetCaller.GetShort(url, true));
 			return orig;
@@ -701,7 +699,7 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 		 * @param {} id
 		 * @return orig
 		 */
-		Invoices_Get_CustomerID: function(id){
+		Invoices_Get_CustomerID: function (id) {
 			var url = IP + "/invoices/by-customer/" + id;
 			var orig = Promise.resolve(GetCaller.GetShort(url, true));
 			return orig;
@@ -712,7 +710,7 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 		 * @param {} id
 		 * @return orig
 		 */
-		Invoices_Get_Items: function(id){
+		Invoices_Get_Items: function (id) {
 			var url = IP + "/invoices/" + id + "/items";
 			var orig = Promise.resolve(GetCaller.GetShort(url, true));
 			return orig;
@@ -723,7 +721,7 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 		 * @param {} itemID
 		 * @return orig
 		 */
-		Invoices_Get_Items_ItemID: function(itemID){
+		Invoices_Get_Items_ItemID: function (itemID) {
 			var url = IP + "/invoices/by-invoice-item/" + itemID;
 			var orig = Promise.resolve(GetCaller.GetShort(url, true));
 			return orig;
@@ -735,12 +733,12 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 		 * @param {} itemID
 		 * @return orig
 		 */
-		Invoices_Get_InvoiceID_Items_ItemID: function(id, itemID){
+		Invoices_Get_InvoiceID_Items_ItemID: function (id, itemID) {
 			var url = IP + "/invoices/" + id + "/items/" + itemID;
 			var orig = Promise.resolve(GetCaller.GetShort(url, true));
 			return orig;
 		},
-		
+
 		/**
 		 * Invoices_Post: function(data){
 		 * var url = IP + "/invoices";
@@ -752,12 +750,12 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 		 * @param {} data
 		 * @return orig
 		 */
-		Invoices_Post_Items: function(id, data){
+		Invoices_Post_Items: function (id, data) {
 			var url = IP + "/invoices/" + id + "/items";
 			var orig = Promise.resolve(PostCaller.Post(url, data, true));
 			return orig;
 		},
-		
+
 		/**
 		 * Description
 		 * @method Invoices_Patch_Paid
@@ -765,22 +763,22 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 		 * @param {} data
 		 * @return orig
 		 */
-		Invoices_Patch_Paid: function(id, data){
+		Invoices_Patch_Paid: function (id, data) {
 			var url = IP + "/invoices/" + id + "/paid";
 			var orig = Promise.resolve(PatchCaller.Patch(url, data, true));
 			return orig;
 		},
 
-		
-		
-		
-	//BOOKINGS
+
+
+
+		//BOOKINGS
 		/**
 		 * Description
 		 * @method Bookings_Get
 		 * @return orig
 		 */
-		Bookings_Get: function(){
+		Bookings_Get: function () {
 			var url = IP + "/bookings";
 			var orig = Promise.resolve(GetCaller.GetShort(url, true));
 			return orig;
@@ -791,7 +789,7 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 		 * @param {} id
 		 * @return orig
 		 */
-		Bookings_Get_BookingID: function(id){
+		Bookings_Get_BookingID: function (id) {
 			var url = IP + "/bookings/" + id;
 			var orig = Promise.resolve(GetCaller.GetShort(url, true));
 			return orig;
@@ -802,7 +800,7 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 		 * @param {} id
 		 * @return orig
 		 */
-		Bookings_Get_CustomerID: function(id){
+		Bookings_Get_CustomerID: function (id) {
 			var url = IP + "/bookings/by-customer/" + id;
 			var orig = Promise.resolve(GetCaller.GetShort(url, true));
 			return orig;
@@ -813,7 +811,7 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 		 * @param {} id
 		 * @return orig
 		 */
-		Bookings_Get_TripID: function(id){
+		Bookings_Get_TripID: function (id) {
 			var url = IP + "/bookings/by-trip/" + id;
 			var orig = Promise.resolve(GetCaller.GetShort(url, true));
 			return orig;
@@ -824,34 +822,34 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 		 * @param {} date
 		 * @return orig
 		 */
-		Bookings_Get_Date: function(date){
+		Bookings_Get_Date: function (date) {
 			var url = IP + "/bookings/date/" + date;
 			var orig = Promise.resolve(GetCaller.GetShort(url, true));
 			return orig;
 		},
-		
+
 		/**
 		 * Description
 		 * @method Bookings_Post
 		 * @param {} data
 		 * @return orig
 		 */
-		Bookings_Post: function(data){
+		Bookings_Post: function (data) {
 			var url = IP + "/bookings";
 			var orig = Promise.resolve(PostCaller.Post(url, data, true));
 			return orig;
 		},
-	
-	
-	
-	
-	//MAINTENANCES
+
+
+
+
+		//MAINTENANCES
 		/**
 		 * Description
 		 * @method Maintances_Get
 		 * @return orig
 		 */
-		Maintances_Get: function(){
+		Maintances_Get: function () {
 			var url = IP + '/maintenances';
 			var orig = Promise.resolve(GetCaller.GetShort(url, true));
 			return orig;
@@ -862,34 +860,34 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 		 * @param {} id
 		 * @return orig
 		 */
-		Maintances_Get_MaintenanceID: function(id){
+		Maintances_Get_MaintenanceID: function (id) {
 			var url = IP + '/maintenances/' + id;
 			var orig = Promise.resolve(GetCaller.GetShort(url, true));
 			return orig;
 		},
-		
+
 		/**
 		 * Description
 		 * @method Maintances_Post
 		 * @param {} data
 		 * @return orig
 		 */
-		Maintances_Post: function(data){
+		Maintances_Post: function (data) {
 			var url = IP + "/maintenances";
 			var orig = Promise.resolve(PostCaller.Post(url, data, true));
 			return orig;
 		},
-		
-		
-		
-		
-	//CAR MAINTENANCES
+
+
+
+
+		//CAR MAINTENANCES
 		/**
 		 * Description
 		 * @method Car_Maintances_Get
 		 * @return orig
 		 */
-		Car_Maintances_Get: function(){
+		Car_Maintances_Get: function () {
 			var url = IP + '/car-maintenances';
 			var orig = Promise.resolve(GetCaller.GetShort(url, true));
 			return orig;
@@ -900,7 +898,7 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 		 * @param {} id
 		 * @return orig
 		 */
-		Car_Maintances_Get_CarMaintenanceID: function(id){
+		Car_Maintances_Get_CarMaintenanceID: function (id) {
 			var url = IP + '/car-maintenances/' + id;
 			var orig = Promise.resolve(GetCaller.GetShort(url, true));
 			return orig;
@@ -911,7 +909,7 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 		 * @param {} id
 		 * @return orig
 		 */
-		Car_Maintances_Get_MaintenanceID: function(id){
+		Car_Maintances_Get_MaintenanceID: function (id) {
 			var url = IP + '/car-maintenances/by-maintenance/' + id;
 			var orig = Promise.resolve(GetCaller.GetShort(url, true));
 			return orig;
@@ -922,7 +920,7 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 		 * @param {} id
 		 * @return orig
 		 */
-		Car_Maintances_Get_CarID: function(id){
+		Car_Maintances_Get_CarID: function (id) {
 			var url = IP + '/car-maintenances/by-car/' + id;
 			var orig = Promise.resolve(GetCaller.GetShort(url, true));
 			return orig;
@@ -933,24 +931,24 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 		 * @param {} id
 		 * @return orig
 		 */
-		Car_Maintances_Get_InvoiceItemID: function(id){
+		Car_Maintances_Get_InvoiceItemID: function (id) {
 			var url = IP + '/car-maintenances/by-invoice-item/' + id;
 			var orig = Promise.resolve(GetCaller.GetShort(url, true));
 			return orig;
 		},
-		
+
 		/**
 		 * Description
 		 * @method Car_Maintances_Post
 		 * @param {} data
 		 * @return orig
 		 */
-		Car_Maintances_Post: function(data){
+		Car_Maintances_Post: function (data) {
 			var url = IP + "/car-maintenances";
 			var orig = Promise.resolve(PostCaller.Post(url, data, true));
 			return orig;
 		},
-		
+
 		/**
 		 * Description
 		 * @method Car_Maintances_Patch_CompletedDate
@@ -958,19 +956,19 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 		 * @param {} data
 		 * @return orig
 		 */
-		Car_Maintances_Patch_CompletedDate: function(id, data){
+		Car_Maintances_Patch_CompletedDate: function (id, data) {
 			var url = IP + "/car-maintenances/" + id + "/completed-date";
 			var orig = Promise.resolve(PatchCaller.Patch(url, data, true));
 			return orig;
 		},
-		
-	//STATISTICS
+
+		//STATISTICS
 		/**
 		 * Description
 		 * @method Statistics_Get
 		 * @return orig
 		 */
-		Statistics_Get: function(){
+		Statistics_Get: function () {
 			var url = IP + '/statistics';
 			var orig = Promise.resolve(GetCaller.GetShort(url, true));
 			return orig;
@@ -981,14 +979,14 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 		 * @param {} date
 		 * @return orig
 		 */
-		Statistics_Get_ByDate: function(date){
+		Statistics_Get_ByDate: function (date) {
 			var url = IP + '/statistics/' + date;
 			var orig = Promise.resolve(GetCaller.GetShort(url, true));
 			return orig;
 		}
-		
-		
-		
+
+
+
 	};
 
 });
@@ -997,7 +995,7 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 
 application.factory('Helper', function (RESTFactory, $cookies) {
 
-    return {
+	return {
 
 		/**
 		 * Description
@@ -1068,13 +1066,16 @@ application.factory('Helper', function (RESTFactory, $cookies) {
 				return date;
 			}
 
-			//ALTERNATVE			
-			if (value[value.length - 1] !== 'Z') {
-			//	value += "Z";
-			}			
+			if (!(value[value.length - 1] === 'T' && value[value.length - 2] === 'M' && value[value.length - 3] === 'G')) {
+				//ALTERNATVE
+				if (value[value.length - 1] !== 'Z') {
+					value += "Z";
+				}
+			}
+
 
 			var now = new Date(value);
-			
+
 			date.state = true;
 			date.date = now.getDate() + "." + (now.getMonth() + 1) + "." + now.getFullYear();
 			date.time = now.getHours() + ":" + now.getMinutes();
@@ -1096,7 +1097,7 @@ application.factory('Helper', function (RESTFactory, $cookies) {
 			return date;
 
 		}
-	
-    };
+
+	};
 
 });
