@@ -214,7 +214,7 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 
 
 
-		//TRIPS
+	//TRIPS
 		/**
 		 * Description
 		 * @method Trips_Get
@@ -276,7 +276,7 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 
 
 
-		//PUBLIC
+	//PUBLIC
 		/**
 		 * Description
 		 * @method Login_Get
@@ -316,7 +316,7 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 
 
 
-		//CUSTOMERS
+	//CUSTOMERS
 		/**
 		 * Description
 		 * @method Customers_Get
@@ -437,7 +437,7 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 
 
 
-		//CARS
+	//CARS
 		/**
 		 * Description
 		 * @method Cars_Get
@@ -559,7 +559,7 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 
 
 
-		//CHARGING-STATION
+	//CHARGING-STATION
 		/**
 		 * Description
 		 * @method Charging_Stations_Get
@@ -606,10 +606,23 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 			return orig;
 		},
 
+		/**
+		 * Description
+		 * @method Charging_Stations_Post
+		 * @param {} data
+		 * @return orig
+		 */
+		Charging_Stations_Patch_OccupiedSlots: function (id, slots) {
+			var url = IP + "/charging-stations/" + id + "/slots-occupied";
+			var orig = Promise.resolve(PatchCaller.Patch(url, slots, true));
+			return orig;
+		},
 
 
 
-		//CAR CHARGING STATION
+
+
+	//CAR CHARGING STATION
 		/**
 		 * Description
 		 * @method Car_Charging_Stations_Get
@@ -671,7 +684,7 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 
 
 
-		//INVOICES
+	//INVOICES
 		/**
 		 * Description
 		 * @method Invoices_Get
@@ -772,7 +785,7 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 
 
 
-		//BOOKINGS
+	//BOOKINGS
 		/**
 		 * Description
 		 * @method Bookings_Get

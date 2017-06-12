@@ -53,7 +53,10 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
         },
         car_standing_user:{
             icon: "images/icons/car_standing_user.png"
-        }
+		},
+		station_available: {
+			icon: "images/icons/station_available.png"
+		}
     };
 
     var LOADING_STATES = {
@@ -103,9 +106,10 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
 	 * @param {} image_string
 	 * @param {} lat
 	 * @param {} lon
+	 * @param {} map
 	 * @return 
 	 */
-    function AddMarker(id, title, content, image_string, lat, lon){
+    function AddMarker(id, title, content, image_string, lat, lon, map){
 
         var img = {
             url: 'images/icons/car_available.png',
@@ -191,13 +195,13 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
 
                         var content = "Das Fahrzeug lädt. Ladezustand " + parseInt(bat) + " (" + car.loadingStateObj.text + "). Voraussichtliches Ende gegen " + Helper.Get_Zeit(endTime).time + ", bei einer Aufladung von " + loadingPerSecond + "% pro Minute.";
                         if(bat < 25){
-                            new AddMarker(carID, title, content, "car_loading_00", lat, lon);
+                            new AddMarker(carID, title, content, "car_loading_00", lat, lon, map);
                         }else if (bat < 50){
-                            new AddMarker(carID, title, content, "car_loading_25", lat, lon);
+                            new AddMarker(carID, title, content, "car_loading_25", lat, lon, map);
                         }else if (bat < 75){
-                            new AddMarker(carID, title, content, "car_loading_50", lat, lon);
+							new AddMarker(carID, title, content, "car_loading_50", lat, lon, map);
                         }else if (bat < 100){
-                            new AddMarker(carID, title, content, "car_loading_75", lat, lon);
+							new AddMarker(carID, title, content, "car_loading_75", lat, lon, map);
                         }
 
                     }, function(response){
@@ -207,20 +211,20 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
 
                         var content = "Das Fahrzeug lädt. Ladezustand " + parseInt(bat) + " (" + car.loadingStateObj.text + "). Voraussichtliches Ende gegen " + Helper.Get_Zeit(endTime).time + ", bei einer Aufladung von 1% pro Minute.";
                         if(bat < 25){
-                            new AddMarker(carID, title, content, "car_loading_00", lat, lon);
+							new AddMarker(carID, title, content, "car_loading_00", lat, lon, map);
                         }else if (bat < 50){
-                            new AddMarker(carID, title, content, "car_loading_25", lat, lon);
+							new AddMarker(carID, title, content, "car_loading_25", lat, lon, map);
                         }else if (bat < 75){
-                            new AddMarker(carID, title, content, "car_loading_50", lat, lon);
+							new AddMarker(carID, title, content, "car_loading_50", lat, lon, map);
                         }else if (bat < 100){
-                            new AddMarker(carID, title, content, "car_loading_75", lat, lon);
+							new AddMarker(carID, title, content, "car_loading_75", lat, lon, map);
                         }
 
                     });
 
                 }else{
                     var content = "Das Fahrzeug ist voll geladen und kann benutzt werden.";
-                    new AddMarker(carID, title, content, "car_available", lat, lon);
+					new AddMarker(carID, title, content, "car_available", lat, lon, map);
                 }
 
                 break;
@@ -231,10 +235,10 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
 
                 if(now.value - car.lastDate.value > 1000 * 60 * 60 * 24){
                     var content = "Das Fahrzeug ist gebucht, wurde aber seit mehr als 24 Stunden nicht mehr bewegt";
-                    new AddMarker(carID, title, content, "car_standing_admin", lat, lon);
+					new AddMarker(carID, title, content, "car_standing_admin", lat, lon, map);
                 }else{
                     var content = "Das Fahrzeug ist gebucht, dies ist der letzte bekannte Standort vom " + car.lastDate.date + " um " + car.lastDate.time;
-                    new AddMarker(carID, title, content, "car_occupied", lat, lon);
+					new AddMarker(carID, title, content, "car_occupied", lat, lon, map);
                 }
 
                 break;
@@ -242,7 +246,7 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
             case "BLOCKED":
 
                 var content = "Das Fahrzeug wurde blockiert";
-                new AddMarker(carID, title, content, "car_occupied", lat, lon);
+				new AddMarker(carID, title, content, "car_occupied", lat, lon, map);
 
                 break;
 
@@ -337,18 +341,24 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
 							$scope.$apply();
 						}
 
-						Helper.Get_Address(vehicle.lastLat, vehicle.lastLon).then(function (address) {
+						function Get_Address() {
+							
+							RESTFactory.Get_Address(vehicle.lastLat, vehicle.lastLon).then(function (address) {
 
-							vehicle.address_state = "true";
-							vehicle.address = address;
+								vehicle.address_state = "true";
+								vehicle.address = address;
 
-							vehicles_all[ID_STR] = vehicle;
-							$scope.vehicles = vehicles_all;
-							if ($scope.testing === false) {
-								$scope.$apply();
-							}
+								vehicles_all[ID_STR] = vehicle;
+								$scope.vehicles = vehicles_all;
+								if ($scope.testing === false) {
+									$scope.$apply();
+								}
 
-						});
+							});
+
+						}
+
+						setTimeout(Get_Address, 100);
 
 					}
 
@@ -373,185 +383,196 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
 
         new DisabledEditMode();
             
-		$scope.vehicle_selected = "false";
-        $scope.$apply();			
+				
 
-        RESTFactory.Cars_Get_CarID(id).then(function(response){
+		RESTFactory.Cars_Get_CarID(id).then(function (response) {
 
-            $scope.vehicle_selected = "true";
+			$scope.vehicle_selected = "true";
 
-            var data_use = response.data;
+			var data_use = response.data;
 
-            var vehicle = {};
+			var vehicle = {};
 
-            vehicle.vehicleID = data_use.carId;
-            vehicle.licensePlate = data_use.licensePlate;
+			vehicle.vehicleID = data_use.carId;
+			vehicle.licensePlate = data_use.licensePlate;
 
-            vehicle.bookingStateObj = BOOKING_STATES[data_use.bookingState];
-            vehicle.loadingStateObj = LOADING_STATES[data_use.chargingState];
+			vehicle.bookingStateObj = BOOKING_STATES[data_use.bookingState];
+			vehicle.loadingStateObj = LOADING_STATES[data_use.chargingState];
 
-            vehicle.mileage = data_use.mileage;
-            vehicle.chargeLevel = data_use.chargeLevel;
+			vehicle.mileage = data_use.mileage;
+			vehicle.chargeLevel = data_use.chargeLevel;
 
-            var endTime = new Date();
-            endTime.setTime(endTime.getTime() + ((100 - vehicle.chargeLevel) * 60 * 1000));
-            vehicle.chargeDone = Helper.Get_Zeit(endTime).time;
+			var endTime = new Date();
+			endTime.setTime(endTime.getTime() + ((100 - vehicle.chargeLevel) * 60 * 1000));
+			vehicle.chargeDone = Helper.Get_Zeit(endTime).time;
 
-            vehicle.kilowatts = data_use.kilowatts;
-            vehicle.manufacturer = data_use.manufacturer;
-            vehicle.model = data_use.model;
-            vehicle.constructionYear = data_use.yearOfConstruction;
-            vehicle.lastLat = data_use.lastKnownPositionLatitude;
-            vehicle.lastLon = data_use.lastKnownPositionLongitude;
-            vehicle.lastDate = Helper.Get_Zeit_Server(data_use.lastKnownPositionDate);
-            vehicle.address_state = "false";
-            vehicle.maintenanceState = "false";
-            vehicle.trip_state = "false";
+			vehicle.kilowatts = data_use.kilowatts;
+			vehicle.manufacturer = data_use.manufacturer;
+			vehicle.model = data_use.model;
+			vehicle.constructionYear = data_use.yearOfConstruction;
+			vehicle.lastLat = data_use.lastKnownPositionLatitude;
+			vehicle.lastLon = data_use.lastKnownPositionLongitude;
+			vehicle.lastDate = Helper.Get_Zeit_Server(data_use.lastKnownPositionDate);
+			vehicle.address_state = "false";
+			vehicle.maintenanceState = "false";
+			vehicle.trip_state = "false";
 
-            $scope.currentVehicle = vehicle;
+			$scope.currentVehicle = vehicle;
 			if ($scope.testing === false) {
 				$scope.$apply();
 			}
 
 
-            map.panTo(new google.maps.LatLng(vehicle.lastLat, vehicle.lastLon));
+			map.panTo(new google.maps.LatLng(vehicle.lastLat, vehicle.lastLon));
 
-            //Get last address
-            Helper.Get_Address(vehicle.lastLat, vehicle.lastLon).then(function(address){
+			function Load_Address() {
 
-                vehicle.address_state = "true";
+				//Get last address
+				RESTFactory.Get_Address(vehicle.lastLat, vehicle.lastLon).then(function (address) {
 
-                vehicle.address = address;
+					vehicle.address_state = "true";
 
-                $scope.currentVehicle = vehicle;
-				if ($scope.testing === false) {
-					$scope.$apply();
-				}
+					vehicle.address = address;
 
-            });
+					$scope.currentVehicle.address = address;
 
-            //Get all 
-            RESTFactory.Car_Maintances_Get_CarID(vehicle.vehicleID).then(function(response){
+				}, function (response) {
 
-                var data = response.data;
+				});
 
-                var maintenancesOpen = {};
-                var maintenancesDone = {};
+			}
 
-                if(data.length !== null && data.length > 0){
+			function Load_Car_Maintenance() {
 
-                    data.forEach(function(data_use, index){
+				//Get all 
+				RESTFactory.Car_Maintances_Get_CarID(vehicle.vehicleID).then(function (response) {
 
-                        var maintenance = {};
-                        var ID_STR = data_use.carMaintenanceId;
-                        maintenance.carMaintenanceID = data_use.carMaintenanceId;
-                        maintenance.carID = data_use.carId;
-                        maintenance.maintenanceID = data_use.maintenanceId;
-                        maintenance.invoiceItemID = data_use.invoiceItemId;
-                        maintenance.plannedDate = Helper.Get_Zeit_Server(data_use.plannedDate);
-                        maintenance.invoiceState = "false";
-                        maintenance.completedState = "false";
-                        if(data_use.completedDate === null){
-                            maintenancesOpen[ID_STR] = maintenance;
-                        }else{
-                            maintenance.completedState = "true";
-                            maintenance.completedDate = Helper.Get_Zeit_Server(data_use.completedDate);
-                            maintenancesDone[ID_STR] = maintenance;
-                        }
+					var data = response.data;
 
-                        vehicle.maintenanceState = "true";
-                        vehicle.maintenancesDone = maintenancesDone;
-                        vehicle.maintenancesOpen = maintenancesOpen;
+					var maintenancesOpen = {};
+					var maintenancesDone = {};
 
-                        $scope.currentVehicle = vehicle;
+					if (data.length !== null && data.length > 0) {
+
+						data.forEach(function (data_use, index) {
+
+							var maintenance = {};
+							var ID_STR = data_use.carMaintenanceId;
+							maintenance.carMaintenanceID = data_use.carMaintenanceId;
+							maintenance.carID = data_use.carId;
+							maintenance.maintenanceID = data_use.maintenanceId;
+							maintenance.invoiceItemID = data_use.invoiceItemId;
+							maintenance.plannedDate = Helper.Get_Zeit_Server(data_use.plannedDate);
+							maintenance.invoiceState = "false";
+							maintenance.completedState = "false";
+							if (data_use.completedDate === null) {
+								maintenancesOpen[ID_STR] = maintenance;
+							} else {
+								maintenance.completedState = "true";
+								maintenance.completedDate = Helper.Get_Zeit_Server(data_use.completedDate);
+								maintenancesDone[ID_STR] = maintenance;
+							}
+
+							vehicle.maintenanceState = "true";
+							vehicle.maintenancesDone = maintenancesDone;
+							vehicle.maintenancesOpen = maintenancesOpen;
+
+							$scope.currentVehicle.maintenanceState = "true";
+							$scope.currentVehicle.maintenancesDone = maintenancesDone;
+							$scope.currentVehicle.maintenancesOpen = maintenancesOpen;
+
+							if (data_use.invoiceItemId !== null) {
+
+								RESTFactory.Invoices_Get_Items_ItemID(maintenance.invoiceItemID).then(function (response) {
+
+									var data = response.data;
+
+									var data_use = data;
+
+									var invoice = {};
+
+									invoice.invoiceID = data_use.invoiceId;
+									invoice.totalAmount = data_use.totalAmount;
+									invoice.customerID = data_use.customerId;
+									invoice.paid = data_use.paid;
+									invoice.paidText = "Nicht bezahlt";
+									if (invoice.paid === true) { invoice.paidText = "Bezahlt"; }
+
+									maintenance.invoice = invoice;
+									maintenance.invoiceState = "true";
+
+									$scope.currentVehicle.maintenancesDone[ID_STR].invoice = invoice;
+
+								});
+
+							}
+
+						});
+
+					}
+
+				}, function (response) {
+
+				});
+
+			}
+
+			function Load_Trip() {
+
+
+				RESTFactory.Trips_Get_CarID(vehicle.vehicleID).then(function (response) {
+
+					var data = response.data;
+
+					var trips = {};
+
+					if (data !== null && data !== undefined && data.length > 0) {
+
+						data.forEach(function (data_use, index) {
+
+							var trip = {};
+
+							trip.tripID = data_use.tripId;
+							trip.carID = data_use.carId;
+							trip.customerID = data_use.customerId;
+							trip.startDate = Helper.Get_Zeit_Server(data_use.startDate);
+							trip.endDate = Helper.Get_Zeit_Server(data_use.endDate);
+							trip.startChargingStationID = data_use.startChargingStationId;
+
+							trip.endState = "false";
+							trip.distanceTravelled = 0;
+
+							if (trip.endDate.state === "true") {
+								trip.endState = "true";
+								trip.distanceTravelled = data_use.distanceTravelled;
+								trip.endChargingStationID = data_use.endChargingStationId;
+							}
+
+							trips[trip.tripID] = trip;
+
+						});
+
+						vehicle.trip_state = "true";
+						vehicle.trips = trips;
+						$scope.currentVehicle = vehicle;
 						if ($scope.testing === false) {
 							$scope.$apply();
 						}
 
-                        if(data_use.invoiceItemId !== null){
-
-                            RESTFactory.Invoices_Get_Items_ItemID(maintenance.invoiceItemID).then(function(response){
-
-                                var data = response.data;
-
-                                var data_use = data;
-
-                                var invoice = {};
-
-                                invoice.invoiceID = data_use.invoiceId;
-                                invoice.totalAmount = data_use.totalAmount;
-                                invoice.customerID = data_use.customerId;
-                                invoice.paid = data_use.paid;
-                                invoice.paidText = "Nicht bezahlt";
-                                if(invoice.paid === true){ invoice.paidText = "Bezahlt"; }
-
-                                maintenance.invoice = invoice;
-                                maintenance.invoiceState = "true";
-
-                                maintenancesDone[ID_STR] = maintenance;
-                                vehicle.maintenanceDone = maintenancesDone;
-
-                                $scope.currentVehicle = vehicle;
-								if ($scope.testing === false) {
-									$scope.$apply();
-								}
-
-                            });
-
-                        }
-
-                    });
-
-                }
-
-            });
-
-            RESTFactory.Trips_Get_CarID(vehicle.vehicleID).then(function(response){
-
-                var data = response.data;
-
-                var trips = {};
-
-                if(data !== null && data !== undefined && data.length > 0){
-
-                    data.forEach(function(data_use, index){
-
-                        var trip = {};
-
-                        trip.tripID = data_use.tripId;
-                        trip.carID = data_use.carId;
-                        trip.customerID = data_use.customerId;
-                        trip.startDate = Helper.Get_Zeit_Server(data_use.startDate);
-                        trip.endDate = Helper.Get_Zeit_Server(data_use.endDate);
-                        trip.startChargingStationID = data_use.startChargingStationId;
-
-                        trip.endState = "false";
-                        trip.distanceTravelled = 0;
-
-                        if(trip.endDate.state === "true"){
-                            trip.endState = "true";
-                            trip.distanceTravelled = data_use.distanceTravelled;
-                            trip.endChargingStationID = data_use.endChargingStationId;
-                        }
-
-                        trips[trip.tripID] = trip;
-
-                    });
-
-                    vehicle.trip_state = "true";
-                    vehicle.trips = trips;
-                    $scope.currentVehicle = vehicle;
-					if ($scope.testing === false) {
-						$scope.$apply();
 					}
 
-                }
+				});
 
-            });
+			}
 
+			setTimeout(Load_Address, 50);
+			setTimeout(Load_Car_Maintenance, 150);
+			setTimeout(Load_Trip, 250);
 
-
-        });
+		}, function (response) {
+			$scope.vehicle_selected = "false";
+			$scope.$apply();
+		});
 
     }
 
@@ -649,29 +670,54 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
             return;
         }
 
+		var new_vehicle = $scope.new_vehicle;
+
         var vehicle = {};
 
-        vehicle.licensePlate = $scope.new_vehicle.licensePlate;
+        vehicle.licensePlate = new_vehicle.licensePlate;
 
-        vehicle.bookingState = $scope.new_vehicle.bookingStateObj.be;
-        vehicle.chargingState = $scope.new_vehicle.loadingStateObj.be;
+        vehicle.bookingState = new_vehicle.bookingStateObj.be;
+        vehicle.chargingState = new_vehicle.loadingStateObj.be;
 
-        vehicle.mileage = $scope.new_vehicle.mileage;
-        vehicle.chargeLevel = $scope.new_vehicle.chargeLevel;
-        vehicle.kilowatts = $scope.new_vehicle.kilowatts;
-        vehicle.manufacturer = $scope.new_vehicle.manufacturer;
-        vehicle.model = $scope.new_vehicle.model;
-        vehicle.yearOfConstruction = $scope.new_vehicle.yearOfConstruction;
-        vehicle.lastKnownPositionLatitude = $scope.new_vehicle.lat;
-        vehicle.lastKnownPositionLongitude = $scope.new_vehicle.lon;
+        vehicle.mileage = new_vehicle.mileage;
+        vehicle.chargeLevel = new_vehicle.chargeLevel;
+        vehicle.kilowatts = new_vehicle.kilowatts;
+        vehicle.manufacturer = new_vehicle.manufacturer;
+        vehicle.model = new_vehicle.model;
+        vehicle.yearOfConstruction = new_vehicle.yearOfConstruction;
+        vehicle.lastKnownPositionLatitude = new_vehicle.lat;
+        vehicle.lastKnownPositionLongitude = new_vehicle.lon;
         vehicle.lastKnownPositionDate = (new Date()).toUTCString();
 
-        console.log(vehicle);
+        RESTFactory.Cars_Post(vehicle).then(function(response){
 
-        RESTFactory.Cars_Post(vehicle).then(function(){
+			var station = new_vehicle.station;
+
+			var car_charging_station = {};
+			car_charging_station.carId = response.data.id;
+			car_charging_station.chargingStationId = station.stationID;
+			car_charging_station.chargeStart = (new Date()).toUTCString();
+
+			RESTFactory.Car_Charging_Stations_Post(car_charging_station).then(function (response) {
+
+				station.slotsOccupied++;
+
+				RESTFactory.Charging_Stations_Patch_OccupiedSlots(station.stationID, station.slotsOccupied).then(function (response) {
+					alert("Ladestation erfolgreich aktualisiert");
+				}, function (response) {
+					alert("Ladestation konnte nicht aktualisiert werden");
+				});
+
+				alert("Verknüpfung zur Ladestation erfolgreich");
+				new Update("ALL", undefined, null);
+			}, function (response) {
+				alert("Verknüpfung zur Ladestation fehlgeschlagen");
+            	new Update("ALL", undefined, null);
+			});
+			
             alert("Fahrzeug erfolgreich hinzugefügt");
             new Hide_AddVehicle();
-            new Update("ALL", undefined, null);
+
         }, function(){
             alert("Fahrzeug konnte nicht hinzugefügt werden");
             new Hide_AddVehicle();
@@ -699,6 +745,8 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
 	 * @return 
 	 */
     function Show_AddVehicle(){
+
+		var map2;
 
         $scope.view = "add";
 
@@ -729,15 +777,16 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
 		 */
         function Init_Map(){
 
-            var input = document.getElementById('search_input');
-            var searchBox = new google.maps.places.SearchBox(input);
+            //var input = document.getElementById('search_input');
+            //var searchBox = new google.maps.places.SearchBox(input);
 
             var map2 = new google.maps.Map(document.getElementById('map_vehicle_new'), {
                 zoom: 16,
                 center: new google.maps.LatLng(49.5, 8.434),
                 mapTypeId: 'roadmap'
-            });
-
+			});
+			
+/* UNCOMMENT IF SEARCHBOX IS USEFUL
             map2.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
 
             map2.addListener('bounds_changed', function() {
@@ -767,11 +816,63 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
                 var lon = event.latLng.lng();
 
                 new PositionSelected(map2, lat, lon);
-            });
+			});
+*/			
+
+			RESTFactory.Charging_Stations_Get().then(function (response) {
+
+				var data = response.data;
+
+				data.forEach(function (data_use) {
+
+					var station = {};
+					station.stationID = data_use.chargingStationId;
+					station.slots = data_use.slots;
+					station.slotsOccupied = data_use.slotsOccupied;
+					station.lat = data_use.latitude;
+					station.lon = data_use.longitude;
+
+					var diff = station.slots - station.slotsOccupied;
+
+					if (diff > 0) {
+						var img = {
+							url: 'images/icons/station_available.png',
+							scaledSize: new google.maps.Size(60, 87),
+							origin: new google.maps.Point(0, 0),
+							anchor: new google.maps.Point(30, 87)
+						};
+
+						img.url = icons["station_available"].icon;
+
+						var marker = new google.maps.Marker({
+							position: new google.maps.LatLng(station.lat, station.lon),
+							map: map2,
+							icon: img,
+							optimized: false,
+							station: station
+						});
+
+						marker.addListener('click', function (event) {
+
+							var _station = this.station;
+
+							new PositionSelected(map2, _station.lat, _station.lon, _station);
+
+						});
+
+					}
+
+				});
+
+
+			}, function () {
+
+			});
+
 
         }
 
-        setTimeout(Init_Map, 2000);
+        setTimeout(Init_Map, 1000);
 
     }
 
@@ -783,16 +884,17 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
 	 * @param {} lon
 	 * @return 
 	 */
-    function PositionSelected(map2, lat, lon){
+    function PositionSelected(map2, lat, lon, station){
 
         map2.panTo(new google.maps.LatLng(lat, lon));
 
         $scope.new_vehicle.lat = lat;
         $scope.new_vehicle.lon = lon;
         $scope.new_vehicle.hasPosition = true;
-        $scope.new_vehicle.address_state = "false";
+		$scope.new_vehicle.address_state = "false";
+		$scope.new_vehicle.station = station;
 
-        Helper.Get_Address(lat, lon).then(function(address){
+        RESTFactory.Get_Address(lat, lon).then(function(address){
             $scope.new_vehicle.address_state = "true";
 			$scope.new_vehicle.address = address;
 			
