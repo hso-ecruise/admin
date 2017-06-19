@@ -26,16 +26,6 @@ application.controller('Ctrl_Add_CarMaintenance', function ($rootScope, $scope, 
 
 	new Init();
 
-	/**
-    * Description
-    * @method closeDialog
-    * @return 
-    */
-	$scope.closeDialog = function () {
-		$mdDialog.hide();
-	};
-
-
 
 	/**
 	 * Funktion Dialog zu schliessen
@@ -472,54 +462,7 @@ application.controller('Ctrl_Maintenances', function ($rootScope, $scope, RESTFa
              * @return 
              */
 			controller: 'Ctrl_Add_CarMaintenance'
-			/* function DialogController($scope, $mdDialog){
-
-				var item = {};
-				item.maintenanceID = maintenanceID;
-				item.carID = 0;
-				item.plannedDate = new Date();
-				item.minDate = new Date();
-                $scope.item = item;
-				*/
-
-                /**
-                 * Funktion Dialog zu schliessen
-                 * @method closeDialog
-                 * @return 
-                 */
-			/*
-                $scope.closeDialog = function(){
-                    $mdDialog.hide();
-                };
-*/
-                /**
-                 * Funktion um in Dialog eingegebenen Daten zu speichern
-                 * @method Save
-                 * @return 
-                 */
-			/*
-                $scope.Save = function(){
-					
-					var item = $scope.item;
-					
-					var data = {};
-					data.carId = item.carID;
-					data.maintenanceId = item.maintenanceID;
-					data.plannedDate = item.plannedDate.toUTCString();
-					
-					RESTFactory.Car_Maintances_Post(data).then(function(response){
-						alert("Element erfolgreich hinzugefügt");
-						new Update("ALL", undefined);
-					}, function(response){
-						alert("Element hinzufügen fehlgeschlagen");
-						new Update("ALL", undefined);
-					});
-					
-                    $scope.closeDialog();
-                };
-
-            }
-			*/
+			
         });
 		
 	}
@@ -537,6 +480,8 @@ application.controller('Ctrl_Maintenances', function ($rootScope, $scope, RESTFa
 		var data = {};
 		data.completedDate =endDate;
 		data.invoiceItemId = invoiceItemID;
+
+		console.log(data);
 
 		RESTFactory.Car_Maintances_Patch(carMainID, data).then(function(response){
 			alert("End Datum und RechnungsElementID erfolgreich gesetzt");
@@ -635,8 +580,8 @@ application.controller('Ctrl_Maintenances', function ($rootScope, $scope, RESTFa
 	 * @param {} endDate
 	 * @return 
 	 */
-	$scope.SafeEndDate = function(mainID, carMainID, endDate){
-		new SafeEndDate(mainID, carMainID, endDate);
+	$scope.SafeEndDate = function(mainID, carMainID, endDate, invoiceItemID){
+		new SafeEndDate(mainID, carMainID, endDate, invoiceItemID);
 	};
 	
 	

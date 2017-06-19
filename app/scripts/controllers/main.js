@@ -279,18 +279,6 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 	//PUBLIC
 		/**
 		 * Description
-		 * @method Login_Get
-		 * @param {} email
-		 * @param {} data
-		 * @return orig
-		 */
-		Login_Get: function (email, data) {
-			var url = IP + "/public/login/" + email;
-			var orig = Promise.resolve(GetCaller.Get(url, data, false));
-			return orig;
-		},
-		/**
-		 * Description
 		 * @method User_Login
 		 * @param {} email
 		 * @param {} password
@@ -739,18 +727,6 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 			var orig = Promise.resolve(GetCaller.GetShort(url, true));
 			return orig;
 		},
-		/**
-		 * Description
-		 * @method Invoices_Get_InvoiceID_Items_ItemID
-		 * @param {} id
-		 * @param {} itemID
-		 * @return orig
-		 */
-		Invoices_Get_InvoiceID_Items_ItemID: function (id, itemID) {
-			var url = IP + "/invoices/" + id + "/items/" + itemID;
-			var orig = Promise.resolve(GetCaller.GetShort(url, true));
-			return orig;
-		},
 
 		/**
 		 * Invoices_Post: function(data){
@@ -964,13 +940,13 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 
 		/**
 		 * Description
-		 * @method Car_Maintances_Patch_CompletedDate
+		 * @method Car_Maintances_Patch
 		 * @param {} id
 		 * @param {} data
 		 * @return orig
 		 */
-		Car_Maintances_Patch_CompletedDate: function (id, data) {
-			var url = IP + "/car-maintenances/" + id + "/completed-date";
+		Car_Maintances_Patch: function (id, data) {
+			var url = IP + "/car-maintenances/" + id;
 			var orig = Promise.resolve(PatchCaller.Patch(url, data, true));
 			return orig;
 		},
