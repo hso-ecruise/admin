@@ -278,10 +278,10 @@
 
                     <md-content flex layout-padding>
                         <md-input-container flex-gt-sm>
-                            <input type="text" placeholder="Hersteller" ng-model="new_vehicle.manufacturer" ng-required="true" />
+                            <input type="text" placeholder="Hersteller" maxlength="64" ng-model="new_vehicle.manufacturer" ng-required="true" />
                         </md-input-container>
                         <md-input-container flex-gt-sm>
-                            <input type="text" placeholder="Modell" ng-model="new_vehicle.model" ng-required="true" />
+                            <input type="text" placeholder="Modell" maxlength="32" ng-model="new_vehicle.model" ng-required="true" />
                         </md-input-container>
                     </md-content>
 
