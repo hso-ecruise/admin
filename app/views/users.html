@@ -30,18 +30,12 @@
                                     <td>{{ customer.name }} {{ customer.familyName }}</td>
                                 </tr>
                             </tbody>
-                            <tfoot>
-                                <tr ng-click="Show_AddCustomer()">
-                                    <td colspan="2">
-                                        <div class="md-list-item-text" layout="column">
-                                            <h4>Neuen Nutzer hinzufügen</h4>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </tfoot>
                         </table>
                     </md-content>
                 </div>
+				<div ng-click="Show_AddCustomer()">
+					<h4>Neuen Nutzer hinzufügen</h4>
+				</div>
             </md-content>
         </div>
 

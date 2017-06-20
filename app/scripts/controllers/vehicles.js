@@ -231,15 +231,47 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
 
             case "BOOKED":
 
-                var now = Helper.Get_Zeit(new Date());
+				switch (car.loadingStateObj.be) {
+					case "FULL":
+						var content = "Das Fahrzeug ist gebucht und voll geladen";
+						new AddMarker(carID, title, content, "car_reserved", lat, lon, map);
+						break;
 
-                if(now.value - car.lastDate.value > 1000 * 60 * 60 * 24){
-                    var content = "Das Fahrzeug ist gebucht, wurde aber seit mehr als 24 Stunden nicht mehr bewegt";
-					new AddMarker(carID, title, content, "car_standing_admin", lat, lon, map);
-                }else{
-                    var content = "Das Fahrzeug ist gebucht, dies ist der letzte bekannte Standort vom " + car.lastDate.date + " um " + car.lastDate.time;
-					new AddMarker(carID, title, content, "car_occupied", lat, lon, map);
-                }
+					case "CHARGING":
+						RESTFactory.Cars_Get_ChargeLevelPerMinute().then(function (response) {
+
+							var loadingPerSecond = response.data;
+
+							var endTime = new Date();
+							endTime.setTime(endTime.getTime() + (100 - bat) * 1000 * 60 * loadingPerSecond);
+
+							var content = "Das Fahrzeug lädt und im Anschluss gebucht. Ladezustand " + parseInt(bat) + " (" + car.loadingStateObj.text + "). Voraussichtliches Ende gegen " + Helper.Get_Zeit(endTime).time + ", bei einer Aufladung von " + loadingPerSecond + "% pro Minute.";
+							new AddMarker(carID, title, content, "car_reserved", lat, lon, map);
+
+						}, function (response) {
+
+							var endTime = new Date();
+							endTime.setTime(endTime.getTime() + (100 - bat) * 1000 * 60);
+
+							var content = "Das Fahrzeug lädt und im Anschluss gebucht. Ladezustand " + parseInt(bat) + " (" + car.loadingStateObj.text + "). Voraussichtliches Ende gegen " + Helper.Get_Zeit(endTime).time + ", bei einer Aufladung von 1% pro Minute.";
+							new AddMarker(carID, title, content, "car_reserved", lat, lon, map);
+							
+						});
+						break;
+					
+					case "DISCHARGING":
+						var now = Helper.Get_Zeit(new Date());
+						if(now.value - car.lastDate.value > 1000 * 60 * 60 * 24){
+							var content = "Das Fahrzeug ist gebucht, wurde aber seit mehr als 24 Stunden nicht mehr bewegt";
+							new AddMarker(carID, title, content, "car_standing_admin", lat, lon, map);
+						}else{
+							var content = "Das Fahrzeug ist gebucht, dies ist der letzte bekannte Standort vom " + car.lastDate.date + " um " + car.lastDate.time;
+							new AddMarker(carID, title, content, "car_occupied", lat, lon, map);
+						}
+
+						break;
+				}
+
 
                 break;
 

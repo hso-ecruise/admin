@@ -27,20 +27,12 @@
                                     <td>{{ maintenance.stateObj.text }}</td>
                                 </tr>
                             </tbody>
-
-                            <tfoot>
-                                <tr ng-click="Show_AddMaintenance()">
-                                    <td colspan="2">
-                                        <div class="md-list-item-text" layout="column">
-                                            <h4>Neue Instandhaltung hinzufügen</h4>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </tfoot>
-
                         </table>
                     </md-content>
                 </div>
+				<div ng-click="Show_AddMaintenance()">
+					<h4>Neue Instandhaltung hinzufügen</h4>
+				</div>
             </md-content>
 
         </div>

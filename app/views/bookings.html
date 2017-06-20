@@ -34,18 +34,12 @@
                                     <td>{{ booking.statusText }}</td>
                                 </tr>
                             </tbody>
-                            <tfoot>
-                                <tr ng-click="Show_AddBooking()">
-                                    <td colspan="3">
-                                        <div class="md-list-item-text" layout="column">
-                                            <h4>Neue Buchung hinzufügen</h4>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </tfoot>
                         </table>
                     </md-content>
                 </div>
+				<div ng-click="Show_AddBooking()">
+					<h4>Neue Buchung hinzufügen</h4>
+				</div>
 
             </md-content>
 
