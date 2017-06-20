@@ -133,6 +133,14 @@ application.config(function ($routeProvider, $locationProvider){
 		controller: 'Ctrl_Statistics'
 	})
 	
+	.when('/configuration', {
+		templateUrl: 'views/configuration.html',
+		resolve: {
+			factory: checkRouting
+		},
+		controller: 'Ctrl_Configuration'
+	})
+
 	.otherwise(
 	{
 		templateUrl : 'views/start.html',

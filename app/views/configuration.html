@@ -1,0 +1,34 @@
+<div class="mainview-container" >
+    <div class="" layout="row" layout-wrap>
+        <div ng-cloak class="content fullscreen" flex>
+            <md-toolbar class="md-hue-2">
+                <div class="md-toolbar-tools">
+                    <h2 class="md-flex">Konfiguration</h2>
+                </div>
+            </md-toolbar>
+
+			<div>
+
+				<md-content flex layout-padding ng-switch="configuration.state">
+
+					<md-input-container>
+						<input type="text" placeholder="Konfigurations-ID" value={{configuration.ID}} ng-disabled="true"/>
+					</md-input-container>
+
+					<md-input-container>
+						<input type="text" placeholder="Status" value={{configuration.statusText}} ng-disabled="true" />
+					</md-input-container>
+				
+					<md-input-container ng-switch-when="false">
+						<md-button class="md-raised md-primary button-to-right" ng-click="SetEnable()"> Buchungen zulassen </md-button>
+					</md-input-container>
+
+					<md-input-container ng-switch-when="true">
+						<md-button class="md-primary md-hue-1 button-to-right" ng-click="SetDisable()"> Buchungen blockieren </md-button>
+					</md-input-container>
+				</md-content>
+			</div>
+
+        </div>
+    </div>
+</div>

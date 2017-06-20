@@ -211,8 +211,29 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 			//return orig;
 		},
 
-
-
+	//Configuration
+		/**
+		 * Description
+		 * @method Configuration_Get
+		 * @return orig
+		 */
+		Configuration_Get: function () {
+			var url = IP + "/configuration";
+			var orig = Promise.resolve(GetCaller.GetShort(url, true));
+			return orig;
+		},
+		/**
+		 * Description
+		 * @method Configuration_Patch_AllowNewBookings
+		 * @param {} id
+		 * @param {} data
+		 * @return orig
+		 */
+		Configuration_Patch_AllowNewBookings: function (data) {
+			var url = IP + "/configuration/allowNewBookings";
+			var orig = Promise.resolve(PatchCaller.Patch(url, data, true));
+			return orig;
+		},
 
 	//TRIPS
 		/**
