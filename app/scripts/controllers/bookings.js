@@ -112,6 +112,10 @@ application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactor
 				if(plannedDate.state === "false"){
 					booking.status = "FAILED";
 					booking.statusText = "Datum ungültig";
+					if (in_booking.plannedDate === null) {
+						booking.status = "SPONTAN";
+						booking.statusText = "Spontane Fahrt";
+					}
 				}else{
 					var now = new Date();
 					if(plannedDate.value - now.getTime() < 0){
@@ -194,6 +198,11 @@ application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactor
 			if(plannedDate.state === "false"){
 				booking.status = "FAILED";
 				booking.statusText = "Datum ungültig";
+				//Check if spontan
+				if (data.plannedDate === null) {
+					booking.status = "SPONTAN";
+					booking.statusText = "Spontane Fahrt";
+				}
 			}else{
 				var now = new Date();
 				if(plannedDate.value - now.getTime() < 0){
@@ -275,8 +284,6 @@ application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactor
 
 				//GET TRIP INFOS
 				RESTFactory.Trips_Get_TripID(booking.tripID).then(function(response){
-					
-					console.log(response.data);
 
 					var data = response.data;
 
@@ -302,6 +309,10 @@ application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactor
 						trip.startState = "false";
 						trip.endState = "false";
 
+
+						if (booking.status === "SPONTAN") {
+							booking.plannedDate = start;
+						}						
 
 						booking.trip = trip;
 						

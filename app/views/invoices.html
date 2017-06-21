@@ -34,37 +34,12 @@
                                     <td>{{ invoice.paidText }}</td>
                                 </tr>
                             </tbody>
-                            <!--
-<tfoot>
-<tr ng-click="Show_AddInvoice()">
-<td colspan="3">
-<div class="md-list-item-text" layout="column">
-<h4>Neue Rechnung hinzufügen</h4>
-</div>
-</td>
-</tr>
-</tfoot>
--->
+
+
                         </table>
                     </md-content>
                 </div>
-                <!--
-<md-list flex>
-<md-list-item><h4>ID Fahrer Status</h4></md-list-item>
-<md-list-item class="md-1-line" ng-repeat="(key, booking) in bookings track by $index" ng-click="LoadBookingDetails2(booking)">
-<div class="md-list-item-text" layout="column" ng-switch on="booking.status">
-<h4 ng-switch-when="FUTURE">{{ key }} {{ booking.customer.name }} {{ booking.customer.familyName }} FUTURE</h4>
-<h4 ng-switch-when="PAST">{{ key }} {{ booking.customer.name }} {{ booking.customer.familyName }} PAST</h4>
-</div>
-<md-divider ></md-divider>
-</md-list-item>
-<md-list-item class="md-1-line" ng-click="Show_AddBooking()">
-<div class="md-list-item-text" layout="column">
-<h4>Neue Buchung hinzufügen</h4>
-</div>
-</md-list-item>
-</md-list>
--->
+
             </md-content>
 
         </div>
@@ -136,7 +111,7 @@
                             <h4>Rechnungselemente</h4>
 
                             <div ng-switch="currentInvoice.itemState">
-
+								
                                 <BLOCKQUOTE ng-switch-when="true" ng-repeat="(key, item) in currentInvoice.items track by $index">
 
                                     <h5>ID: {{ item.itemID }}</h5>

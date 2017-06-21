@@ -171,16 +171,18 @@ application.controller('Ctrl_Users', function ($rootScope, $scope, RESTFactory, 
 			function Load_1() {
 				
 				//LOAD BOOKING INFOS
-				RESTFactory.Bookings_Get_CustomerID(id).then(function(response){
+				RESTFactory.Bookings_Get_CustomerID(id).then(function (response) {
 					
 					var data = response.data;
-					
-					var bookingsOpen = {};
-					var bookingsDone = {};
-					
-					for(var i = 0; i < data.length; i++){
-						
-						var data_use = data[i];
+
+					customer.bookingsOpen = {};
+					customer.bookingsDone = {};
+					$scope.currentCustomer = customer;
+					if ($scope.testing === false) {
+						$scope.$apply();
+					}
+
+					data.forEach(function (data_use, index) {
 						
 						var booking = {};
 						
@@ -188,24 +190,40 @@ application.controller('Ctrl_Users', function ($rootScope, $scope, RESTFactory, 
 						booking.tripID = data_use.tripId;
 						booking.customerID = data_use.customerId;
 						booking.invoiceItemID = data_use.invoiceItemId;
-						booking.plannedDate = Helper.Get_Zeit_Server(data_use.plannedDate);
-						
-						var now = new Date();
-						
-						if(booking.plannedDate.value - now.getTime() < 0){
-							bookingsDone[booking.bookingID] = booking;
-						}else{
-							bookingsOpen[booking.bookingID] = booking;
+
+						if (booking.tripID === null) {
+							$scope.currentCustomer.bookingsOpen[booking.bookingID] = booking;
+						} else {
+
+							if (data_use.plannedDate === null) {
+								//Spontane Fahrt
+								RESTFactory.Trips_Get_TripID(booking.tripID).then(function (response) {
+									
+									var data = response.data;
+									
+									if (data.endDate === null) {
+										booking.plannedDate = Helper.Get_Zeit_Server(data.startDate);
+										$scope.currentCustomer.bookingsOpen[booking.bookingID] = booking;
+									} else {
+										booking.plannedDate = Helper.Get_Zeit_Server(data.startDate);
+										$scope.currentCustomer.bookingsDone[booking.bookingID] = booking;
+									}
+
+								}, function (response) {
+									booking.plannedDate = Helper.Get_Zeit_Server(data_use.plannedDate);
+									$scope.currentCustomer.bookingsDone[booking.bookingID] = booking;
+								});
+
+							} else {
+							
+								booking.plannedDate = Helper.Get_Zeit_Server(data_use.plannedDate);
+								$scope.currentCustomer.bookingsDone[booking.bookingID] = booking;
+								
+							}
 						}
-						
-					}
+
+					});
 					
-					customer.bookingsOpen = bookingsOpen;
-					customer.bookingsDone = bookingsDone;
-					$scope.currentCustomer = customer;
-					if ($scope.testing === false) {
-						$scope.$apply();
-					}
 					
 				});
 
@@ -406,51 +424,6 @@ application.controller('Ctrl_Users', function ($rootScope, $scope, RESTFactory, 
 			new Hide_AddCustomer();
 			new Update("ALL", undefined);
 
-			
-			/*
-			var address = {};
-			address.street = customer.address.street;
-			address.city = customer.address.city;
-			address.houseNumber = customer.address.number;
-			address.zipCode = customer.address.zip;
-			address.country = customer.address.country;
-			address.addressExtraLine = customer.address.extra;
-			
-			
-			RESTFactory.Customers_Patch_Address(customerID, address).then(function(response){
-				alert("Adresse erfolgreich geändert");
-			}, function(response){
-				alert("Adresse konnte nicht geändert werden");
-			});
-			
-			
-			var phoneNr = customer.phoneNr;
-			
-			RESTFactory.Customers_Patch_PhoneNr(customerID, phoneNr).then(function(response){
-				alert("Telefonnummer erfolgreich geändert");
-			}, function(response){
-				alert("Telefonnummer konnte nicht geändert werden");
-			});
-			
-			
-			var verified = customer.verified;
-			
-			RESTFactory.Customers_Patch_Verified(customerID, verified).then(function(response){
-				alert("Verifizierungsstatus erfolgreich geändert");
-			}, function(response){
-				alert("Verifizierungsstatus konnte nicht geändert werden");
-			});
-			
-			
-			var chipID = customer.chipID;
-			
-			RESTFactory.Customers_Patch_ChipCard(customerID, chipID).then(function(response){
-				alert("ChipkartenID erfolgreich geändert");
-			}, function(response){
-				alert("ChipkartenID konnte nicht geändert werden");
-			});
-			*/
-			
 		}, function(response){
 			
 			alert("Neuer Nutzer konnte nicht angelegt werden");

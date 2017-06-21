@@ -36,17 +36,17 @@
             <div ng-switch-when="true">
                 <md-content flex layout-padding>
                     <md-input-container>
-                        <input type="text" placeholder="Datum" value="{{currentStatistic.date.date}}"> 
+                        <input type="text" placeholder="Datum" value="{{currentStatistic.date.date}}" ng-disabled="true"> 
                     </md-input-container>
                 </md-content>
                 <md-content flex layout-padding>
                     <md-input-container>
-                        <input type="text" placeholder="Durchschnittsladezustand" value="{{currentStatistic.averageCharge}}"> 
+                        <input type="text" placeholder="Durchschnittsladezustand" value="{{currentStatistic.averageCharge}}" ng-disabled="true"> 
                     </md-input-container>
                 </md-content>
                 <md-content flex layout-padding>
                     <md-input-container>
-                        <input type="text" placeholder="Buchungen gesamt" value="{{currentStatistic.bookings}}"> 
+                        <input type="text" placeholder="Buchungen gesamt" value="{{currentStatistic.bookings}}" ng-disabled="true"> 
                     </md-input-container>
                 </md-content>
             </div>

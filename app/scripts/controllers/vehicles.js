@@ -514,7 +514,8 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
 							$scope.currentVehicle.maintenancesOpen = maintenancesOpen;
 
 							if (data_use.invoiceItemId !== null) {
-
+								console.log("CALLED");
+							
 								RESTFactory.Invoices_Get_Items_ItemID(maintenance.invoiceItemID).then(function (response) {
 
 									var data = response.data;
@@ -535,7 +536,10 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
 
 									$scope.currentVehicle.maintenancesDone[ID_STR].invoice = invoice;
 
+								}, function (response) {
+									
 								});
+
 
 							}
 
@@ -573,8 +577,7 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
 
 							trip.endState = "false";
 							trip.distanceTravelled = 0;
-
-							if (trip.endDate.state === "true") {
+							if (trip.endDate.state === true) {
 								trip.endState = "true";
 								trip.distanceTravelled = data_use.distanceTravelled;
 								trip.endChargingStationID = data_use.endChargingStationId;
