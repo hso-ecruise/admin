@@ -56,6 +56,9 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
 		},
 		station_available: {
 			icon: "images/icons/station_available.png"
+		},
+		car_ontrip: {
+			icon: "images/icons/car_onway.png"
 		}
     };
 
@@ -266,7 +269,7 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
 							new AddMarker(carID, title, content, "car_standing_admin", lat, lon, map);
 						}else{
 							var content = "Das Fahrzeug ist gebucht, dies ist der letzte bekannte Standort vom " + car.lastDate.date + " um " + car.lastDate.time;
-							new AddMarker(carID, title, content, "car_occupied", lat, lon, map);
+							new AddMarker(carID, title, content, "car_ontrip", lat, lon, map);
 						}
 
 						break;
@@ -574,6 +577,7 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
 							trip.startDate = Helper.Get_Zeit_Server(data_use.startDate);
 							trip.endDate = Helper.Get_Zeit_Server(data_use.endDate);
 							trip.startChargingStationID = data_use.startChargingStationId;
+							trip.bookingID = data_use.bookingId;
 
 							trip.endState = "false";
 							trip.distanceTravelled = 0;

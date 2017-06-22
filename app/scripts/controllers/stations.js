@@ -448,6 +448,7 @@ application.controller('Ctrl_Stations', function ($rootScope, $scope, RESTFactor
 	 * @method Show_Heatmap
 	 * @return 
 	 */
+	/*
 	function Show_Heatmap() {
 
 		for (var i = 0; i < markers.length; i++) {
@@ -554,7 +555,7 @@ application.controller('Ctrl_Stations', function ($rootScope, $scope, RESTFactor
 
 
 	}
-
+*/
     /**
 	 * Funktion um Heatmap zu verstecken 
 	 * @method Hide_Heatmap
@@ -652,13 +653,385 @@ application.controller('Ctrl_Stations', function ($rootScope, $scope, RESTFactor
 	 * @return 
 	 */
 	$scope.ToggleHeatmap = function () {
+		
 		if (heatmap_shown === true) {
 			new Hide_Heatmap();
 		} else {
 			new Show_Heatmap();
 		}
-
 	};
+
+
+	function Show_Heatmap() {
+
+		heatmap_shown = true;
+		
+		var config = {};
+		config.time = {};
+		config.time.start = new Date();
+		config.time.end = new Date();
+		config.minProc = 0;
+		config.maxProc = 100;
+		config.minLoadTime = 0;
+
+		$scope.config = config;
+
+		$scope.closeDialog = function () {
+			$mdDialog.hide();
+		};
+
+		$mdDialog.show({
+			clickOutsideToClose: false,
+			scope: $scope,
+			preserveScope: true,
+			template:
+			'<md-dialog class="booking-dialog">' +
+			'	<md-dialog-content>' +
+
+			'		<md-toolbar class="md-hue-2">' +
+			'			<div class="md-toolbar-tools">' +
+			'				<h2 class="md-flex">Visualisierung konfigurieren</h2>' +
+			'			</div>' +
+			'		</md-toolbar>' +
+
+			'		<form name="formName">' +	
+			'		<md-content flex layout-padding>' +
+			'			<md-input-container>' +
+			'				<md-checkbox ng-model="config.timeBorder" class="md-primary">Zeitlich begrenzt</md-checkbox>' +
+			'			</md-input-container>' +
+			'			<br/>' +
+			'			<md-input-container>' +
+			'				<md-checkbox ng-model="config.minBorder" class="md-primary">Prozentual begrenzt</md-checkbox>' +
+			'			</md-input-container>' +
+			'			<br/>' +
+			'			<md-input-container>' +
+			'				<md-checkbox ng-model="config.loadTimeBorder" class="md-primary">Ladezeit begrenzt</md-checkbox>' +
+			'			</md-input-container>' +
+			'		</md-content>' +
+
+			'		<md-content flex layout-padding >' +
+			'			<span ng-switch="config.timeBorder">' +
+			'				<md-input-container ng-switch-when="true">' +
+			'					<input type="date" placeholder="Startdatum" class="md-input" value="{{config.time.start}}" >' +
+			'				</md-input-container>' +
+			'				<md-input-container ng-switch-when="true">' +
+			'					<input type="date" placeholder="Enddatum" class="md-input" value="{{config.time.end}}">' +
+			'				</md-input-container>' +
+			'			<span' +
+
+			'			<span ng-switch="config.minBorder">' +
+			'				<md-input-container ng-switch-when="true">' +
+			'					<input type="number" placeholder="Untergrenze" class="md-input" ng-model="config.minProc">' +
+			'				</md-input-container>' +
+			'				<md-input-container ng-switch-when="true">' +
+			'					<input type="number" placeholder="Obergrenze" class="md-input" ng-model="config.maxProc">' +
+			'				</md-input-container>' +
+			'			<span' +
+
+			'			<span ng-switch="config.loadTimeBorder">' +
+			'				<md-input-container ng-switch-when="true">' +
+			'					<input type="number" placeholder="Untergrenze" class="md-input" ng-model="config.minLoadTime">' +
+			'				</md-input-container>' +
+			'			<span' +
+
+			'		</md-content>' +
+			
+			'		<md-content flex layout-padding>' +
+			'			<md-button class="md-raised md-primary button-to-right" ng-click="Apply()" > Anwenden </md-button>' +
+			'			<md-button class="md-raised md-hue-1 button-to-right" ng-click="closeDialog()" > Verwerfen </md-button>' +
+			'		</md-content>' +
+			'		</form>' +
+
+			'	</md-dialog-content>' +
+			'</md-dialog>',
+
+			controller: function DialogController($scope, $mdDialog, RESTFactory, Helper) {
+
+				$scope.Apply = function () {
+
+					for (var i = 0; i < markers.length; i++) {
+						markers[i].setMap(null);
+					}
+
+					var stations = {};
+					var char_stations = {};
+					var heatmap_data = [];
+
+					new Load_Stations();
+					
+					var config;
+
+					function Load_Stations() {
+
+						config = $scope.config;
+						
+						RESTFactory.Charging_Stations_Get().then(function (response) {
+							
+							var data = response.data;
+
+							data.forEach(function (data_use, index) {
+								
+								var station = {};
+
+								var stationID = data_use.chargingStationId;
+								station.stationID = stationID;
+								station.lat = data_use.latitude;
+								station.lon = data_use.longitude;
+								station.weight = 0;
+
+								stations[stationID] = station;
+								
+							});
+
+							new Load_Extras();
+
+						}, function (response) {
+
+						});					
+
+					}
+
+					function Load_Extras() {
+
+						RESTFactory.Car_Charging_Stations_Get().then(function (response) {
+							
+							var data = response.data;
+
+							data.forEach(function (data_use, index) {
+								
+								var char_station = {};
+								char_station.active = true;
+								char_station.start = Helper.Get_Zeit_Server(data_use.chargeStart);
+								char_station.end = Helper.Get_Zeit_Server(data_use.chargeEnd);
+								char_station.chargingStationID = data_use.chargingStationId;
+								char_station.carID = data_use.carId;
+								char_station.carChargingStationID = data_use.carChargingStationId;
+								char_station.loadTime = (char_station.end.value - char_station.start.value);
+								
+								if (config.loadTimeBorder === true) {
+									if (char_station.end.state === true && char_station.start.state === true) {
+										char_stations[char_station.carChargingStationID] = char_station;
+									}
+								} else {
+									char_stations[char_station.carChargingStationID] = char_station;
+								}
+
+
+							});
+
+							new ApplyFilters();
+
+						}, function (response) {
+							
+						});
+
+					}
+
+					function ApplyFilters() {
+
+						if (config.timeBorder === true) {
+
+							var startTimest = new Date(config.time.start);
+							startTimest.setHours(0);
+							startTimest.setMinutes(0);
+							startTimest.setSeconds(0);
+							startTimest.setMilliseconds(0);
+							var endTimest = new Date(config.time.end);
+							endTimest.setHours(23);
+							endTimest.setMinutes(59);
+							endTimest.setMilliseconds(999);
+							endTimest.setSeconds(59);
+
+							startTimest = startTimest.getTime();
+							endTimest = endTimest.getTime();
+
+							for (var char_stationID in char_stations) {
+									
+								if (char_stations[char_stationID].start.value >= startTimest && char_stations[char_stationID].end.value <= endTimest) {
+									char_stations[char_stationID].active = true;
+								} else {
+									char_stations[char_stationID].active = false;
+								}
+
+							}
+
+						}
+
+						if (config.loadTimeBorder === true) {
+
+							var minLen = config.minLoadTime;
+
+							if (minLen < 0) {
+								minLen = 0;
+							} else if (minLen > 100) {
+								minLen = 100;
+							}
+							
+							for (var char_stationID in char_stations) {
+
+								//console.log(char_stations[char_stationID].loadTime);
+
+								if (char_stations[char_stationID].loadTime >= minLen) {
+									char_stations[char_stationID].active = true;
+								} else {
+									char_stations[char_stationID].active = false;
+								}
+
+							}						
+
+						}
+
+						new Draw();
+
+					}
+
+					function Draw() {
+
+						for (var char_stationID in char_stations) {
+
+							for (var stationID in stations) {
+								
+								if (stations[stationID].stationID === char_stations[char_stationID].chargingStationID) {
+									if (char_stations[char_stationID].active === true) {
+										stations[stationID].weight++;
+									}
+								}
+
+							}
+
+						}
+
+						var maxHeat = 0;
+						var totalHeat = 0;
+
+						var prep_data = [];
+
+						for (var key in stations) {
+
+							var station = stations[key];
+
+							var lat = station.lat;
+							var lon = station.lon;
+							var weight = station.weight;
+							var heat = {};
+
+							if (weight > maxHeat) {
+								maxHeat = weight;
+							}
+
+							totalHeat += weight;
+
+							heat.location = new google.maps.LatLng(lat, lon);
+							heat.weight = weight;
+
+							prep_data.push(heat);
+
+						}
+
+						if (config.minBorder === true) {
+
+							var minProc = config.minProc;
+							var maxProc = config.maxProc;
+
+							if (minProc < 0) {
+								minProc = 0;
+							} else if (minProc > 100) {
+								minProc = 100;
+							}
+							
+							if (maxProc < minProc) {
+								maxProc = minProc + 1;
+							}
+
+							if (maxProc < 0) {
+								maxProc = 0;
+							} else if (maxProc > 100) {
+								maxProc = 100;
+							}
+
+							for (var i = prep_data.length - 1; i >= 0; i--) {
+								
+								if (prep_data[i].weight >= totalHeat / 100 * minProc && prep_data[i].weight <= totalHeat / 100 * maxProc) {
+									prep_data[i].weight = prep_data[i].weight - totalHeat / 100 * minProc + 1;
+									heatmap_data.push(prep_data[i]);
+								}
+
+							}
+
+						} else {
+
+							for (var i = prep_data.length - 1; i >= 0; i--) {
+								heatmap_data.push(prep_data[i]);
+							}							
+
+						}
+
+						heatmap = new google.maps.visualization.HeatmapLayer({
+							data: heatmap_data
+						});
+
+						heatmap.setMap(map);
+
+						var gradient = [
+							'rgba(0, 0, 255, 0)'
+						];
+
+						var g = 0;
+						var r = 0;
+						var b = 255;
+
+						var step = 25;
+
+						for (var i = 0; i < 510; i+=step) {
+							
+							var rgba = "rgba(" + r + "," + g + "," + b + ",1)";
+							gradient.push(rgba);
+
+							if (i > 127 && i < 382) {
+								if (i < 255) {
+									g += step;
+								} else {
+									if (i > 0) {
+										g -= step;
+										if (g < 0) {
+											g = 0;
+										}
+									}
+								}
+							}
+
+							if (i < 255) {
+								b -= step;
+								if (b < 0) {
+									b = 0;
+								}
+							}
+							
+							if (i > 255) {
+								r+=step;
+							}
+
+						}
+
+
+						heatmap.set('gradient', gradient);
+
+						heatmap.set('radius', 50);
+
+
+						$scope.closeDialog();
+
+					}
+				}
+
+			}
+
+		});
+
+
+
+	}	
+
 
     /**
 	 * Initfunktion der Seite Stations
