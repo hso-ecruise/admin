@@ -41,8 +41,6 @@ var checkRouting= function ($rootScope, $location, Helper) {
     $rootScope.loggedIN = loggedIN;
     $rootScope.token = token;
     $rootScope.customerID = customerID;
-    
-	console.log($rootScope.customerID);
 
     if ($rootScope.loggedIN === false || $rootScope.loggedIN === undefined || $rootScope.customerID !== "1")
     {

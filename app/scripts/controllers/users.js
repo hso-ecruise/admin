@@ -182,7 +182,6 @@ application.controller('Ctrl_Users', function ($rootScope, $scope, RESTFactory, 
 						$scope.$apply();
 					}
 
-						console.log(data);
 					data.forEach(function (data_use, index) {
 						
 						var booking = {};
@@ -363,8 +362,6 @@ application.controller('Ctrl_Users', function ($rootScope, $scope, RESTFactory, 
 			});
 		}
 		
-		console.log(customer_old.verified + "  " +  verified);
-
 		if("\"" + customer_old.verified + "\"" !== verified){
 			RESTFactory.Customers_Patch_Verified(customerID, verified).then(function(response){
 				alert("Verifizierungsstatus erfolgreich geändert");

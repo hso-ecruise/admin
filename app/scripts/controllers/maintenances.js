@@ -481,8 +481,6 @@ application.controller('Ctrl_Maintenances', function ($rootScope, $scope, RESTFa
 		data.completedDate =endDate;
 		data.invoiceItemId = invoiceItemID;
 
-		console.log(data);
-
 		RESTFactory.Car_Maintances_Patch(carMainID, data).then(function(response){
 			alert("End Datum und RechnungsElementID erfolgreich gesetzt");
 			new Update("ALL", undefined);

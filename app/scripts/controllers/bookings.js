@@ -213,8 +213,6 @@ application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactor
 					booking.statusText = "In der Zukunft";
 				}
 			}
-			
-			console.log(booking);
 
 			booking.tripState = "false";
 			booking.invoiceState = "false";

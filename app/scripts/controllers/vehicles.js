@@ -517,7 +517,6 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
 							$scope.currentVehicle.maintenancesOpen = maintenancesOpen;
 
 							if (data_use.invoiceItemId !== null) {
-								console.log("CALLED");
 							
 								RESTFactory.Invoices_Get_Items_ItemID(maintenance.invoiceItemID).then(function (response) {
 

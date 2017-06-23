@@ -869,8 +869,6 @@ application.controller('Ctrl_Stations', function ($rootScope, $scope, RESTFactor
 							
 							for (var char_stationID in char_stations) {
 
-								//console.log(char_stations[char_stationID].loadTime);
-
 								if (char_stations[char_stationID].loadTime >= minLen) {
 									char_stations[char_stationID].active = true;
 								} else {

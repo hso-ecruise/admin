@@ -418,8 +418,6 @@ application.controller('Ctrl_Invoices', function ($rootScope, $scope, RESTFactor
 						type: item.typeObj.be
 					};
 					
-					console.log(data);
-					
 					RESTFactory.Invoices_Post_Items(invoiceID, data).then(function (response) {
 						new Load_Details(invoiceID);
 						alert("Element erfolgreich hinzugefügt");
@@ -504,8 +502,6 @@ application.controller('Ctrl_Invoices', function ($rootScope, $scope, RESTFactor
 	$scope.Enter_Search = function(){
 		
 		var search = $scope.searchQuery;
-		
-		console.log(search);
 		
 		if(search === undefined || search.length === 0){
 			new Update("ALL", undefined);
