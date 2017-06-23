@@ -6,7 +6,7 @@
 
         <div style="padding: 15px;"></div>
 
-        <div class="content" style="width:15%">
+        <div class="content" style="width:15%;">
             <md-toolbar class="md-hue-2">
                 <div class="md-toolbar-tools">
                     <h2 class="md-flex">Ladestationen</h2>
@@ -17,7 +17,7 @@
                     <label> Suche nach ID</label>
                     <input ng-model="searchQuery" my-enter="Enter_Search()"/>
                 </md-input-container>
-                <div class="scroll">
+                <div class="scrollable4">
                     <md-content>
                         <table>
                             <thead>
@@ -44,7 +44,7 @@
                         </table>
                     </md-content>
                 </div>
-				<div ng-click="Show_AddStation()">
+				<div ng-click="Show_AddStation()" style="">
 					<h4>Neue Ladestation hinzufügen</h4>
 				</div>
             </md-content>

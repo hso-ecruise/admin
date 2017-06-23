@@ -11,7 +11,7 @@
                     <label> Suche nach ID</label>
                     <input ng-model="bookingID" my-enter="Enter_Search()"/>
                 </md-input-container>
-                <div class="scroll">
+                <div class="scrollable4">
                     <md-content>
                         <table>
                             <thead>
@@ -60,7 +60,7 @@
                     </md-content>
                 </div>
 
-                <div ng-switch-when="true">
+                <div ng-switch-when="true" class="scrollable">
                     <md-content layout-padding>
                         <p>
                             <label> Buchungs-ID: {{ currentBooking.bookingID }} </label>

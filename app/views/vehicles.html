@@ -43,9 +43,9 @@
                         </table>
                     </md-content>
                 </div>
-				<div ng-click="Show_AddVehicle()">
-					<h4>Neues Fahrzeug hinzufügen</h4>
-				</div>
+                <div ng-click="Show_AddVehicle()">
+                    <h4>Neues Fahrzeug hinzufügen</h4>
+                </div>
             </md-content>
         </div>
         <div style="padding: 15px;"></div>
@@ -53,7 +53,7 @@
         <div ng-switch="view" class="content" style="width:30%;">
 
             <div ng-switch-when="info" ng-switch="vehicle_selected">
-                
+
                 <md-toolbar class="md-hue-2">
                     <div class="md-toolbar-tools">
                         <h2 class="md-flex">Fahrzeug-Informationen</h2>
@@ -106,7 +106,7 @@
                                     <md-input-container ng-switch-when="100">
                                         <input type="text" placeholder="Geladen" value="voll geladen" ng-disabled="true"/>
                                     </md-input-container>
-                                    
+
                                     <md-input-container ng-switch-default>
                                         <input type="text" placeholder="Voll geladen um" ng-model="currentVehicle.chargeDone" ng-disabled="true"/>
                                     </md-input-container>
@@ -171,11 +171,11 @@
                             </md-content>
                         </md-tab>
 
-                        <md-tab label="Bisherige Fahrten">
-                            <md-content layout-padding>
-                                
+                        <md-tab label="Bisherige Fahrten" >
+                            <md-content layout-padding class="scrollable3">
+
                                 <blockquote ng-repeat="(key, trip) in currentVehicle.trips track by $index">
-                                    
+
                                     <label><b>Allgemeines</b></label>
                                     <p></p>
                                     <h5>Buchungs-ID: {{trip.bookingID}} Trip-ID: {{trip.tripID}} von Fahrer-ID: {{trip.customerID}}</h5>
@@ -197,166 +197,166 @@
                         </md-tab>
 
                         <md-tab label="Instandhaltung">
-                            <md-content ng-switch="currentVehicle.maintenanceState">
-                            
+                            <md-content ng-switch="currentVehicle.maintenanceState" class="scrollable3">
+
                                 <md-tabs md-dynamic-height md-border-bottom ng-switch-when="true">
                                     <md-tab label="Vergangene">
 
                                         <md-content layout-padding>
                                             <blockquote ng-repeat="(key, maintenance) in currentVehicle.maintenancesDone track by $index">
-                                                
+
                                                 <label><b>Allgemeines</b></label>
                                                 <p ng-switch="maintenance.invoiceState">
-                                                    <h5>Instandhaltungs-ID: {{maintenance.maintenanceID}}</h5>
-                                                    <h5>Fahrzeug-Instandhaltungs-ID: {{maintenance.carMaintenanceID}}</h5>
-                                                    <h5>Rechnungs-ID: {{maintenance.invoice.invoiceID}}</h5>
-                                                    <h5 ng-switch-when="true">Rechnungsitem-ID: {{maintenance.invoiceItemID}}</h5>
+                                                <h5>Instandhaltungs-ID: {{maintenance.maintenanceID}}</h5>
+                                                <h5>Fahrzeug-Instandhaltungs-ID: {{maintenance.carMaintenanceID}}</h5>
+                                                <h5>Rechnungs-ID: {{maintenance.invoice.invoiceID}}</h5>
+                                                <h5 ng-switch-when="true">Rechnungsitem-ID: {{maintenance.invoiceItemID}}</h5>
                                                 </p>
-                                                
-                                                <label><b>Zeitlicher Rahmen</b></label>
-                                                <p></p>
-                                                <h5>Von {{maintenance.plannedDate.date}}</h5>
-                                                <h5>bis {{maintenance.completedDate.date}}</h5>
+
+                                            <label><b>Zeitlicher Rahmen</b></label>
+                                            <p></p>
+                                            <h5>Von {{maintenance.plannedDate.date}}</h5>
+                                            <h5>bis {{maintenance.completedDate.date}}</h5>
                                             </blockquote>
 
                                         </md-content>
 
                                     </md-tab>
 
-                                    <md-tab label="Ausstehende">
+                                <md-tab label="Ausstehende">
 
-                                        <md-content layout-padding>
-                                            <blockquote ng-repeat="(key, maintenance) in currentVehicle.maintenancesOpen track by $index">
-                                                
-                                                <label><b>Allgemeines</b></label>
-                                                <p ng-switch="maintenance.invoiceState">
-                                                    <h5>Instandhaltungs-ID: {{maintenance.maintenanceID}}</h5>
-                                                    <h5>Fahrzeug-Instandhaltungs-ID: {{maintenance.carMaintenanceID}}</h5>
-                                                    <h5>Rechnungs-ID: {{maintenance.invoice.invoiceID}}</h5>
-                                                    <h5 ng-switch-when="true">Rechnungsitem-ID: {{maintenance.invoiceItemID}}</h5>
-                                                </p>
-                                                
-                                                <label><b>Zeitlicher Rahmen</b></label>
-                                                <p></p>
-                                                <h5>Von {{maintenance.plannedDate.date}}</h5>
-                                                <h5>bis</h5>
-                                                <h5>Instandhaltung noch nicht beendet</h5>
-                                            </blockquote>
+                                    <md-content layout-padding class="scrollable3">
+                                        <blockquote ng-repeat="(key, maintenance) in currentVehicle.maintenancesOpen track by $index">
 
-                                        </md-content>
+                                            <label><b>Allgemeines</b></label>
+                                            <p ng-switch="maintenance.invoiceState">
+                                            <h5>Instandhaltungs-ID: {{maintenance.maintenanceID}}</h5>
+                                            <h5>Fahrzeug-Instandhaltungs-ID: {{maintenance.carMaintenanceID}}</h5>
+                                            <h5>Rechnungs-ID: {{maintenance.invoice.invoiceID}}</h5>
+                                            <h5 ng-switch-when="true">Rechnungsitem-ID: {{maintenance.invoiceItemID}}</h5>
+                                            </p>
 
-                                    </md-tab>                                
-                                </md-tabs>
-                
-                                <div ng-switch-when="false">
-                                    <p>
-                                        <h5>Keine Instandhaltungen für dieses Fahrzeug verfügbar</h5>
-                                    </p>
-                                </div>
-                            </md-content>
-                        </md-tab>
+                                        <label><b>Zeitlicher Rahmen</b></label>
+                                        <p></p>
+                                        <h5>Von {{maintenance.plannedDate.date}}</h5>
+                                        <h5>bis</h5>
+                                        <h5>Instandhaltung noch nicht beendet</h5>
+                                        </blockquote>
 
-                    </md-tabs>
-                    
-                </div>
-                
-            </div>
+                                    </md-content>
 
-            <div ng-switch-when="add">
-                <md-toolbar class="md-hue-2">
-                    <div class="md-toolbar-tools">
-                        <h2 class="md-flex">Neues Fahrzeug hinzuf&uuml;gen</h2>
-                    </div>
-                </md-toolbar>
+                                </md-tab>                                
+                            </md-tabs>
 
-                <form name="form_NewVehicle">
-
-
-                    <md-content flex layout-padding>
-                        <md-input-container flex-gt-sm>
-                            <input type="text" placeholder="Hersteller" maxlength="64" ng-model="new_vehicle.manufacturer" ng-required="true" />
-                        </md-input-container>
-                        <md-input-container flex-gt-sm>
-                            <input type="text" placeholder="Modell" maxlength="32" ng-model="new_vehicle.model" ng-required="true" />
-                        </md-input-container>
+                        <div ng-switch-when="false">
+                            <p>
+                            <h5>Keine Instandhaltungen für dieses Fahrzeug verfügbar</h5>
+                            </p>
+                        </div>
                     </md-content>
+                </md-tab>
 
-                    <md-content flex layout-padding>
-                        <md-input-container flex-gt-sm>
-                            <input type="number" placeholder="Baujahr" min="1980" max="2100" ng-model="new_vehicle.yearOfConstruction" ng-required="true" />
-                        </md-input-container>
-                        <md-input-container flex-gt-sm>
-                            <input type="text" placeholder="Nummernschild" pattern="[A-Z]{1,3} [A-Z]{1,2} [0-9]{1,4}" ng-model="new_vehicle.licensePlate" ng-required="true" />
-                        </md-input-container>
-                    </md-content>
+            </md-tabs>
 
-                    <md-content flex layout-padding>
-                        <md-input-container flex-gt-sm>
-                            <input type="number" placeholder="Kilometer-Stand" min="0" ng-model="new_vehicle.mileage" ng-required="true" />
-                        </md-input-container>
-                    </md-content>
-
-                    <md-content flex layout-padding>
-                        <md-input-container flex-gt-sm>
-                            <input type="number" placeholder="Kilowatt" min="0" max="999" ng-model="new_vehicle.kilowatts" ng-required="true" />
-                        </md-input-container>
-                        <md-input-container flex-gt-sm>
-                            <input type="number" placeholder="Batteriestand" min="0" max="100" ng-model="new_vehicle.chargeLevel" ng-required="true" />
-                        </md-input-container>
-                    </md-content>
-
-                    <md-content flex layout-padding>
-                        <md-input-container flex-gt-sm>
-                            Reservierungszustand:
-                            <md-menu>
-                                <md-button ng-mouseenter="$mdMenu.open()">{{new_vehicle.bookingStateObj.text}}</md-button>
-                                <md-menu-content width="4" ng-mouseleave="$mdMenu.close()">
-                                    <md-menu-item ng-repeat="item in bookingStates">
-                                        <md-button ng-click="new_vehicle.bookingStateObj = item">
-                                            {{item.text}}
-                                        </md-button>
-                                    </md-menu-item>
-                                </md-menu-content>
-                            </md-menu>
-                        </md-input-container>
-                        <br/>
-                        <md-input-container flex-gt-sm>
-                            Ladezustand:
-                            <md-menu>
-                                <md-button ng-mouseenter="$mdMenu.open()">{{new_vehicle.loadingStateObj.text}}</md-button>
-                                <md-menu-content width="4" ng-mouseleave="$mdMenu.close()">
-                                    <md-menu-item ng-repeat="item in loadingStates">
-                                        <md-button ng-click="new_vehicle.loadingStateObj = item">
-                                            {{item.text}}
-                                        </md-button>
-                                    </md-menu-item>
-                                </md-menu-content>
-                            </md-menu>
-                        </md-input-container>
-                    </md-content>
-
-                    <md-content flex layout-padding>
-                        <md-input-container flex-gt-sm>
-                            <input type="text" placeholder="Strasse" ng-model="new_vehicle.address.street" disabled />
-                        </md-input-container>
-                        <md-input-container flex-gt-sm>
-                            <input type="text" placeholder="Nummer" ng-model="new_vehicle.address.number" disabled />
-                        </md-input-container>
-                        <md-input-container style="display: none;">
-                            <input type="number" ng-model="new_vehicle.lat" min="-180" ng-required />
-                        </md-input-container>
-                    </md-content>
-					<!--
-                    <input type="text" id='search_input' value="" placeholder="Suchen"/>
-					-->
-                    <div id="map_vehicle_new" style="height: 250px;"></div>
-
-                    <md-content flex layout-padding>
-                        <md-button class="md-raised md-primary button-to-right" ng-click="Safe_New()" ng-disabled="form_NewVehicle.$invalid"> Speichern </md-button>
-                        <md-button class="md-primary md-hue-1 button-to-right" ng-click="Dismiss_New()"> Verwerfen </md-button>
-                    </md-content>
-                </form>
-            </div>
-        </div>
     </div>
+
+</div>
+
+<div ng-switch-when="add">
+    <md-toolbar class="md-hue-2">
+        <div class="md-toolbar-tools">
+            <h2 class="md-flex">Neues Fahrzeug hinzuf&uuml;gen</h2>
+        </div>
+    </md-toolbar>
+
+    <form name="form_NewVehicle" class="scrollable2">
+
+
+        <md-content flex layout-padding>
+            <md-input-container flex-gt-sm>
+                <input type="text" placeholder="Hersteller" maxlength="64" ng-model="new_vehicle.manufacturer" ng-required="true" />
+            </md-input-container>
+            <md-input-container flex-gt-sm>
+                <input type="text" placeholder="Modell" maxlength="32" ng-model="new_vehicle.model" ng-required="true" />
+            </md-input-container>
+        </md-content>
+
+        <md-content flex layout-padding>
+            <md-input-container flex-gt-sm>
+                <input type="number" placeholder="Baujahr" min="1980" max="2100" ng-model="new_vehicle.yearOfConstruction" ng-required="true" />
+            </md-input-container>
+            <md-input-container flex-gt-sm>
+                <input type="text" placeholder="Nummernschild" pattern="[A-Z]{1,3} [A-Z]{1,2} [0-9]{1,4}" ng-model="new_vehicle.licensePlate" ng-required="true" />
+            </md-input-container>
+        </md-content>
+
+        <md-content flex layout-padding>
+            <md-input-container flex-gt-sm>
+                <input type="number" placeholder="Kilometer-Stand" min="0" ng-model="new_vehicle.mileage" ng-required="true" />
+            </md-input-container>
+        </md-content>
+
+        <md-content flex layout-padding>
+            <md-input-container flex-gt-sm>
+                <input type="number" placeholder="Kilowatt" min="0" max="999" ng-model="new_vehicle.kilowatts" ng-required="true" />
+            </md-input-container>
+            <md-input-container flex-gt-sm>
+                <input type="number" placeholder="Batteriestand" min="0" max="100" ng-model="new_vehicle.chargeLevel" ng-required="true" />
+            </md-input-container>
+        </md-content>
+
+        <md-content flex layout-padding>
+            <md-input-container flex-gt-sm>
+                Reservierungszustand:
+                <md-menu>
+                    <md-button ng-mouseenter="$mdMenu.open()">{{new_vehicle.bookingStateObj.text}}</md-button>
+                    <md-menu-content width="4" ng-mouseleave="$mdMenu.close()">
+                        <md-menu-item ng-repeat="item in bookingStates">
+                            <md-button ng-click="new_vehicle.bookingStateObj = item">
+                                {{item.text}}
+                            </md-button>
+                        </md-menu-item>
+                    </md-menu-content>
+                </md-menu>
+            </md-input-container>
+            <br/>
+            <md-input-container flex-gt-sm>
+                Ladezustand:
+                <md-menu>
+                    <md-button ng-mouseenter="$mdMenu.open()">{{new_vehicle.loadingStateObj.text}}</md-button>
+                    <md-menu-content width="4" ng-mouseleave="$mdMenu.close()">
+                        <md-menu-item ng-repeat="item in loadingStates">
+                            <md-button ng-click="new_vehicle.loadingStateObj = item">
+                                {{item.text}}
+                            </md-button>
+                        </md-menu-item>
+                    </md-menu-content>
+                </md-menu>
+            </md-input-container>
+        </md-content>
+
+        <md-content flex layout-padding>
+            <md-input-container flex-gt-sm>
+                <input type="text" placeholder="Strasse" ng-model="new_vehicle.address.street" disabled />
+            </md-input-container>
+            <md-input-container flex-gt-sm>
+                <input type="text" placeholder="Nummer" ng-model="new_vehicle.address.number" disabled />
+            </md-input-container>
+            <md-input-container style="display: none;">
+                <input type="number" ng-model="new_vehicle.lat" min="-180" ng-required />
+            </md-input-container>
+        </md-content>
+        <!--
+<input type="text" id='search_input' value="" placeholder="Suchen"/>
+-->
+        <div id="map_vehicle_new" style="height: 250px;"></div>
+
+        <md-content flex layout-padding>
+            <md-button class="md-raised md-primary button-to-right" ng-click="Safe_New()" ng-disabled="form_NewVehicle.$invalid"> Speichern </md-button>
+            <md-button class="md-primary md-hue-1 button-to-right" ng-click="Dismiss_New()"> Verwerfen </md-button>
+        </md-content>
+    </form>
+</div>
+</div>
+</div>
 </div>

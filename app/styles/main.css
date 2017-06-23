@@ -1,4 +1,4 @@
-﻿
+
 md-input-container{
     height: 37px;
 }
@@ -42,7 +42,22 @@ md-nav-bar md-nav-ink-bar {
     height: calc(100vh - 300px);
     overflow:auto;
 }
-
+.scrollable{
+    height: calc(100vh - 200px);
+    overflow:auto;
+}
+.scrollable2{
+    height: calc(100vh - 150px);
+    overflow:auto;
+}
+.scrollable3{
+    height: calc(100vh - 250px);
+    overflow:auto;
+}
+.scrollable4{
+    height: calc(100vh - 320px);
+    overflow:auto;
+}
 #ng_view{
     height: calc(100% - 52px - 10px);
 }
