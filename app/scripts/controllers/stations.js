@@ -806,7 +806,7 @@ application.controller('Ctrl_Stations', function ($rootScope, $scope, RESTFactor
 								char_station.chargingStationID = data_use.chargingStationId;
 								char_station.carID = data_use.carId;
 								char_station.carChargingStationID = data_use.carChargingStationId;
-								char_station.loadTime = (char_station.end.value - char_station.start.value);
+								char_station.loadTime = (char_station.end.value - char_station.start.value) / 1000 / 60;
 								
 								if (config.loadTimeBorder === true) {
 									if (char_station.end.state === true && char_station.start.state === true) {
@@ -892,6 +892,7 @@ application.controller('Ctrl_Stations', function ($rootScope, $scope, RESTFactor
 								if (stations[stationID].stationID === char_stations[char_stationID].chargingStationID) {
 									if (char_stations[char_stationID].active === true) {
 										stations[stationID].weight++;
+										console.log(char_stations[char_stationID]);
 									}
 								}
 
@@ -922,7 +923,9 @@ application.controller('Ctrl_Stations', function ($rootScope, $scope, RESTFactor
 							heat.location = new google.maps.LatLng(lat, lon);
 							heat.weight = weight;
 
-							prep_data.push(heat);
+							if (heat.weight > 0) {
+								prep_data.push(heat);
+							}
 
 						}
 
