@@ -182,6 +182,7 @@ application.controller('Ctrl_Users', function ($rootScope, $scope, RESTFactory, 
 						$scope.$apply();
 					}
 
+						console.log(data);
 					data.forEach(function (data_use, index) {
 						
 						var booking = {};
@@ -191,7 +192,9 @@ application.controller('Ctrl_Users', function ($rootScope, $scope, RESTFactory, 
 						booking.customerID = data_use.customerId;
 						booking.invoiceItemID = data_use.invoiceItemId;
 
+
 						if (booking.tripID === null) {
+							booking.plannedDate = Helper.Get_Zeit_Server(data_use.plannedDate);
 							$scope.currentCustomer.bookingsOpen[booking.bookingID] = booking;
 						} else {
 
@@ -215,7 +218,7 @@ application.controller('Ctrl_Users', function ($rootScope, $scope, RESTFactory, 
 								});
 
 							} else {
-							
+								
 								booking.plannedDate = Helper.Get_Zeit_Server(data_use.plannedDate);
 								$scope.currentCustomer.bookingsDone[booking.bookingID] = booking;
 								
