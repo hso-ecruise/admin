@@ -47,7 +47,7 @@ var checkRouting= function ($rootScope, $location, Helper) {
 		if($rootScope.loggedIN === undefined){
 			$rootScope.loggedIN = false;
 		}
-		angular.element(document.getElementById('mainCtrl')).scope().Logout(true);
+		//angular.element(document.getElementById('mainCtrl')).scope().Logout(true);
 		$location.path("/start");
     }
     else
