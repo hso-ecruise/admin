@@ -42,12 +42,14 @@ var checkRouting= function ($rootScope, $location, Helper) {
     $rootScope.token = token;
     $rootScope.customerID = customerID;
     
-    if ($rootScope.loggedIN === false || $rootScope.loggedIN === undefined)
+	console.log($rootScope.customerID);
+
+    if ($rootScope.loggedIN === false || $rootScope.loggedIN === undefined || $rootScope.customerID !== "1")
     {
 		if($rootScope.loggedIN === undefined){
 			$rootScope.loggedIN = false;
 		}
-		
+		angular.element(document.getElementById('mainCtrl')).scope().Logout(true);
 		$location.path("/start");
     }
     else

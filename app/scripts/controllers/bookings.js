@@ -512,8 +512,8 @@ application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactor
 		function Init_Map(){
 			
 			var map = new google.maps.Map(document.getElementById('map_booking'), {
-				zoom: 16,
-				center: new google.maps.LatLng(49.5, 8.434),
+				zoom: 15,
+				center: new google.maps.LatLng(49.488813, 8.465976),
 				mapTypeId: 'roadmap'
 			});
 			

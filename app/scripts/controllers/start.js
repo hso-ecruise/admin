@@ -116,7 +116,7 @@ application.controller('Ctrl_Main', function ($rootScope, $scope, Helper, $locat
      * @method Logout
      * @return 
      */
-    $scope.Logout = function(){
+    $scope.Logout = function(remote){
 	
 		//DELETE COOKIES
 		
@@ -130,7 +130,9 @@ application.controller('Ctrl_Main', function ($rootScope, $scope, Helper, $locat
 		Helper.Cookie_Set("token", "");
 		Helper.Cookie_Set("customerID", "");
 		
-		if ($scope.testing === false) {
+		if (remote === true) {
+			$rootScope.$apply(function () { $location.path('/start'); });
+		} else {
 			$location.path('/start');
 		}
 	
