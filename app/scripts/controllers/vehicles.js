@@ -569,14 +569,12 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
 						data.forEach(function (data_use, index) {
 
 							var trip = {};
-
 							trip.tripID = data_use.tripId;
 							trip.carID = data_use.carId;
 							trip.customerID = data_use.customerId;
 							trip.startDate = Helper.Get_Zeit_Server(data_use.startDate);
 							trip.endDate = Helper.Get_Zeit_Server(data_use.endDate);
 							trip.startChargingStationID = data_use.startChargingStationId;
-							trip.bookingID = data_use.bookingId;
 
 							trip.endState = "false";
 							trip.distanceTravelled = 0;
