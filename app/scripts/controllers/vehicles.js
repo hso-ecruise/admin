@@ -735,15 +735,6 @@ application.controller('Ctrl_Vehicles', function ($rootScope, $scope, RESTFactor
 			car_charging_station.chargeStart = (new Date()).toUTCString();
 
 			RESTFactory.Car_Charging_Stations_Post(car_charging_station).then(function (response) {
-
-				station.slotsOccupied++;
-
-				RESTFactory.Charging_Stations_Patch_OccupiedSlots(station.stationID, station.slotsOccupied).then(function (response) {
-					alert("Ladestation erfolgreich aktualisiert");
-				}, function (response) {
-					alert("Ladestation konnte nicht aktualisiert werden");
-				});
-
 				alert("Verknüpfung zur Ladestation erfolgreich");
 				new Update("ALL", undefined, null);
 			}, function (response) {

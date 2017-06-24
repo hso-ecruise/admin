@@ -615,19 +615,6 @@ application.factory('RESTFactory', function ($http, GetCaller, PostCaller, Patch
 			return orig;
 		},
 
-		/**
-		 * Description
-		 * @method Charging_Stations_Post
-		 * @param {} data
-		 * @return orig
-		 */
-		Charging_Stations_Patch_OccupiedSlots: function (id, slots) {
-			var url = IP + "/charging-stations/" + id + "/slots-occupied";
-			var orig = Promise.resolve(PatchCaller.Patch(url, slots, true));
-			return orig;
-		},
-
-
 
 
 
