@@ -68,7 +68,7 @@
                             </md-input-container>
 
                             <md-input-container>
-                                <input type="text" placeholder="Gesamtpreis" value="{{currentInvoice.totalAmount}}" ng-disabled="true" />
+                                <input type="text" placeholder="Gesamtpreis" value="{{currentInvoice.totalAmount}}&euro;" ng-disabled="true" />
                             </md-input-container>
                         </md-content>
 
@@ -115,7 +115,7 @@
                                 <BLOCKQUOTE ng-switch-when="true" ng-repeat="(key, item) in currentInvoice.items track by $index">
 
                                     <h5>ID: {{ item.itemID }}</h5>
-                                    <h5>Preis: {{ item.amount }}</h5>
+                                    <h5>Preis: {{ item.amount }}&euro;</h5>
                                     <h5>Typ: {{ item.typeObj.text }}</h5>
                                     <h5>Grund: {{ item.reason }}</h5>
 

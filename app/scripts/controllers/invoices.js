@@ -81,7 +81,7 @@ application.controller('Ctrl_Invoices', function ($rootScope, $scope, RESTFactor
 				var ID_STR = data_use.invoiceId;
 				
 				invoice.invoiceID = data_use.invoiceId;
-				invoice.totalAmount = data_use.totalAmount;
+				invoice.totalAmount = data_use.totalAmount.toFixed(2);
 				invoice.customerID = data_use.customerId;
 				invoice.paid = data_use.paid;
 				invoice.paidText = "Nicht bezahlt";
@@ -142,7 +142,7 @@ application.controller('Ctrl_Invoices', function ($rootScope, $scope, RESTFactor
 			var invoice = {};
 			
 			invoice.invoiceID = data_use.invoiceId;
-			invoice.totalAmount = data_use.totalAmount;
+			invoice.totalAmount = data_use.totalAmount.toFixed(2);
 			invoice.customerID = data_use.customerId;
 			invoice.paid = data_use.paid;
 			invoice.paidText = "Nicht bezahlt";
@@ -196,7 +196,7 @@ application.controller('Ctrl_Invoices', function ($rootScope, $scope, RESTFactor
 					item.invoiceID = data_use.invoiceId;
 					item.reason = data_use.reason;
 					item.typeObj = INVOICE_TYPES[data_use.type];
-					item.amount = data_use.amount;
+					item.amount = data_use.amount.toFixed(2);
 					
 					invoice.items[item.itemID] = item;
 					

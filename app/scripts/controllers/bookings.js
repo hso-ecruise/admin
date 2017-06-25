@@ -234,7 +234,7 @@ application.controller('Ctrl_Bookings', function ($rootScope, $scope, RESTFactor
 					
 					invoice.invoiceID = data.invoiceId;
 					invoice.customerId = data.customerID;
-					invoice.totalAmount = data.totalAmount;
+					invoice.totalAmount = data.totalAmount.toFixed(2);
 					invoice.paid = data.paid;
 					invoice.paidText = "Rechnung offen";
 					if(invoice.paid === "true"){

@@ -120,7 +120,7 @@
                         <BLOCKQUOTE ng-switch="currentBooking.invoiceState">
                             <div ng-switch-when="true">
                                 <h5> ID: {{ currentBooking.invoice.invoiceID }} </h5>
-                                <h5> Preis: {{ currentBooking.invoice.totalAmount }} </h5>
+                                <h5> Preis: {{ currentBooking.invoice.totalAmount }}&euro; </h5>
                                 <h5> Status: {{ currentBooking.invoice.paidText }} </h5>
                             </div>
                             <div ng-switch-when="false">
